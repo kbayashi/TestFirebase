@@ -25,14 +25,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@color/colorPrimary" />
+            app:srcCompat="@drawable/ic_person_black_24dp" />
 
         <TextView
             android:id="@+id/user_list_my_name_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="栗林けけけ"
             android:textColor="@color/design_default_color_on_secondary"
             android:textSize="25sp"
@@ -123,6 +123,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/user_list_user_recyclerView"
         android:layout_width="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"

@@ -10,6 +10,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //下のナビゲーションボタンが押されたら画面を切り替える
         main_bottmnavview.setOnNavigationItemSelectedListener {
 
             when(it.itemId){
