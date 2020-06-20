@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.main_fragment_FrameLayout, UserListFragment())
                         .commit()
+                    title = "ユーザ一覧"
                     return@setOnNavigationItemSelectedListener true
                 }
 
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.main_fragment_FrameLayout, LatestChatListFragment())
                         .commit()
+                    title = "トーク一覧"
                     return@setOnNavigationItemSelectedListener true
                 }
 
@@ -35,8 +37,16 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        //初期化
+        startFlagment()
+
+    }
+
+    //初期化
+    private fun startFlagment(){
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_fragment_FrameLayout, UserListFragment())
             .commit()
+        title = "ユーザ一覧"
     }
 }
