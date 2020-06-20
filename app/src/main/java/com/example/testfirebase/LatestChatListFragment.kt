@@ -1,6 +1,7 @@
 package com.example.testfirebase
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +30,12 @@ class LatestChatListFragment: Fragment() {
         view.latest_chat_list_recyclerView.
             addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
         )
+
+        //チャット画面に移動
+        adapter?.setOnclickListener {
+            val intent = Intent(context, ChatActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onAttach(context: Context) {

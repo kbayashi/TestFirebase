@@ -41,6 +41,7 @@ class UserListFragment: Fragment() {
             friendDisplaySwitching(view)
         }
 
+
     }
 
     override fun onAttach(context: Context) {

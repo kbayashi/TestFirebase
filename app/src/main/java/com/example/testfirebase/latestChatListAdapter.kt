@@ -1,6 +1,7 @@
 package com.example.testfirebase
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 
 class latestChatListAdapter(private val context: Context)
     : RecyclerView.Adapter<latestChatListAdapter.ViewHolder>(){
+
+    val LATEST = "LATESTCHAT"
+
+    var itemClickListner : (()->Unit)? = null
+
+    fun setOnclickListener(listener:()->Unit){
+        itemClickListner = listener
+    }
 
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val latestChatTitle:TextView = itemView.findViewById(R.id.latest_chat_row_title_textView)
@@ -40,7 +49,11 @@ class latestChatListAdapter(private val context: Context)
 
     override fun onBindViewHolder(holder: latestChatListAdapter.ViewHolder, position: Int) {
         holder.latestChatTime.text = "9:00"
-    }
 
+        holder.itemView.setOnClickListener {
+            Log.d(LATEST,"タッチ")
+            itemClickListner?.invoke()
+        }
+    }
 
 }
