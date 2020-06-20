@@ -46,7 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:text="こんにちは、わたしは日本"
+            android:maxLines="1"
+            android:text="こんにちは、わたしは日本aaaaaaaaaaaaa"
             app:layout_constraintStart_toEndOf="@+id/user_list_my_imageView"
             app:layout_constraintTop_toBottomOf="@+id/user_list_my_name_textView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -58,6 +59,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_list_my_profile_constraintLayout">
+
+        <ImageView
+            android:id="@+id/user_list_group_title_arrow_imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/user_list_group_title_textView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/user_list_group_title_textView"
+            app:srcCompat="@drawable/ic_expand_more_24dp" />
 
         <ImageView
             android:id="@+id/user_list_group_title_imageView"
@@ -81,7 +92,7 @@
             android:textColor="@color/design_default_color_on_secondary"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/user_list_group_title_arrow_imageView"
             app:layout_constraintStart_toEndOf="@+id/user_list_group_title_imageView"
             app:layout_constraintTop_toTopOf="@+id/user_list_group_title_imageView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -115,9 +126,20 @@
             android:textColor="@color/design_default_color_on_secondary"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/user_list_friend_title_imageView"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/user_list_friend_title_arrow_imageView"
             app:layout_constraintStart_toEndOf="@+id/user_list_friend_title_imageView"
-            app:layout_constraintTop_toTopOf="@+id/user_list_friend_title_imageView" />
+            app:layout_constraintTop_toTopOf="@+id/user_list_friend_title_imageView"
+            app:layout_constraintVertical_bias="0.39" />
+
+        <ImageView
+            android:id="@+id/user_list_friend_title_arrow_imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/user_list_friend_title_textView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/user_list_friend_title_textView"
+            app:srcCompat="@drawable/ic_expand_more_24dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView

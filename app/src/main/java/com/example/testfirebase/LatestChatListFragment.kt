@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
-class ChatListFragment: Fragment() {
+class LatestChatListFragment: Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

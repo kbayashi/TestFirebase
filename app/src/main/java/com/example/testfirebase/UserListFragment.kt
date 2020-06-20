@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.user_list_fragment.view.*
 class UserListFragment: Fragment() {
 
     var adapter:userListAdapter? = null
+    var friendDisplayFlg = false
 
     //フラグメントにレイアウトを設定
     override fun onCreateView(
@@ -29,9 +30,16 @@ class UserListFragment: Fragment() {
         dummydata(adapter!!)
 
         view.user_list_user_recyclerView.adapter = adapter
+        view.user_list_user_recyclerView.visibility = View.GONE
+
         //recyclerviewに下線を足す
         view.user_list_user_recyclerView.addItemDecoration(DividerItemDecoration(activity,
             DividerItemDecoration.VERTICAL))
+
+        //友達リストを表示・非表示
+        view.user_list_friend_constraintLayout.setOnClickListener {
+            friendDisplaySwitching(view)
+        }
 
     }
 
@@ -47,4 +55,19 @@ class UserListFragment: Fragment() {
         adapter?.add()
         adapter?.add()
     }
+
+    //友達表示・非表示
+    private fun friendDisplaySwitching(view: View){
+
+        if(friendDisplayFlg == true){
+            friendDisplayFlg = false
+            view.user_list_user_recyclerView.visibility = View.GONE
+            view.user_list_friend_title_arrow_imageView.setImageResource(R.drawable.ic_expand_less_24dp)
+        }else{
+            friendDisplayFlg = true
+            view.user_list_user_recyclerView.visibility = View.VISIBLE
+            view.user_list_friend_title_arrow_imageView.setImageResource(R.drawable.ic_expand_more_24dp)
+        }
+    }
+
 }

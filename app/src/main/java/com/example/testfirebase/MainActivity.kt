@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.bottom_nav_chat ->{
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_fragment_FrameLayout, ChatListFragment())
+                        .replace(R.id.main_fragment_FrameLayout, LatestChatListFragment())
                         .commit()
                     return@setOnNavigationItemSelectedListener true
                 }
