@@ -68,7 +68,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/user_list_group_title_textView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/user_list_group_title_textView"
-            app:srcCompat="@drawable/ic_expand_more_24dp" />
+            app:srcCompat="@drawable/ic_expand_less_24dp" />
 
         <ImageView
             android:id="@+id/user_list_group_title_imageView"
@@ -103,7 +103,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_list_group_constraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/user_list_group_list_recyclerView">
 
         <ImageView
             android:id="@+id/user_list_friend_title_imageView"
@@ -139,7 +139,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/user_list_friend_title_textView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/user_list_friend_title_textView"
-            app:srcCompat="@drawable/ic_expand_more_24dp" />
+            app:srcCompat="@drawable/ic_expand_less_24dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -155,5 +155,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_list_friend_constraintLayout"
         app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/user_list_group_list_recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_list_group_constraintLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
