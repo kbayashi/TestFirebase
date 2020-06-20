@@ -50,10 +50,10 @@ class UserListFragment: Fragment() {
 
     //ダミーデータ格納
     fun dummydata(adapter: userListAdapter){
-        adapter?.add()
-        adapter?.add()
-        adapter?.add()
-        adapter?.add()
+        adapter.add()
+        adapter.add()
+        adapter.add()
+        adapter.add()
     }
 
     //友達表示・非表示
