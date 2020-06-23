@@ -19,12 +19,12 @@ class userListAdapter(private val context: Context)
     }
 
     //現状userデータがないのでダミーデータを格納するだけの処理になっている
-    class userListItem(){}
+    class userListItem(val user: User){}
 
     private var itemList = mutableListOf<userListItem>()
 
-    fun add(){
-        itemList.add(userListItem())
+    fun add(user: User){
+        itemList.add(userListItem(user))
     }
 
     //セルが必要になるたびに呼び出される。
@@ -39,7 +39,8 @@ class userListAdapter(private val context: Context)
 
     //保持されているビューにデータなどを設定するここでリスナなどを設定する
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.user_name.text = "aaaaaaa"
+        holder.user_name.text = itemList[position].user.name
+        holder.user_pr.text = itemList[position].user.pr
 
     }
 

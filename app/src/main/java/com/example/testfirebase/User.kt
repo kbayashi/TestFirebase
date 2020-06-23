@@ -6,9 +6,9 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class User (val Uid:String, val Name:String, val Img:String,
-            val Gender:String, val Birthday: String, val PR:String,
-            val Live: String, val Sick:String, val LifeExpectancy: String){
+class User (val uid:String, val name:String, val img:String,
+            val gender:String, val birthday: String, val pr:String,
+            val live: String, val sick:String, val life_expectancy: String){
 
     constructor():this("", "", "", "",
         "", "", "", "",

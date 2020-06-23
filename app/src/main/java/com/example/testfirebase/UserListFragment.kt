@@ -2,11 +2,15 @@ package com.example.testfirebase
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.user_list_fragment.*
 import kotlinx.android.synthetic.main.user_list_fragment.view.*
 
 class UserListFragment: Fragment() {
@@ -29,11 +33,9 @@ class UserListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dummydata(userListAdapter!!, groupListAdapter!!)
+        //dummydata(userListAdapter!!, groupListAdapter!!)
 
-
-        setUp(view)
-
+        fetchUsers()
 
         //友達リストを表示・非表示
         view.user_list_friend_constraintLayout.setOnClickListener {
@@ -55,11 +57,6 @@ class UserListFragment: Fragment() {
 
     //ダミーデータ格納
     fun dummydata(adapter: userListAdapter, groupListAdapter: groupListAdapter){
-        adapter.add()
-        adapter.add()
-        adapter.add()
-        adapter.add()
-
         groupListAdapter.add()
         groupListAdapter.add()
         groupListAdapter.add()
@@ -67,9 +64,41 @@ class UserListFragment: Fragment() {
         groupListAdapter.add()
 
     }
+    //ユーザ取り出す
+    private fun fetchUsers(){
+        val db = FirebaseFirestore.getInstance()
+        var loginUser:User? = null
+        val uid = FirebaseAuth.getInstance().uid
+        val loginUserRef = db.collection("user").document(uid!!)
+
+        loginUserRef.get().addOnSuccessListener {
+            Log.d("ユーザ取得", "${it.data}")
+            loginUser = it.toObject(User::class.java)
+            Log.d("ユーザ取得", "ログインしているユーザ名${loginUser?.name}")
+
+            setUp(view!!,loginUser!!)
+
+            val users = db.collection("user")
+            users.get().addOnSuccessListener {
+                it.forEach {
+                    Log.d("ユーザ取得","${it.toObject(User::class.java)}")
+                    var getUser = it.toObject(User::class.java)
+                    Log.d("ユーザ取得","${getUser.name}")
+                    if(loginUser?.name != getUser.name) {
+                        Log.d("ユーザ" ,"${loginUser}")
+                        Log.d("ユーザ", "${getUser}")
+                        userListAdapter?.add(getUser)
+                    }
+                }
+            }.addOnFailureListener {
+                Log.d("ユーザ取得失敗", it.message)
+            }
+        }
+
+    }
 
     //ビューの初期化
-    private fun setUp(view: View){
+    private fun setUp(view: View, user: User){
 
         view.user_list_user_recyclerView.adapter = userListAdapter
         view.user_list_user_recyclerView.visibility = View.GONE
@@ -80,6 +109,9 @@ class UserListFragment: Fragment() {
         //recyclerviewに下線を足す
         view.user_list_user_recyclerView.addItemDecoration(DividerItemDecoration(activity,
             DividerItemDecoration.VERTICAL))
+
+        view.user_list_my_name_textView.text = user.name
+        view.user_list_my_pr_textView.text = user.pr
 
     }
 

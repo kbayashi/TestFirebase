@@ -65,7 +65,7 @@ class UserRegistarActivity : AppCompatActivity() {
     //ユーザのデータをデータベースに登録
     private fun UserSaveDB(user:User){
         val ref  = FirebaseFirestore.getInstance().collection("user")
-            .document(user.Uid)
+            .document(user.uid)
 
         ref.set(user)
             .addOnSuccessListener {
