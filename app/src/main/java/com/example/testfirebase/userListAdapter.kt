@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.user_list_fragment.view.*
 
 class userListAdapter(private val context: Context)
     : RecyclerView.Adapter<userListAdapter.ViewHolder>() {
@@ -41,6 +43,9 @@ class userListAdapter(private val context: Context)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.user_name.text = itemList[position].user.name
         holder.user_pr.text = itemList[position].user.pr
+        Picasso.get().load("https://i.pinimg.com/originals/31/65/6a/31656a9f20b9f8ef858038440da820e2.jpg").
+            into(holder.user_image)
+        
 
     }
 
