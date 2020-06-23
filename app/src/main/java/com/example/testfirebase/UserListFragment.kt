@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.user_list_fragment.*
 import kotlinx.android.synthetic.main.user_list_fragment.view.*
 
@@ -33,8 +34,10 @@ class UserListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //dummydata(userListAdapter!!, groupListAdapter!!)
+        //ダミー
+        dummydata(groupListAdapter!!)
 
+        //ユーザ取り出して表示
         fetchUsers()
 
         //友達リストを表示・非表示
@@ -56,7 +59,7 @@ class UserListFragment: Fragment() {
     }
 
     //ダミーデータ格納
-    fun dummydata(adapter: userListAdapter, groupListAdapter: groupListAdapter){
+    fun dummydata(groupListAdapter: groupListAdapter){
         groupListAdapter.add()
         groupListAdapter.add()
         groupListAdapter.add()
@@ -76,6 +79,7 @@ class UserListFragment: Fragment() {
             loginUser = it.toObject(User::class.java)
             Log.d("ユーザ取得", "ログインしているユーザ名${loginUser?.name}")
 
+            //初期設定
             setUp(view!!,loginUser!!)
 
             val users = db.collection("user")
@@ -84,7 +88,7 @@ class UserListFragment: Fragment() {
                     Log.d("ユーザ取得","${it.toObject(User::class.java)}")
                     var getUser = it.toObject(User::class.java)
                     Log.d("ユーザ取得","${getUser.name}")
-                    if(loginUser?.name != getUser.name) {
+                    if(!(loginUser?.name == getUser.name)) {
                         Log.d("ユーザ" ,"${loginUser}")
                         Log.d("ユーザ", "${getUser}")
                         userListAdapter?.add(getUser)
@@ -112,6 +116,9 @@ class UserListFragment: Fragment() {
 
         view.user_list_my_name_textView.text = user.name
         view.user_list_my_pr_textView.text = user.pr
+        //テストでネット上の画像を表示できるか試した
+        view.user_list_my_imageView.visibility = View.INVISIBLE
+        Picasso.get().load("https://www.jalan.net/news/img/2020/02/20200213_neko-break_1.jpg").into(view.user_list_my_circleimageView)
 
     }
 
