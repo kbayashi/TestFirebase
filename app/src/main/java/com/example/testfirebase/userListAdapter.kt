@@ -45,7 +45,7 @@ class userListAdapter(private val context: Context)
         holder.user_pr.text = itemList[position].user.pr
         Picasso.get().load("https://i.pinimg.com/originals/31/65/6a/31656a9f20b9f8ef858038440da820e2.jpg").
             into(holder.user_image)
-        
+
 
     }
 

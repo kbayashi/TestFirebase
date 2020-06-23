@@ -142,28 +142,17 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <ImageView
-                        android:id="@+id/user_list_my_imageView"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="24dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_person_black_24dp" />
-
                     <TextView
                         android:id="@+id/user_list_my_name_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="24dp"
                         android:textColor="@color/design_default_color_on_secondary"
                         android:textSize="25sp"
                         android:textStyle="bold"
-                        app:layout_constraintStart_toEndOf="@+id/user_list_my_imageView"
-                        app:layout_constraintTop_toTopOf="@+id/user_list_my_imageView"
+                        app:layout_constraintStart_toEndOf="@+id/user_list_my_circleimageView"
+                        app:layout_constraintTop_toTopOf="parent"
                         tools:text="konnnnnn" />
 
                     <TextView
@@ -173,7 +162,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="4dp"
                         android:maxLines="1"
-                        app:layout_constraintStart_toEndOf="@+id/user_list_my_imageView"
+                        app:layout_constraintStart_toEndOf="@+id/user_list_my_circleimageView"
                         app:layout_constraintTop_toBottomOf="@+id/user_list_my_name_textView"
                         tools:text="わかやましゅっしんくそぞこなかめ" />
 
@@ -181,10 +170,11 @@
                         android:id="@+id/user_list_my_circleimageView"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/user_list_my_imageView"
-                        app:layout_constraintEnd_toEndOf="@+id/user_list_my_imageView"
-                        app:layout_constraintStart_toStartOf="@+id/user_list_my_imageView"
-                        app:layout_constraintTop_toTopOf="@+id/user_list_my_imageView"></de.hdodenhof.circleimageview.CircleImageView>
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="24dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"></de.hdodenhof.circleimageview.CircleImageView>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

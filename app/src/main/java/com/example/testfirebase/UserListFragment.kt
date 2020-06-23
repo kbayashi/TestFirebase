@@ -117,7 +117,6 @@ class UserListFragment: Fragment() {
         view.user_list_my_name_textView.text = user.name
         view.user_list_my_pr_textView.text = user.pr
         //テストでネット上の画像を表示できるか試した
-        view.user_list_my_imageView.visibility = View.INVISIBLE
         Picasso.get().load("https://i.pinimg.com/originals/31/65/6a/31656a9f20b9f8ef858038440da820e2.jpg").
             into(view.user_list_my_circleimageView)
 
