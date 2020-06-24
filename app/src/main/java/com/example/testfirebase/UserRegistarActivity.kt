@@ -42,7 +42,7 @@ class UserRegistarActivity : AppCompatActivity() {
         val pass = user_registar_pass_editText.text.toString()
         val checkPass = user_registar_pass_check_editText.text.toString()
 
-        if(email.isEmpty() || pass.isEmpty() || name.isEmpty()){
+        if(email.isEmpty() || pass.isEmpty() || name.isEmpty() || pass != checkPass ) {
             Toast.makeText(this, "入力内容が不足しています", Toast.LENGTH_SHORT).show()
             return
         }
