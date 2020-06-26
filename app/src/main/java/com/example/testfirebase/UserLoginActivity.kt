@@ -22,10 +22,17 @@ class UserLoginActivity : AppCompatActivity() {
             email = user_login_user_mail_editText.text.toString()
             password = user_login_user_pass_editText.text.toString()
 
+            if(email.isEmpty() || password.isEmpty()) {
+                user_login_user_alarm_textView.text = "値が無効です"
+                Log.d("通ってます", "aaaa")
+                return@setOnClickListener
+            }
+
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener {
                     if(!it.isSuccessful){
                         Log.d("ログインできません", "aaaa")
+                        user_login_user_alarm_textView.text = "メールアドレスまたはパスワードが無効です"
                         return@addOnCompleteListener
                     }
                     Log.d("ログイン" ,"ログイン成功")
