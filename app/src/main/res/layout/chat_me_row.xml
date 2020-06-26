@@ -16,7 +16,9 @@
         android:maxEms="20"
         android:padding="10"
         android:text="あ"
-        app:layout_constraintEnd_toStartOf="@+id/imageView3" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView3"
