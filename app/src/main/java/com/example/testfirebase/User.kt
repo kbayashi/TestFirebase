@@ -1,14 +1,16 @@
 package com.example.testfirebase
 
+import android.os.Parcelable
 import android.util.Log
+import kotlinx.android.parcel.Parcelize
 import java.lang.IllegalArgumentException
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-
+@Parcelize
 class User (val uid:String, val name:String, val img:String,
             val gender:String, val birthday: String, val pr:String,
-            val live: String, val sick:String, val life_expectancy: String){
+            val live: String, val sick:String, val life_expectancy: String) :Parcelable{
 
     constructor():this("", "", "", "",
         "", "", "", "",
