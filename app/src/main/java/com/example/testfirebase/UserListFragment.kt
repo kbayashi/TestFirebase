@@ -1,6 +1,7 @@
 package com.example.testfirebase
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -48,6 +49,12 @@ class UserListFragment: Fragment() {
         view.user_list_group_constraintLayout.setOnClickListener {
             groupDisplaySwitching(view)
         }
+
+        /*ユーザプロフィール画面に飛ばしたい
+        userListAdapter?.setOnclickListener {user->
+            val intent = Intent(context, UserRegistarActivity::class.java)
+            intent.putExtra("SELECT_USER", user)
+        }*/
 
 
     }
