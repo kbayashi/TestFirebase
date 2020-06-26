@@ -8,7 +8,7 @@
     android:layout_marginBottom="8dp">
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/chat_me_row_msg_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -16,12 +16,12 @@
         android:background="@drawable/button_round_me"
         android:maxEms="20"
         android:padding="10dp"
-        android:text="あ"
-        app:layout_constraintEnd_toStartOf="@+id/imageView3"
+        android:text="ECCコンピュータ専門学校"
+        app:layout_constraintEnd_toStartOf="@+id/chat_me_row_pic_imageView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/chat_me_row_pic_imageView"
         android:layout_width="60dp"
         android:layout_height="60dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,12 +29,12 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/timestamp_textView"
+        android:id="@+id/chat_me_row_time_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
         android:text="12:34"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/chat_me_row_pic_imageView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
