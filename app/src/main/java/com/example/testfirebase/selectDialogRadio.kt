@@ -8,11 +8,13 @@ import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.select_dialog_radio.*
 
-class selectDialogRadio(val title:String): DialogFragment() {
+//ダイアログの選択項目がラジオボタンでかつ、選択した値をtextviewに入れたい場合使用してください
+class selectDialogRadio(val title:String, val listener:((TextView, String)->Unit),val textView: TextView): DialogFragment() {
 
     val SELECT_DIALOG = "SELECT_DIALOG"
 
@@ -33,15 +35,26 @@ class selectDialogRadio(val title:String): DialogFragment() {
             setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         }
 
-        dialog.select_dialog_title_textView.text = title
         var adapter = selectDialogAdapter(context!!)
         AdapterSet(adapter)
 
+        dialog.select_dialog_title_textView.text = title
+
+        //選択ボタン
+   dialog.select_dialog_select_button.setOnClickListener {
+            listener.invoke(textView, adapter.checkedText)
+            dialog.cancel()
+        }
+        //キャンセルにデータをセット
+        dialog.select_dialog_cansel_button.setOnClickListener {
+            dialog.cancel()
+        }
 
 
         return dialog
     }
 
+    //アダプター
     private fun AdapterSet(adapter: selectDialogAdapter){
         val ref = FirebaseFirestore.getInstance().collection("sick")
         ref.get().addOnSuccessListener {

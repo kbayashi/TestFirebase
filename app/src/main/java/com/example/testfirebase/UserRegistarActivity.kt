@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.widget.RadioButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
@@ -17,6 +18,10 @@ class UserRegistarActivity : AppCompatActivity() {
 
 
     var ragioGender:RadioButton? = null
+    //ダイアログに渡す処理
+    val listener:((TextView, String)->Unit)  = { TextView, String->
+        TextView.text = String
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +40,7 @@ class UserRegistarActivity : AppCompatActivity() {
 
         //病名ダイアログ表示
         user_registar_sick_textView.setOnClickListener {
-            val dialog = selectDialogRadio("病名")
+            val dialog = selectDialogRadio("病名",listener, user_registar_sick_textView)
             dialog.show(supportFragmentManager, "病名")
         }
     }
