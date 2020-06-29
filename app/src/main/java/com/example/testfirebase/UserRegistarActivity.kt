@@ -1,6 +1,7 @@
 package com.example.testfirebase
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.widget.RadioButton
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_user_registar.*
 
 class UserRegistarActivity : AppCompatActivity() {
@@ -40,7 +42,7 @@ class UserRegistarActivity : AppCompatActivity() {
         val pass = user_registar_pass_editText.text.toString()
         val checkPass = user_registar_pass_check_editText.text.toString()
 
-        if(email.isEmpty() || pass.isEmpty() || name.isEmpty()){
+        if(email.isEmpty() || pass.isEmpty() || name.isEmpty() || pass != checkPass || ragioGender == null) {
             Toast.makeText(this, "入力内容が不足しています", Toast.LENGTH_SHORT).show()
             return
         }
@@ -62,10 +64,11 @@ class UserRegistarActivity : AppCompatActivity() {
             }
     }
 
+
     //ユーザのデータをデータベースに登録
     private fun UserSaveDB(user:User){
         val ref  = FirebaseFirestore.getInstance().collection("user")
-            .document(user.Uid)
+            .document(user.uid)
 
         ref.set(user)
             .addOnSuccessListener {
