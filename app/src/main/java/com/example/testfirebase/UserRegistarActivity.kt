@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_user_registar.*
@@ -31,6 +32,12 @@ class UserRegistarActivity : AppCompatActivity() {
                 ragioGender = findViewById<RadioButton>(i)
                 Log.d("ラジオグループ", ragioGender?.text.toString())
             }
+
+        //病名ダイアログ表示
+        user_registar_sick_textView.setOnClickListener {
+            val dialog = selectDialogRadio("病名")
+            dialog.show(supportFragmentManager, "病名")
+        }
     }
 
     //入力検査(まだ適当)と認証
