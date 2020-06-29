@@ -8,6 +8,6 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
-        supportActionBar?.title
+        supportActionBar?.title = "前田裕輝"
     }
 }
