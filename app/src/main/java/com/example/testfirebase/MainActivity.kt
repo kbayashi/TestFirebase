@@ -1,10 +1,12 @@
 package com.example.testfirebase
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        //verifyfyUserIsLogin()
+        verifyfyUserIsLogin()
 
         //下のナビゲーションボタンが押されたら画面を切り替える
         main_bottmnavview.setOnNavigationItemSelectedListener {
@@ -46,6 +48,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.user_list_fragment_menu, menu)
+        return true
+    }
+
     //初期化
     private fun startFlagment(){
         supportFragmentManager.beginTransaction()
@@ -55,12 +63,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     //ログイン確認
-    /*private fun verifyfyUserIsLogin(){
+    private fun verifyfyUserIsLogin(){
         val uid = FirebaseAuth.getInstance().uid
         if(uid == null){
-            val intent  = Intent(this, TitleActivity::class.java)
+            val intent  = Intent(this, UserRegistarActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
+            finish()
         }
-    }*/
+    }
 }
