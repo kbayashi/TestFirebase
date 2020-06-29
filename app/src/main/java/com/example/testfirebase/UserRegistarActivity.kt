@@ -40,7 +40,7 @@ class UserRegistarActivity : AppCompatActivity() {
 
         //病名ダイアログ表示
         user_registar_sick_textView.setOnClickListener {
-            val dialog = selectDialogRadio("病名",listener, user_registar_sick_textView)
+            val dialog = selectDialogRadio("病名",user_registar_sick_textView)
             dialog.show(supportFragmentManager, "病名")
         }
     }
