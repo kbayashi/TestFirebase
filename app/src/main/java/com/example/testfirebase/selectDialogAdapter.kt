@@ -19,7 +19,6 @@ class selectDialogAdapter(private val context: Context)
         val radioButton: RadioButton = itemView.findViewById(R.id.select_dialog_item_radioButton)
     }
 
-    //現状userデータがないのでダミーデータを格納するだけの処理になっている
     class selectDialogListItem(val text:String){}
 
     private var itemList = mutableListOf<selectDialogListItem>()

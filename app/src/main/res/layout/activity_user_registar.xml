@@ -21,7 +21,6 @@
         android:id="@+id/user_registar_name_editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_marginEnd="24dp"
         android:ems="10"
         android:hint="栗林幸暉"
@@ -45,7 +44,6 @@
         android:id="@+id/user_registar_email_editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:ems="10"
         android:hint="228kuri@gmail.com"
         android:inputType="textEmailAddress"
@@ -68,7 +66,6 @@
         android:id="@+id/user_registar_pass_editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:ems="10"
         android:hint="dustelbox1"
         android:inputType="textPassword"
@@ -91,7 +88,6 @@
         android:id="@+id/user_registar_pass_check_editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:ems="10"
         android:inputType="textPassword"
         android:textSize="30sp"
@@ -112,21 +108,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="男性"
-            android:textSize="30sp" />
+            android:textSize="24sp" />
 
         <RadioButton
             android:id="@+id/user_registar_woman_radioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="女性"
-            android:textSize="30sp" />
+            android:textSize="24sp" />
 
         <RadioButton
             android:id="@+id/user_registar_private_radioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="非公開"
-            android:textSize="30sp" />
+            android:textSize="24sp" />
     </RadioGroup>
 
     <TextView
@@ -143,7 +139,7 @@
         android:id="@+id/user_registar_life_expancy_title_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/user_registar_life_expancy_title_textView"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@+id/user_registar_sick_textView"
@@ -153,7 +149,6 @@
         android:id="@+id/user_registar_life_expancy_editText"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:textSize="30sp"
@@ -166,7 +161,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/button_round_light_green"
         android:text="登録"
         android:textSize="30sp"
