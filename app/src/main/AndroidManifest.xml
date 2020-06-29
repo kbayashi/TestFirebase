@@ -10,16 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".TitleActivity">
-        <activity android:name=".UserRegistarActivity">
         </activity>
-        <activity android:name=".ChatActivity" />
-        <activity android:name=".MainActivity">
-        <activity android:name=".UserLoginActivity">
+        <activity android:name=".UserRegistarActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".UserLoginActivity">
+
         </activity>
     </application>
 
