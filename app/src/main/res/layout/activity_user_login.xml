@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".UserLoginActivity">
+
+    <TextView
+        android:id="@+id/user_login_user_mail_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="32dp"
+        android:text="メールアドレス"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/user_login_user_mail_editText"
+        android:layout_width="291dp"
+        android:layout_height="52dp"
+        android:ems="10"
+        android:hint="228kuri@gmail"
+        android:inputType="textEmailAddress"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="@+id/user_login_user_mail_textView"
+        app:layout_constraintTop_toBottomOf="@+id/user_login_user_mail_textView" />
+
+    <EditText
+        android:id="@+id/user_login_user_pass_editText"
+        android:layout_width="291dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:hint="・・・・・・"
+        android:inputType="textPassword"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="@+id/user_login_user_pass_textView"
+        app:layout_constraintTop_toTopOf="@+id/user_login_user_pass_textView" />
+
+    <Button
+        android:id="@+id/user_login_login_Button"
+        android:layout_width="173dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="92dp"
+        android:layout_marginEnd="119dp"
+        android:background="#03A9F4"
+        android:text="ログイン"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_login_forget_textView" />
+
+    <TextView
+        android:id="@+id/user_login_forget_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="119dp"
+        android:text="パスワードを忘れた方"
+        android:textColor="#03A9F4"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_login_user_pass_editText" />
+
+    <TextView
+        android:id="@+id/user_login_user_pass_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="パスワード"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/user_login_user_mail_editText"
+        app:layout_constraintTop_toBottomOf="@+id/user_login_user_mail_editText" />
+
+    <TextView
+        android:id="@+id/user_login_user_alarm_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="32dp"
+        android:textColor="#F44336"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_login_user_pass_editText"
+        tools:text="メールアドレスまたはパスワードが無効です" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
