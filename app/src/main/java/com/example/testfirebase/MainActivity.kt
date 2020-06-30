@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
     private fun verifyfyUserIsLogin(){
         val uid = FirebaseAuth.getInstance().uid
         if(uid == null){
-            val intent  = Intent(this, UserRegistarActivity::class.java)
+            val intent  = Intent(this, UserLoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             finish()
