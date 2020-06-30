@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".UserProfileActivity">
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="394dp"
+        android:layout_height="586dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/user_profile_user_imageview"
+                android:layout_width="match_parent"
+                android:layout_height="185dp"
+                android:translationZ="2dp"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/user_profile_user_name_title_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#808080"
+                android:text="名前"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/user_profile_user_name_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="名前(内容)"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/user_profile_user_pr_title_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#808080"
+                android:text="自己紹介"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/user_profile_user_pr_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="自己紹介(内容)"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/user_profile_user_gender_title_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#808080"
+                android:text="性別"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/user_profile_user_gender_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="性別(内容)"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/user_profile_user_old_title_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#808080"
+                android:text="年齢"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/user_profile_user_old_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="年齢(内容)"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/user_profile_user_prefectures_title_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#808080"
+                android:text="都道府県"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/user_profile_user_prefectures_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="都道府県(内容)"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/user_profile_user_hobby_title_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#808080"
+                android:text="趣味"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/user_profile_user_hobby_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="趣味(内容)"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/user_profile_user_sick_title_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#808080"
+                android:text="病名"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/user_profile_user_sick_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="病名(内容)"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/profile_user_lifeexpectancy_title_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#808080"
+                android:text="余命"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/user_profile_user_lifeexpectancy_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="余命(内容)"
+                android:textSize="30sp" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </FrameLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/user_profile_talk_imageview"
+        android:layout_width="66dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="25dp"
+        android:translationZ="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_chat_bubble_24" />
+
+    <ImageView
+        android:id="@+id/user_profile_talk_background_imageview"
+        android:layout_width="96dp"
+        android:layout_height="101dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_brightness_1_24" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
