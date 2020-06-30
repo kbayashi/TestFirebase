@@ -9,16 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UserLoginActivity">
+        <activity android:name=".UserLoginActivity"/>
         <activity android:name=".UserProfileActivity"/>
         <activity android:name=".TitleActivity">
         </activity>
         <activity android:name=".UserRegistarActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ChatActivity">
             <meta-data
@@ -26,6 +21,11 @@
                 android:value=".MainActivity"/>
         </activity>
         <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

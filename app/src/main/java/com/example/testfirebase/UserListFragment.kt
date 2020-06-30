@@ -56,7 +56,7 @@ class UserListFragment: Fragment() {
 
         //ユーザプロフィール画面に飛ばしたい
         userListAdapter?.setOnclickListener {user->
-            val intent = Intent(context, ChatActivity::class.java)
+            val intent = Intent(context, UserProfileActivity::class.java)
             intent.putExtra(SELECT_USER, user)
             Log.d(SELECT_USER, "${user.name}")
             startActivity(intent)
