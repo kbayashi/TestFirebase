@@ -1,26 +1,31 @@
 package com.example.testfirebase
 
 import android.content.Intent
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.widget.RadioButton
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_user_registar.*
+
 
 class UserRegistarActivity : AppCompatActivity() {
 
 
     var ragioGender:RadioButton? = null
+    //ダイアログに渡す処理
+    val listener:((TextView, String)->Unit)  = { TextView, String->
+        TextView.text = String
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_registar)
-
 
         //登録ボタン
         user_registar_button.setOnClickListener {
@@ -32,6 +37,12 @@ class UserRegistarActivity : AppCompatActivity() {
                 ragioGender = findViewById<RadioButton>(i)
                 Log.d("ラジオグループ", ragioGender?.text.toString())
             }
+
+        //病名ダイアログ表示
+        user_registar_sick_textView.setOnClickListener {
+            val dialog = selectDialogRadio("病名",user_registar_sick_textView, "sick")
+            dialog.show(supportFragmentManager, "病名")
+        }
     }
 
     //入力検査(まだ適当)と認証
