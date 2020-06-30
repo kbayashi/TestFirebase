@@ -13,11 +13,15 @@ class ChatActivity : AppCompatActivity() {
         setContentView(R.layout.activity_chat)
 
         val intent = getIntent()
-        val get_username = intent.getParcelableExtra<User>(SELECT_USER)
-        supportActionBar?.title = get_username.name
+        val get_name = intent.getParcelableExtra<User>(SELECT_USER)
+        supportActionBar?.title = get_name.name
 
         send_button.setOnClickListener {
-            Toast.makeText(applicationContext, "押されてます", Toast.LENGTH_SHORT).show()
+            if(message_editText.text.isEmpty()){
+                Toast.makeText(applicationContext, "メッセージを入力してください", Toast.LENGTH_SHORT).show()
+            }else{
+
+            }
         }
 
     }
