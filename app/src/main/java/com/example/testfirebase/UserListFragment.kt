@@ -17,6 +17,10 @@ import kotlinx.android.synthetic.main.user_list_fragment.view.*
 
 class UserListFragment: Fragment() {
 
+    companion object{
+        val SELECT_USER = "SELECT_USER"
+    }
+
     var userListAdapter:userListAdapter? = null
     var groupListAdapter:groupListAdapter? = null
     var friendDisplayFlg = false
@@ -50,11 +54,13 @@ class UserListFragment: Fragment() {
             groupDisplaySwitching(view)
         }
 
-        /*ユーザプロフィール画面に飛ばしたい
+        //ユーザプロフィール画面に飛ばしたい
         userListAdapter?.setOnclickListener {user->
-            val intent = Intent(context, UserRegistarActivity::class.java)
-            intent.putExtra("SELECT_USER", user)
-        }*/
+            val intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra(SELECT_USER, user)
+            Log.d(SELECT_USER, "${user.name}")
+            startActivity(intent)
+        }
 
 
     }
