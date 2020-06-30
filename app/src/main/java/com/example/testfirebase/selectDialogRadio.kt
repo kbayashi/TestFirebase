@@ -14,7 +14,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.select_dialog_radio.*
 
 //ダイアログの選択項目がラジオボタンでかつ、選択した値をtextviewに入れたい場合使用してください
-class selectDialogRadio(val title:String,val textView: TextView): DialogFragment() {
+//第一引数ダイアログのタイトルに格納する文字・第二引数代入したいtextview・第三引数はデータベースのテーブル名
+class selectDialogRadio(val title:String,val textView: TextView, val dbRefName: String): DialogFragment() {
 
     val SELECT_DIALOG = "SELECT_DIALOG"
 
@@ -56,7 +57,7 @@ class selectDialogRadio(val title:String,val textView: TextView): DialogFragment
 
     //アダプターにデータをセット
     private fun AdapterSet(adapter: selectDialogAdapter){
-        val ref = FirebaseFirestore.getInstance().collection("sick")
+        val ref = FirebaseFirestore.getInstance().collection(dbRefName)
         ref.get().addOnSuccessListener {
             Log.d(SELECT_DIALOG, "$it" )
             it.forEach{
