@@ -2,18 +2,17 @@ package com.example.testfirebase
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.testfirebase.UserListFragment.Companion.SELECT_USER
 
 class ChatActivity : AppCompatActivity() {
-    companion object{
-        val SELECT_USER = "SELECT_USER"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
         val intent = getIntent()
-        supportActionBar?.title = intent.getStringExtra("SELECT_USER")
+        val get_username = intent.getParcelableExtra<User>(SELECT_USER)
+        supportActionBar?.title = get_username.name
 
         //val adapter = GroupAdapter<ViewHolder>()
 
