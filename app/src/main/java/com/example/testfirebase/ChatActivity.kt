@@ -2,6 +2,7 @@ package com.example.testfirebase
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.example.testfirebase.UserListFragment.Companion.SELECT_USER
 import kotlinx.android.synthetic.main.activity_chat.*
 
@@ -16,7 +17,7 @@ class ChatActivity : AppCompatActivity() {
         supportActionBar?.title = get_username.name
 
         send_button.setOnClickListener {
-
+            Toast.makeText(applicationContext, "押されてます", Toast.LENGTH_SHORT).show()
         }
 
     }
