@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserRegistarActivity">
+
+    <TextView
+        android:id="@+id/user_registar_name_title_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/user_registar_name_title_textView"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/user_registar_name_editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:hint="栗林幸暉"
+        android:inputType="textPersonName"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/user_registar_name_title_textView"
+        app:layout_constraintTop_toBottomOf="@+id/user_registar_name_title_textView" />
+
+    <TextView
+        android:id="@+id/user_registar_mail_title_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/user_registar_mail_title_textView"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/user_registar_name_editText"
+        app:layout_constraintTop_toBottomOf="@+id/user_registar_name_editText" />
+
+    <EditText
+        android:id="@+id/user_registar_email_editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="228kuri@gmail.com"
+        android:inputType="textEmailAddress"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/user_registar_name_editText"
+        app:layout_constraintStart_toStartOf="@+id/user_registar_mail_title_textView"
+        app:layout_constraintTop_toBottomOf="@+id/user_registar_mail_title_textView" />
+
+    <TextView
+        android:id="@+id/user_registar_pass_title_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/user_registar_pass_title_textView"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/user_registar_email_editText"
+        app:layout_constraintTop_toBottomOf="@+id/user_registar_email_editText" />
+
+    <EditText
+        android:id="@+id/user_registar_pass_editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="dustelbox1"
+        android:inputType="textPassword"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/user_registar_email_editText"
+        app:layout_constraintStart_toStartOf="@+id/user_registar_pass_title_textView"
+        app:layout_constraintTop_toBottomOf="@+id/user_registar_pass_title_textView" />
+
+    <TextView
+        android:id="@+id/user_registar_pass_title_check_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/user_registar_pass_title_check_textView"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/user_registar_pass_editText"
+        app:layout_constraintTop_toBottomOf="@+id/user_registar_pass_editText" />
+
+    <EditText
+        android:id="@+id/user_registar_pass_check_editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/user_registar_pass_editText"
+        app:layout_constraintStart_toStartOf="@+id/user_registar_pass_title_check_textView"
+        app:layout_constraintTop_toBottomOf="@+id/user_registar_pass_title_check_textView" />
+
+    <RadioGroup
+        android:id="@+id/user_registar_gender_radioGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@+id/user_registar_gender_textView"
+        app:layout_constraintTop_toBottomOf="@+id/user_registar_gender_textView">
+
+        <RadioButton
+            android:id="@+id/user_registar_man_radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="男性"
+            android:textSize="24sp" />
+
+        <RadioButton
+            android:id="@+id/user_registar_woman_radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="女性"
+            android:textSize="24sp" />
+
+        <RadioButton
+            android:id="@+id/user_registar_private_radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="非公開"
+            android:textSize="24sp" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/user_registar_sick_title_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/user_registar_sick_title_textView"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/user_registar_gender_radioGroup"
+        app:layout_constraintTop_toBottomOf="@+id/user_registar_gender_radioGroup" />
+
+    <TextView
+        android:id="@+id/user_registar_life_expancy_title_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/user_registar_life_expancy_title_textView"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/user_registar_sick_textView"
+        app:layout_constraintTop_toBottomOf="@+id/user_registar_sick_textView" />
+
+    <EditText
+        android:id="@+id/user_registar_life_expancy_editText"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="@+id/user_registar_life_expancy_title_textView"
+        app:layout_constraintTop_toBottomOf="@+id/user_registar_life_expancy_title_textView" />
+
+    <Button
+        android:id="@+id/user_registar_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_round_light_green"
+        android:text="登録"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_registar_life_expancy_editText" />
+
+    <TextView
+        android:id="@+id/user_registar_gender_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/user_registar_gender_textView"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/user_registar_pass_check_editText"
+        app:layout_constraintTop_toBottomOf="@+id/user_registar_pass_check_editText" />
+
+    <TextView
+        android:id="@+id/user_registar_sick_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="タップして選択"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="@+id/user_registar_sick_title_textView"
+        app:layout_constraintTop_toBottomOf="@+id/user_registar_sick_title_textView" />
+</androidx.constraintlayout.widget.ConstraintLayout>
