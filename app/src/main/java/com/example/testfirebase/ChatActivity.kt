@@ -40,17 +40,22 @@ class ChatActivity : AppCompatActivity() {
         //自分のユーザ情報を取得
         auth = FirebaseAuth.getInstance()
         val me = auth.currentUser
-        //データベースにメッセージを登録
-        val ref  = FirebaseFirestore.getInstance().collection("user-message")
-            .document(me!!.uid)
-        ref.set(me!!.uid)
-            .addOnSuccessListener {
-                Log.d("データベース", "データベースにメッセージを登録しました")
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+        //
+        val city = City(msg,me!!.uid,you.uid,System.currentTimeMillis())
+        //データベースにメッセージを登録(自分Ver)
+        val ref = FirebaseFirestore.getInstance().collection("user-message").document(me!!.uid).collection(you.uid).add(city)
+            .addOnSuccessListener{
+                Log.d("DB", "データベースにメッセージを登録しました")
             }
-            .addOnFailureListener {
-                Log.d("データベース", "データベースにメッセージの登録が失敗しました ${it.message}")
+            .addOnFailureListener{
+                Log.d("DB", "データベースにメッセージの登録が失敗しました ${it.message}")
             }
     }
+
+    data class City(
+        val message: String? = null,
+        val send_user: String? = null,
+        val receive_user: String? = null,
+        val time: Long? = null
+    )
 }
