@@ -15,6 +15,12 @@
         </activity>
         <activity android:name=".UserRegistarActivity">
         </activity>
+        
+        <activity android:name=".TitleActivity">
+        </activity>
+        <activity android:name=".UserRegistarActivity">
+
+        </activity>
         <activity android:name=".ChatActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
