@@ -8,7 +8,7 @@
     android:layout_marginBottom="8dp">
 
     <Button
-        android:id="@+id/chat_you_row_msg_button"
+        android:id="@+id/chat_me_row_msg_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -17,11 +17,11 @@
         android:maxEms="20"
         android:padding="10dp"
         android:text="ECCコンピュータ専門学校"
-        app:layout_constraintEnd_toStartOf="@+id/chat_you_row_pic_imageView"
+        app:layout_constraintEnd_toStartOf="@+id/chat_me_row_pic_imageView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/chat_you_row_pic_imageView"
+        android:id="@+id/chat_me_row_pic_imageView"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginEnd="8dp"
@@ -30,12 +30,13 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/chat_you_row_time_textView"
+        android:id="@+id/chat_me_row_time_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="12:34"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/chat_you_row_pic_imageView"
-        app:layout_constraintStart_toStartOf="@+id/chat_you_row_pic_imageView"
-        app:layout_constraintTop_toBottomOf="@+id/chat_you_row_pic_imageView" />
+        app:layout_constraintEnd_toEndOf="@+id/chat_me_row_pic_imageView"
+        app:layout_constraintStart_toStartOf="@+id/chat_me_row_pic_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/chat_me_row_pic_imageView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
