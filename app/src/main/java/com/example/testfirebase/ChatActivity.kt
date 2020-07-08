@@ -39,10 +39,9 @@ class ChatActivity : AppCompatActivity() {
                 return@addSnapshotListener
             }
 
-
             snapshot?.forEach {
                 var test  = it.toObject(Message::class.java)
-                Log.d("TEST",test.message)
+                Log.d("message-database",test.message)
             }
 
             /*
@@ -72,7 +71,7 @@ class ChatActivity : AppCompatActivity() {
         //送信時間を確定する
         val millis = System.currentTimeMillis()
         //送信内容をクラスに送る
-        val message = Message(msg,me!!.uid,you.uid,millis)
+        val message = Message(msg,me!!.uid,you.uid,millis.toString())
 
         //データベースにメッセージを登録(自分Ver)
         val ref1 = FirebaseFirestore.getInstance().collection("user-message").document(me!!.uid).collection(you.uid).add(message)
