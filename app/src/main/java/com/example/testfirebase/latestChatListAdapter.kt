@@ -17,9 +17,9 @@ class latestChatListAdapter(private val context: Context)
 
     val LATEST = "LATESTCHAT"
 
-    var itemClickListner : (()->Unit)? = null
+    var itemClickListner : ((User)->Unit)? = null
 
-    fun setOnclickListener(listener:()->Unit){
+    fun setOnclickListener(listener:(User)->Unit){
         itemClickListner = listener
     }
 
@@ -57,7 +57,7 @@ class latestChatListAdapter(private val context: Context)
 
         val loginUid = FirebaseAuth.getInstance().uid.toString()
         var opponentUser :String? = null
-        var getUser:User? = null
+        //var getUser:User? = null
 
         if(itemList[position].message.receive_user != loginUid){
             opponentUser = itemList[position].message.receive_user
@@ -69,22 +69,25 @@ class latestChatListAdapter(private val context: Context)
 
         val ref = FirebaseFirestore.getInstance().collection("user").document(opponentUser!!)
             .get().addOnSuccessListener {
-                getUser = it.toObject(User::class.java)
+                val getUser = it.toObject(User::class.java)
                 Log.d("OPPENTUSER", "${getUser}")
                 holder.latestChatLatst.text = itemList[position].message.message
                 holder.latestChatTitle.text = getUser?.name
                 Picasso.get().load(getUser?.img).into(holder.latestChatTImage)
                 holder.latestChatTime.text = itemList[position].message.changeTimeStampToString(itemList[position].message.time)
 
+                holder.itemView.setOnClickListener {
+                    Log.d(LATEST,"タッチ")
+                    FirebaseFirestore.getInstance().collection("user").document(getUser?.uid!!)
+                    itemClickListner?.invoke(getUser)
+                }
+
             }.addOnFailureListener {
                 Log.d("失敗", it.message)
             }
 
         
-        holder.itemView.setOnClickListener {
-            Log.d(LATEST,"タッチ")
-            itemClickListner?.invoke()
-        }
+
     }
 
 }

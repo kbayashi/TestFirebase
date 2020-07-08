@@ -9,10 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.example.testfirebase.UserListFragment.Companion.SELECT_USER
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.chat_list_fragment.view.*
+import kotlin.math.log
 
 class LatestChatListFragment: Fragment() {
 
@@ -37,6 +39,8 @@ class LatestChatListFragment: Fragment() {
         //チャット画面に移動
         adapter?.setOnclickListener {
             val intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra(SELECT_USER, it)
+            Log.d(SELECT_USER, "$it")
             startActivity(intent)
         }
     }
