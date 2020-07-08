@@ -9,13 +9,7 @@
     android:layout_marginBottom="8dp"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/latest_chat_row_imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+
 
     <TextView
         android:id="@+id/latest_chat_row_title_textView"
@@ -25,7 +19,7 @@
         android:layout_marginTop="8dp"
         android:text="和歌山同好会"
         android:textColor="@color/design_default_color_on_secondary"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/latest_chat_row_imageView"
         app:layout_constraintTop_toTopOf="@+id/latest_chat_row_imageView" />
@@ -38,6 +32,7 @@
         android:layout_marginTop="4dp"
         android:maxLines="1"
         android:text="貴様貴様貴様貴様貴様貴様"
+        android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/latest_chat_row_imageView"
         app:layout_constraintTop_toBottomOf="@+id/latest_chat_row_title_textView" />
 
@@ -46,7 +41,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:text="10:24"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/latest_chat_row_imageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,11 +3,15 @@ package com.example.testfirebase
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.chat_list_fragment.view.*
 
 class LatestChatListFragment: Fragment() {
@@ -25,8 +29,7 @@ class LatestChatListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dummydata(adapter!!)
-        view.latest_chat_list_recyclerView.adapter = adapter
+        fechLatestMessage(adapter!!)
         view.latest_chat_list_recyclerView.
             addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
         )
@@ -44,11 +47,20 @@ class LatestChatListFragment: Fragment() {
     }
 
 
-    //ダミーデータ格納
-    fun dummydata(adapter: latestChatListAdapter){
-        adapter.add()
-        adapter.add()
-        adapter.add()
-        adapter.add()
+    //最新のメッセージを格納
+    private fun fechLatestMessage(adapter: latestChatListAdapter){
+        val uid = FirebaseAuth.getInstance().uid.toString()
+        Log.d("UID", uid)
+        val ref = FirebaseFirestore.getInstance().collection("user-latest").document("les").
+        collection(uid).orderBy("time", Query.Direction.DESCENDING).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            Log.d("GETDATA", "${querySnapshot}")
+            adapter.latesItemDel()
+            querySnapshot?.forEach {
+                Log.d("GETDATA", "${it.toObject(Message::class.java).message}")
+                var message = it.toObject(Message::class.java)
+                adapter.add(message)
+            }
+            view?.latest_chat_list_recyclerView?.adapter = adapter
+        }
     }
 }
