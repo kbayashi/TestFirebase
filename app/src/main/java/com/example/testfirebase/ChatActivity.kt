@@ -10,6 +10,7 @@ import com.example.testfirebase.UserListFragment.Companion.SELECT_USER
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_chat.*
+import kotlinx.android.synthetic.main.user_list_fragment.view.*
 
 private lateinit var auth: FirebaseAuth
 
@@ -40,7 +41,7 @@ class ChatActivity : AppCompatActivity() {
             }
 
             snapshot?.forEach {
-                var test  = it.toObject(Message::class.java)
+                var test = it.toObject(Message::class.java)
                 Log.d("message-database",test.message)
             }
 
@@ -74,7 +75,7 @@ class ChatActivity : AppCompatActivity() {
         val message = Message(msg,me!!.uid,you.uid,millis.toString())
 
         //データベースにメッセージを登録(自分Ver)
-        val ref1 = FirebaseFirestore.getInstance().collection("user-message").document(me!!.uid).collection(you.uid).add(message)
+        val ref1 = db.collection("user-message").document(me!!.uid).collection(you.uid).add(message)
             .addOnSuccessListener{
                 Log.d("DB", "データベースにメッセージを登録しました")
             }
@@ -82,7 +83,7 @@ class ChatActivity : AppCompatActivity() {
                 Log.d("DB", "データベースにメッセージの登録が失敗しました ${it.message}")
             }
         //データベースにメッセージを登録(相手Ver)
-        val ref2 = FirebaseFirestore.getInstance().collection("user-message").document(you.uid).collection(me!!.uid).add(message)
+        val ref2 = db.collection("user-message").document(you.uid).collection(me!!.uid).add(message)
             .addOnSuccessListener{
                 Log.d("DB", "データベースにメッセージを登録しました")
             }
@@ -90,14 +91,14 @@ class ChatActivity : AppCompatActivity() {
                 Log.d("DB", "データベースにメッセージの登録が失敗しました ${it.message}")
             }
         //最新トーク一覧のデータ
-        val ref3 = FirebaseFirestore.getInstance().collection("user-latest").document("les").collection(me!!.uid).document(you.uid).set(message)
+        val ref3 = db.collection("user-latest").document("les").collection(me!!.uid).document(you.uid).set(message)
             .addOnSuccessListener{
                 Log.d("DB", "データベースにメッセージを登録しました")
             }
             .addOnFailureListener{
                 Log.d("DB", "データベースにメッセージの登録が失敗しました ${it.message}")
             }
-        val ref4 = FirebaseFirestore.getInstance().collection("user-latest").document("les").collection(you.uid).document(me!!.uid).set(message)
+        val ref4 = db.collection("user-latest").document("les").collection(you.uid).document(me!!.uid).set(message)
             .addOnSuccessListener{
                 Log.d("DB", "データベースにメッセージを登録しました")
             }
