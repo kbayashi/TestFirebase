@@ -1,5 +1,6 @@
 package com.example.testfirebase
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -17,6 +18,8 @@ class ChatActivity : AppCompatActivity() {
     //自分のユーザ情報を取得
     public val auth = FirebaseAuth.getInstance()
     public val me = auth.currentUser
+    //データベースオブジェクト
+    val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,26 +30,31 @@ class ChatActivity : AppCompatActivity() {
         val get_you = intent.getParcelableExtra<User>(SELECT_USER)
         //アクションバーに相手の名前を表記
         supportActionBar?.title = get_you.name
-        //リサイクルビュー
-        val view : RecyclerView = findViewById(R.id.chat_recyclerView)
 
-        /*
-        //データベース受信
-        val docRef = FirebaseFirestore.getInstance().collection("user-message").document(me!!.uid).collection(get_you.uid)
+        //メッセージの監視
+        val docRef = db.collection("user-message").document(me!!.uid).collection(get_you.uid)
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
-                //Log.w(TAG, "Listen failed.", e)
+                Log.w("TAG", "Listen failed.", e)
                 return@addSnapshotListener
             }
 
-            if (snapshot != null && snapshot.exists()) {
-                Log.d(TAG, "Current data: ${snapshot.data}")
-            } else {
-                Log.d(TAG, "Current data: null")
+
+            snapshot?.forEach {
+                var test  = it.toObject(Message::class.java)
+                Log.d("TEST",test.message)
             }
+
+            /*
+            if (snapshot != null && snapshot.exists()) {
+                Log.d("TAG", "Current data: ${snapshot.data}")
+            } else {
+                Log.d("TAG", "Current data: null")
+            }
+             */
         }
 
-        //メッセージ送信
+        //メッセージ送信(MessageDBに登録)
         send_button.setOnClickListener {
             if(message_editText.text.isEmpty()){
                 Toast.makeText(applicationContext, "メッセージを入力してください", Toast.LENGTH_SHORT).show()
@@ -54,12 +62,11 @@ class ChatActivity : AppCompatActivity() {
                 sendMessage(get_you,message_editText.text.toString())
             }
         }
-        */
-
     }
 
     // Firebaseの「user-message」と「user-latest」コレクションにオブジェクトを登録する関数
     // 引数: you(チャット相手のユーザオブジェクト) / msg(送信するメッセージ内容)
+    // 戻値: なし
     private fun sendMessage(you:User,msg:String){
 
         //送信時間を確定する
