@@ -25,12 +25,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
-        android:text="テストくん"
         android:textColor="@color/design_default_color_on_secondary"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/user_list_row_user_imageView"
-        app:layout_constraintTop_toTopOf="@+id/user_list_row_user_imageView" />
+        app:layout_constraintTop_toTopOf="@+id/user_list_row_user_imageView"
+        tools:text="テストくん" />
 
     <TextView
         android:id="@+id/user_list_row_user_pr_textview"
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
-        android:text="テストテスト"
         app:layout_constraintStart_toEndOf="@+id/user_list_row_user_imageView"
-        app:layout_constraintTop_toBottomOf="@+id/user_list_row_user_name_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/user_list_row_user_name_textview"
+        tools:text="テストテスト" />
 </androidx.constraintlayout.widget.ConstraintLayout>
