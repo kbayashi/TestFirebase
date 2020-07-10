@@ -5,21 +5,17 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testfirebase.Message
 import com.example.testfirebase.R
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.chat_me_row.view.*
-import kotlinx.android.synthetic.main.chat_you_row.view.*
 
 class messageAdapter(private val context: Context)
     :RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     //1行で使用する各部品（ビュー）を保持したもの(自分)
     class ViewMeHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-
         val me_img: ImageView = itemView.findViewById(R.id.chat_me_row_pic_imageView)
         val me_msg: Button = itemView.findViewById(R.id.chat_me_row_msg_button)
         val me_time: TextView = itemView.findViewById(R.id.chat_me_row_time_textView)
@@ -35,7 +31,7 @@ class messageAdapter(private val context: Context)
     //何してるところかよくわからない
     class messageListItem(val message: Message){}
 
-    //アイテムリミット？
+    //メッセージオブジェクトに関する何か
     private val itemList = mutableListOf<messageListItem>()
 
     //何を追加するんでしょう？
@@ -70,7 +66,7 @@ class messageAdapter(private val context: Context)
         }
     }
 
-    //何をしてるんだろう。
+    //何かをカウントしている関数
     override fun getItemCount(): Int = itemList.size
 
     //保持されているビューにデータなどを設定する。ここでリスナなどを設定する
@@ -80,10 +76,13 @@ class messageAdapter(private val context: Context)
                 val holder_me = holder as ViewMeHolder
                 holder_me.me_msg.text = itemList[position].message.message
                 holder_me.me_time.text = itemList[position].message.time.toString()
-                Picasso.get().load("")
+                Picasso.get().load("https://www.zespri.com/ja-JP/kiwibrothers/cmn/img/about_green_figure.jpg").into(holder_me.me_img)
             }
             1->{
                 val holder_you = holder as ViewYouHolder
+                holder_you.you_msg.text = itemList[position].message.message
+                holder_you.you_time.text = itemList[position].message.time.toString()
+                Picasso.get().load("https://www.zespri.com/ja-JP/kiwibrothers/cmn/img/about_gold_figure.jpg").into(holder_you.you_img)
             }
         }
     }

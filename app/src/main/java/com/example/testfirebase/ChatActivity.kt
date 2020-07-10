@@ -3,14 +3,18 @@ package com.example.testfirebase
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testfirebase.UserListFragment.Companion.SELECT_USER
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_chat.*
 import kotlinx.android.synthetic.main.user_list_fragment.view.*
+import messageAdapter
 
 private lateinit var auth: FirebaseAuth
 
@@ -22,7 +26,7 @@ class ChatActivity : AppCompatActivity() {
     //データベースオブジェクト
     val db = FirebaseFirestore.getInstance()
     //アダプター
-    var messageAdapter:messageAdapter? = null
+    var messageListAdapter:messageAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +53,7 @@ class ChatActivity : AppCompatActivity() {
                 Log.d("message-database",messagedata.message)
 
                 //サイクルビューに自分のメッセージ内容を追加する
-
-
+                messageListAdapter?.add(messagedata)
             }
 
             /*
@@ -71,12 +74,6 @@ class ChatActivity : AppCompatActivity() {
                 sendMessage(get_you,message_editText.text.toString())
             }
         }
-
-        //XMLデータ格納
-        fun msgdata(messageAdapter: messageAdapter){
-            messageAdapter.add()
-        }
-
     }
 
     // Firebaseの「user-message」と「user-latest」コレクションにオブジェクトを登録する関数
