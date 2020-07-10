@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_chat.*
+import kotlinx.android.synthetic.main.activity_chat.view.*
 import kotlinx.android.synthetic.main.user_list_fragment.view.*
 import messageAdapter
 
@@ -37,6 +38,10 @@ class ChatActivity : AppCompatActivity() {
         val get_you = intent.getParcelableExtra<User>(SELECT_USER)
         //アクションバーに相手の名前を表記
         supportActionBar?.title = get_you.name
+        //初期設定？
+        //Setup(view!!,me)
+        chat_recyclerView.adapter = messageListAdapter
+        chat_recyclerView.visibility = View.GONE
 
         //メッセージの監視
         val docRef = db.collection("user-message").document(me!!.uid).collection(get_you.uid)
@@ -75,6 +80,16 @@ class ChatActivity : AppCompatActivity() {
             }
         }
     }
+
+    //ビューの初期化
+    /*
+    private fun Setup(view: View,message: Message){
+
+        view.chat_recyclerView.adapter = messageListAdapter
+
+    }
+
+     */
 
     // Firebaseの「user-message」と「user-latest」コレクションにオブジェクトを登録する関数
     // 引数: you(チャット相手のユーザオブジェクト) / msg(送信するメッセージ内容)
