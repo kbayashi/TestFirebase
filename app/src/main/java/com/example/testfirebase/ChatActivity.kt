@@ -21,6 +21,8 @@ class ChatActivity : AppCompatActivity() {
     public val me = auth.currentUser
     //データベースオブジェクト
     val db = FirebaseFirestore.getInstance()
+    //アダプター
+    var messageAdapter:messageAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,16 +38,23 @@ class ChatActivity : AppCompatActivity() {
         val docRef = db.collection("user-message").document(me!!.uid).collection(get_you.uid)
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
+                //空ではない = 何らか文字が入力されているとき
                 Log.w("TAG", "Listen failed.", e)
                 return@addSnapshotListener
             }
 
+            //ForeachでDBに保存されているメッセージ内容をすべて取得する
             snapshot?.forEach {
-                var test = it.toObject(Message::class.java)
-                Log.d("message-database",test.message)
+                var messagedata = it.toObject(Message::class.java)
+                Log.d("message-database",messagedata.message)
+
+                //サイクルビューに自分のメッセージ内容を追加する
+
+
             }
 
             /*
+            なくても通るが、以下の処理はおそらく例外処理と思われる。
             if (snapshot != null && snapshot.exists()) {
                 Log.d("TAG", "Current data: ${snapshot.data}")
             } else {
@@ -62,6 +71,12 @@ class ChatActivity : AppCompatActivity() {
                 sendMessage(get_you,message_editText.text.toString())
             }
         }
+
+        //XMLデータ格納
+        fun msgdata(messageAdapter: messageAdapter){
+            messageAdapter.add()
+        }
+
     }
 
     // Firebaseの「user-message」と「user-latest」コレクションにオブジェクトを登録する関数
