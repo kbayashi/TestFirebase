@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testfirebase.UserListFragment.Companion.SELECT_USER
 import com.google.firebase.auth.FirebaseAuth
@@ -27,7 +28,7 @@ class ChatActivity : AppCompatActivity() {
     //データベースオブジェクト
     val db = FirebaseFirestore.getInstance()
     //アダプター
-    var messageListAdapter:messageAdapter? = null
+    //var messageListAdapter:messageAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +41,11 @@ class ChatActivity : AppCompatActivity() {
         supportActionBar?.title = get_you.name
         //初期設定？
         //Setup(view!!,me)
-        chat_recyclerView.adapter = messageListAdapter
-        chat_recyclerView.visibility = View.GONE
+        var messageListAdapter = messageAdapter(this)
+
 
         //メッセージの監視
-        val docRef = db.collection("user-message").document(me!!.uid).collection(get_you.uid)
+       val docRef = db.collection("user-message").document(me!!.uid).collection(get_you.uid)
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 //空ではない = 何らか文字が入力されているとき
@@ -52,10 +53,19 @@ class ChatActivity : AppCompatActivity() {
                 return@addSnapshotListener
             }
 
+            chat_recyclerView.adapter = messageListAdapter
+
             //ForeachでDBに保存されているメッセージ内容をすべて取得する
-            snapshot?.forEach {
+            /*snapshot?.forEach {
                 var messagedata = it.toObject(Message::class.java)
                 Log.d("message-database",messagedata.message)
+
+
+            }*/
+
+            snapshot?.documentChanges?.forEach {
+                var messagedata = it.document.toObject(Message::class.java)
+                Log.d("documentChange", messagedata.message)
 
                 //サイクルビューに自分のメッセージ内容を追加する
                 messageListAdapter?.add(messagedata)

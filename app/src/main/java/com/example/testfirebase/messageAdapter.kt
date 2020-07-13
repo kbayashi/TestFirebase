@@ -10,6 +10,7 @@ import com.example.testfirebase.Message
 import com.example.testfirebase.R
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.user_list_fragment.view.*
 
 class messageAdapter(private val context: Context)
     :RecyclerView.Adapter<RecyclerView.ViewHolder>(){
@@ -49,7 +50,7 @@ class messageAdapter(private val context: Context)
             return messageAdapter.ViewMeHolder(layout)
         }else{
             val layout = layoutInflater.inflate(R.layout.chat_you_row,parent,false)
-            return messageAdapter.ViewMeHolder(layout)
+            return messageAdapter.ViewYouHolder(layout)
         }
     }
 
@@ -76,13 +77,13 @@ class messageAdapter(private val context: Context)
                 val holder_me = holder as ViewMeHolder
                 holder_me.me_msg.text = itemList[position].message.message
                 holder_me.me_time.text = itemList[position].message.time.toString()
-                Picasso.get().load("https://www.zespri.com/ja-JP/kiwibrothers/cmn/img/about_green_figure.jpg").into(holder_me.me_img)
+                Picasso.get().load("https://i.pinimg.com/originals/31/65/6a/31656a9f20b9f8ef858038440da820e2.jpg").into(holder_me.me_img)
             }
             1->{
                 val holder_you = holder as ViewYouHolder
                 holder_you.you_msg.text = itemList[position].message.message
                 holder_you.you_time.text = itemList[position].message.time.toString()
-                Picasso.get().load("https://www.zespri.com/ja-JP/kiwibrothers/cmn/img/about_gold_figure.jpg").into(holder_you.you_img)
+                Picasso.get().load("https://i.pinimg.com/originals/31/65/6a/31656a9f20b9f8ef858038440da820e2.jpg").into(holder_you.you_img)
             }
         }
     }
