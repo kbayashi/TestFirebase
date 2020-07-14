@@ -10,7 +10,6 @@ import com.example.testfirebase.Message
 import com.example.testfirebase.R
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.user_list_fragment.view.*
 
 class messageAdapter(private val context: Context)
     :RecyclerView.Adapter<RecyclerView.ViewHolder>(){
@@ -35,7 +34,7 @@ class messageAdapter(private val context: Context)
     //メッセージオブジェクトに関する何か
     private val itemList = mutableListOf<messageListItem>()
 
-    //何を追加するんでしょう？
+    //メッセージの追加
     fun add(message: Message){
         itemList.add(messageListItem(message))
     }
@@ -76,13 +75,13 @@ class messageAdapter(private val context: Context)
             0->{
                 val holder_me = holder as ViewMeHolder
                 holder_me.me_msg.text = itemList[position].message.message
-                holder_me.me_time.text = itemList[position].message.time.toString()
+                holder_me.me_time.text = itemList[position].message.sendTimestampToString(itemList[position].message.time)
                 Picasso.get().load("https://i.pinimg.com/originals/31/65/6a/31656a9f20b9f8ef858038440da820e2.jpg").into(holder_me.me_img)
             }
             1->{
                 val holder_you = holder as ViewYouHolder
                 holder_you.you_msg.text = itemList[position].message.message
-                holder_you.you_time.text = itemList[position].message.time.toString()
+                holder_you.you_time.text = itemList[position].message.sendTimestampToString(itemList[position].message.time)
                 Picasso.get().load("https://i.pinimg.com/originals/31/65/6a/31656a9f20b9f8ef858038440da820e2.jpg").into(holder_you.you_img)
             }
         }

@@ -1,21 +1,13 @@
 package com.example.testfirebase
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.testfirebase.UserListFragment.Companion.SELECT_USER
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_chat.*
-import kotlinx.android.synthetic.main.activity_chat.view.*
-import kotlinx.android.synthetic.main.user_list_fragment.view.*
 import messageAdapter
 
 private lateinit var auth: FirebaseAuth
@@ -27,8 +19,6 @@ class ChatActivity : AppCompatActivity() {
     public val me = auth.currentUser
     //データベースオブジェクト
     val db = FirebaseFirestore.getInstance()
-    //アダプター
-    //var messageListAdapter:messageAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,13 +29,11 @@ class ChatActivity : AppCompatActivity() {
         val get_you = intent.getParcelableExtra<User>(SELECT_USER)
         //アクションバーに相手の名前を表記
         supportActionBar?.title = get_you.name
-        //初期設定？
-        //Setup(view!!,me)
+        //アダプターの設定
         var messageListAdapter = messageAdapter(this)
 
-
         //メッセージの監視
-       val docRef = db.collection("user-message").document(me!!.uid).collection(get_you.uid)
+       val docRef = db.collection("user-message").document(me!!.uid).collection(get_you.uid).orderBy("time")
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 //空ではない = 何らか文字が入力されているとき
@@ -53,14 +41,13 @@ class ChatActivity : AppCompatActivity() {
                 return@addSnapshotListener
             }
 
+            //アダプターに関連付け
             chat_recyclerView.adapter = messageListAdapter
 
             //ForeachでDBに保存されているメッセージ内容をすべて取得する
             /*snapshot?.forEach {
                 var messagedata = it.toObject(Message::class.java)
                 Log.d("message-database",messagedata.message)
-
-
             }*/
 
             snapshot?.documentChanges?.forEach {
@@ -90,16 +77,6 @@ class ChatActivity : AppCompatActivity() {
             }
         }
     }
-
-    //ビューの初期化
-    /*
-    private fun Setup(view: View,message: Message){
-
-        view.chat_recyclerView.adapter = messageListAdapter
-
-    }
-
-     */
 
     // Firebaseの「user-message」と「user-latest」コレクションにオブジェクトを登録する関数
     // 引数: you(チャット相手のユーザオブジェクト) / msg(送信するメッセージ内容)
