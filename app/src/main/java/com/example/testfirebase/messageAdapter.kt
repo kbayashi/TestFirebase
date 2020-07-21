@@ -1,4 +1,6 @@
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.testfirebase.Message
 import com.example.testfirebase.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 
 class messageAdapter(private val context: Context)
     :RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+
+    //自分のUIDを取得
+    val meUid = FirebaseAuth.getInstance().uid
 
     //1行で使用する各部品（ビュー）を保持したもの(自分)
     class ViewMeHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -56,8 +62,6 @@ class messageAdapter(private val context: Context)
     //ViewTypeを返す関数(メッセージ送信者が自分か相手か比較する)
     //[戻り値] 0: 自分 / 1: 相手
     override fun getItemViewType(position: Int): Int {
-        //自分のUIDを取得
-        val meUid = FirebaseAuth.getInstance().uid
         //IDを比較
         if(itemList[position].message.send_user == meUid){
             return 0
@@ -71,18 +75,42 @@ class messageAdapter(private val context: Context)
 
     //保持されているビューにデータなどを設定する。ここでリスナなどを設定する
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+        //データベースインスタンスを作成
+        val db = FirebaseFirestore.getInstance()
+
         when(holder.itemViewType){
             0->{
                 val holder_me = holder as ViewMeHolder
                 holder_me.me_msg.text = itemList[position].message.message
                 holder_me.me_time.text = itemList[position].message.sendTimestampToString(itemList[position].message.time)
-                Picasso.get().load("https://i.pinimg.com/originals/31/65/6a/31656a9f20b9f8ef858038440da820e2.jpg").into(holder_me.me_img)
+                val docRef = db.collection("user").document(itemList[position].message.send_user.toString())
+                docRef.get()
+                    .addOnSuccessListener { document ->
+                        if (document != null) {
+                            //Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                            Picasso.get().load(document.getString("img")).into(holder_me.me_img)
+                        } else {
+                            Log.d(TAG, "No such document")
+                            Picasso.get().load("https://cv.tipsfound.com/windows10/02014/8.png").into(holder_me.me_img)
+                        }
+                    }
             }
             1->{
                 val holder_you = holder as ViewYouHolder
                 holder_you.you_msg.text = itemList[position].message.message
                 holder_you.you_time.text = itemList[position].message.sendTimestampToString(itemList[position].message.time)
-                Picasso.get().load("https://i.pinimg.com/originals/31/65/6a/31656a9f20b9f8ef858038440da820e2.jpg").into(holder_you.you_img)
+                val docRef = db.collection("user").document(itemList[position].message.receive_user.toString())
+                docRef.get()
+                    .addOnSuccessListener { document ->
+                        if (document != null) {
+                            //Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                            Picasso.get().load(document.getString("img")).into(holder_you.you_img)
+                        } else {
+                            Log.d(TAG, "No such document")
+                            Picasso.get().load("https://cv.tipsfound.com/windows10/02014/8.png").into(holder_you.you_img)
+                        }
+                    }
             }
         }
     }

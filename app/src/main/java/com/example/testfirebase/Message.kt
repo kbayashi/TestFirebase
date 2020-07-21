@@ -3,7 +3,7 @@ package com.example.testfirebase
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Message(val message: String,val send_user:String,val receive_user: String,val time: Long) {
+class Message(val message: String, val send_user:String, val receive_user: String, val time: Long) {
     constructor():this("", "", "", 0L)
 
     //メッセージを送ったタイムスタンプを時間表示にする関数
@@ -13,7 +13,7 @@ class Message(val message: String,val send_user:String,val receive_user: String,
         //フォーマットを指定
         var format = SimpleDateFormat("h:mm")
         //送ったメッセージが1日より前か比較
-        if(long < (today - 43200000L)){
+        if(long < (today - 86400000L)){
             format = SimpleDateFormat("M/d h:mm")
         }
         //ロング型からDate形に変換

@@ -33,7 +33,7 @@ class ChatActivity : AppCompatActivity() {
         var messageListAdapter = messageAdapter(this)
 
         //メッセージの監視
-       val docRef = db.collection("user-message").document(me!!.uid).collection(get_you.uid).orderBy("time")
+        val docRef = db.collection("user-message").document(me!!.uid).collection(get_you.uid).orderBy("time")
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 //空ではない = 何らか文字が入力されているとき
@@ -44,12 +44,7 @@ class ChatActivity : AppCompatActivity() {
             //アダプターに関連付け
             chat_recyclerView.adapter = messageListAdapter
 
-            //ForeachでDBに保存されているメッセージ内容をすべて取得する
-            /*snapshot?.forEach {
-                var messagedata = it.toObject(Message::class.java)
-                Log.d("message-database",messagedata.message)
-            }*/
-
+            //DBに格納されているデータを取り出す
             snapshot?.documentChanges?.forEach {
                 var messagedata = it.document.toObject(Message::class.java)
                 Log.d("documentChange", messagedata.message)
@@ -57,6 +52,12 @@ class ChatActivity : AppCompatActivity() {
                 //サイクルビューに自分のメッセージ内容を追加する
                 messageListAdapter?.add(messagedata)
             }
+
+            //ForeachでDBに保存されているメッセージ内容をすべて取得する(過去の書き方)
+            /*snapshot?.forEach {
+                var messagedata = it.toObject(Message::class.java)
+                Log.d("message-database",messagedata.message)
+            }*/
 
             /*
             なくても通るが、以下の処理はおそらく例外処理と思われる。
