@@ -20,5 +20,15 @@ class UserPlofileEditActivity : AppCompatActivity() {
         user_profile_user_sick_textview.text = get_user.sick
         user_profile_lifeexpectancy_title_textview.text = get_user.life_expectancy
         Picasso.get().load(get_user.img).into(user_profile_user_imageview)
+
+        //UserProfilePlanTextEditDialog表示処理
+        user_profile_user_name_textview.setOnClickListener{
+            val dialog = UserProfilePlainTextEditDialog("名前",user_profile_user_name_textview,"name")
+            dialog.show(supportFragmentManager, "名前")
+        }
+        user_profile_user_prefectures_textview.setOnClickListener{
+            val dialog = UserProfilePlainTextEditDialog("自己紹介",user_profile_user_prefectures_textview,"pr")
+            dialog.show(supportFragmentManager,"自己紹介")
+        }
     }
 }
