@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.Picasso
 import androidx.recyclerview.widget.RecyclerView
 
 class FriendAddAdapter(private val context: Context)
@@ -13,17 +14,22 @@ class FriendAddAdapter(private val context: Context)
 
     //１行で使用する各部品（ビュー）を保持したもの
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val friendName: TextView = itemView.findViewById(R.id.friend_add_row_name_textView)
-        val friendPr: TextView = itemView.findViewById(R.id.friend_add_row_pr_textView)
+        val userName: TextView = itemView.findViewById(R.id.friend_add_row_name_textView)
+        val userPr: TextView = itemView.findViewById(R.id.friend_add_row_pr_textView)
+        val userImage: ImageView = itemView.findViewById(R.id.friend_add_row_imageView)
     }
 
     //現状userデータがないのでダミーデータを格納するだけの処理になっている
-    class friendListItem(){}
+    class friendListItem(val user: User){}
 
     private var itemList = mutableListOf<friendListItem>()
 
-    fun add(){
-        itemList.add(friendListItem())
+    fun add(user: User){
+        itemList.add(friendListItem(user))
+    }
+
+    fun clear(){
+        itemList.clear()
     }
 
     //セルが必要になるたびに呼び出される。
@@ -38,6 +44,10 @@ class FriendAddAdapter(private val context: Context)
 
     //保持されているビューにデータなどを設定するここでリスナなどを設定する
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+        holder.userName.text = itemList[position].user.name
+        if(itemList[position].user.pr != "非公開")
+        holder.userPr.text = itemList[position].user.pr
+        Picasso.get().load(itemList[position].user.img).
+            into(holder.userImage)
     }
 }

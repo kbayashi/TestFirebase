@@ -8,7 +8,7 @@
     android:layout_margin="8dp"
     android:orientation="vertical">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/friend_add_row_imageView"
         android:layout_width="150dp"
         android:layout_height="150dp"
@@ -16,15 +16,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_round"
-        tools:srcCompat="@tools:sample/avatars" />
+        />
 
     <TextView
         android:id="@+id/friend_add_row_name_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="山田孝之"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/friend_add_row_imageView"
@@ -38,7 +36,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:maxLines="3"
-        android:text="こんにちは僕は人間です"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/friend_add_row_name_textView"

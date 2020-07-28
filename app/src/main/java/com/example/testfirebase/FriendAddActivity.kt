@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.Menu
 import android.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_friend_add.*
 
 class FriendAddActivity : AppCompatActivity() {
@@ -19,15 +19,8 @@ class FriendAddActivity : AppCompatActivity() {
         setSupportActionBar(friend_add_toolbar)
 
         friend_add_search_result_recyclerView.layoutManager = GridLayoutManager(this,3)
-
         adapter = FriendAddAdapter(this)
 
-        adapter?.add()
-        adapter?.add()
-        adapter?.add()
-        adapter?.add()
-
-        friend_add_search_result_recyclerView.adapter = adapter
 
     }
 
@@ -42,12 +35,13 @@ class FriendAddActivity : AppCompatActivity() {
 
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     Log.d("Search", query)
-
                     return true
                 }
 
-                override fun onQueryTextChange(p0: String?): Boolean {
-                    Log.d("Search", p0)
+                override fun onQueryTextChange(text: String?): Boolean {
+                    Log.d("Search", text)
+                    if(text != null)
+                    searchUser(text)
                     return true
                 }
 
@@ -57,6 +51,18 @@ class FriendAddActivity : AppCompatActivity() {
         return true
     }
 
+    private fun searchUser(keyword:String){
+        FirebaseFirestore.getInstance().collection("user")
+            .orderBy("name").startAt(keyword).endAt(keyword + "\uf8ff").get()
+            .addOnSuccessListener {
+                adapter?.clear()
+                it.forEach {
+                    var getUser = it.toObject(User::class.java)
+                    Log.d("ユーザ取得できたか", getUser.name)
+                    adapter?.add(getUser)
+                }
 
-
+                friend_add_search_result_recyclerView.adapter = adapter
+            }
+    }
 }
