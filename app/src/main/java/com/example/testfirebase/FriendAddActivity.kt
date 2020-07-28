@@ -22,6 +22,13 @@ class FriendAddActivity : AppCompatActivity() {
         adapter = FriendAddAdapter(this)
 
 
+        //条件検索ダイアログ表示
+        friend_add_search_button.setOnClickListener {
+            val dialog = friendAddDialog()
+            dialog.show(supportFragmentManager, "")
+        }
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

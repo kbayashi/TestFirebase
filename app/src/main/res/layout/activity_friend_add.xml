@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/friend_add_searcg_button"
+        android:id="@+id/friend_add_search_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -40,5 +40,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friend_add_searcg_button" />
+        app:layout_constraintTop_toBottomOf="@+id/friend_add_search_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>
