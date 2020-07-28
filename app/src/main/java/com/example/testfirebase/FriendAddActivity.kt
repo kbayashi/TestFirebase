@@ -23,8 +23,10 @@ class FriendAddActivity : AppCompatActivity() {
             queryHint = "山田達郎"
             clearFocus()
             setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     Log.d("Search", query)
+
                     return true
                 }
 
