@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserPlofileEditActivity">
+    tools:context=".UserProfileEditActivity">
 
     <ImageView
         android:id="@+id/imageView3"
@@ -38,53 +38,61 @@
                 android:layout_height="185dp"
                 tools:srcCompat="@tools:sample/avatars" />
 
-            <ListView
-                android:id="@+id/user_profile_edit_name_listview"
+            <TextView
+                android:id="@+id/user_profile_edit_name_textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="45sp" />
 
-            </ListView>
-
-            <ListView
-                android:id="@+id/user_profile_edit_pr_listview"
+            <TextView
+                android:id="@+id/user_profile_edit_pr_textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="45sp" />
 
-            </ListView>
-
-            <ListView
-                android:id="@+id/user_profile_edit_gender_listview"
+            <TextView
+                android:id="@+id/user_profile_edit_gender_textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="45sp" />
 
-            <ListView
-                android:id="@+id/user_profile_edit_old_listview"
+            <TextView
+                android:id="@+id/user_profile_edit_old_textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="45sp" />
 
-            <ListView
-                android:id="@+id/user_profile_edit_prefectures_listview"
+            <TextView
+                android:id="@+id/user_profile_edit_prefectures_textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="45sp" />
 
-            <ListView
-                android:id="@+id/user_profile_edit_hobby_listview"
+            <TextView
+                android:id="@+id/user_profile_edit_hobby_textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="45sp" />
 
-            </ListView>
-
-            <ListView
-                android:id="@+id/user_profile_edit_sick_listview"
+            <TextView
+                android:id="@+id/user_profile_edit_sick_textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="45sp" />
 
-            <ListView
-                android:id="@+id/user_profile_edit_lifeexpectancy_listview"
+            <TextView
+                android:id="@+id/user_profile_edit_lifeexpectancy_textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </ListView>
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="45sp" />
 
         </LinearLayout>
     </ScrollView>
