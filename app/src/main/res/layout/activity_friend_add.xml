@@ -26,6 +26,7 @@
         android:layout_marginEnd="24dp"
         android:background="@drawable/button_round_blue"
         android:text="条件で検索"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
