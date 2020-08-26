@@ -13,7 +13,8 @@ import androidx.fragment.app.DialogFragment
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.select_dialog.*
 
-class selectDialogMultiple(val title:String ,val textView: TextView, val dbRefName: String, val mutableList: MutableList<String>):DialogFragment() {
+class selectDialogMultiple(val title:String ,val textView: TextView, val dbRefName: String,
+                           val mutableList: MutableMap<String,MutableList<String>>):DialogFragment() {
 
     val SELECT_DIALOG_MULTIPLE = "SELECT_DIALOG_MULTIPLE"
 
@@ -46,7 +47,7 @@ class selectDialogMultiple(val title:String ,val textView: TextView, val dbRefNa
 
         //選択完了
         dialog.select_dialog_select_button.setOnClickListener {
-            adapter.setTextView(textView, mutableList)
+            adapter.setTextView(textView, mutableList, dbRefName)
             dialog.cancel()
         }
 

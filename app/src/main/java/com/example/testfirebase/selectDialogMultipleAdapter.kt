@@ -26,16 +26,18 @@ class selectDialogMultipleAdapter(private val context: Context)
         itemList.add(selectDialogListItem(text, false))
     }
 
-    fun setTextView(textView: TextView, mutableList: MutableList<String>){
+    fun setTextView(textView: TextView, selectList: MutableMap<String,MutableList<String>>, key:String){
         var text:String = ""
+        var item = mutableListOf<String>()
         itemList.forEach {
             if(it.check == true) {
                 text += it.text + " "
                 Log.d("チェックされた項目", it.text)
-                mutableList.add(it.text)
+                item.add(it.text)
             }
         }
         textView.text = text
+        selectList.put(key, item)
     }
 
     //セルが必要になるたびに呼び出される。
