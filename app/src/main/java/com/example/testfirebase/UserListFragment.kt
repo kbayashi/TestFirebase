@@ -17,10 +17,16 @@ import kotlinx.android.synthetic.main.user_list_fragment.view.*
 
 class UserListFragment: Fragment() {
 
+    companion object{
+        val SELECT_USER = "SELECT_USER"
+    }
+
     var userListAdapter:userListAdapter? = null
     var groupListAdapter:groupListAdapter? = null
     var friendDisplayFlg = false
     var groupDisplayFlg = false
+
+    val uid = FirebaseAuth.getInstance().uid
 
     //フラグメントにレイアウトを設定
     override fun onCreateView(
@@ -39,7 +45,7 @@ class UserListFragment: Fragment() {
         dummydata(groupListAdapter!!)
 
         //ユーザ取り出して表示
-        fetchUsers()
+        fetchUsers(view)
 
         //友達リストを表示・非表示
         view.user_list_friend_constraintLayout.setOnClickListener {
@@ -50,13 +56,13 @@ class UserListFragment: Fragment() {
             groupDisplaySwitching(view)
         }
 
-        /*ユーザプロフィール画面に飛ばしたい
+        //ユーザプロフィール画面に飛ばしたい
         userListAdapter?.setOnclickListener {user->
-            val intent = Intent(context, UserRegistarActivity::class.java)
-            intent.putExtra("SELECT_USER", user)
-        }*/
-
-
+            val intent = Intent(context, UserProfileActivity::class.java)
+            intent.putExtra(SELECT_USER, user)
+            Log.d(SELECT_USER, "${user.name}")
+            startActivity(intent)
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -75,10 +81,9 @@ class UserListFragment: Fragment() {
 
     }
     //ユーザ取り出す
-    private fun fetchUsers(){
+    private fun fetchUsers(view: View){
         val db = FirebaseFirestore.getInstance()
         var loginUser:User? = null
-        val uid = FirebaseAuth.getInstance().uid
         val loginUserRef = db.collection("user").document(uid!!)
 
         loginUserRef.get().addOnSuccessListener {
@@ -87,7 +92,7 @@ class UserListFragment: Fragment() {
             Log.d("ユーザ取得", "ログインしているユーザ名${loginUser?.name}")
 
             //初期設定
-            setUp(view!!,loginUser!!)
+            setUp(view,loginUser!!)
 
             val users = db.collection("user")
             users.get().addOnSuccessListener {
@@ -104,8 +109,13 @@ class UserListFragment: Fragment() {
             }.addOnFailureListener {
                 Log.d("ユーザ取得失敗", it.message)
             }
+            //自分のプロフィール画面に飛ばしたい
+            user_list_my_profile_constraintLayout.setOnClickListener {
+                val intent = Intent(context, UserMyProfileActivity::class.java)
+                intent.putExtra(SELECT_USER, loginUser)
+                startActivity(intent)
+            }
         }
-
     }
 
     //ビューの初期化
@@ -118,8 +128,8 @@ class UserListFragment: Fragment() {
         view.user_list_group_list_recyclerView.visibility = View.GONE
 
         //recyclerviewに下線を足す
-        view.user_list_user_recyclerView.addItemDecoration(DividerItemDecoration(activity,
-            DividerItemDecoration.VERTICAL))
+        /*view.user_list_user_recyclerView.addItemDecoration(DividerItemDecoration(activity,
+            DividerItemDecoration.VERTICAL))*/
 
         view.user_list_my_name_textView.text = user.name
         view.user_list_my_pr_textView.text = user.pr

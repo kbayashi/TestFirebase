@@ -2,9 +2,11 @@ package com.example.testfirebase
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -46,7 +48,10 @@ class MainActivity : AppCompatActivity() {
         //初期化
         startFlagment()
 
+
     }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
@@ -66,7 +71,7 @@ class MainActivity : AppCompatActivity() {
     private fun verifyfyUserIsLogin(){
         val uid = FirebaseAuth.getInstance().uid
         if(uid == null){
-            val intent  = Intent(this, UserRegistarActivity::class.java)
+            val intent  = Intent(this, TitleActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             finish()

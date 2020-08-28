@@ -27,7 +27,6 @@ class userListAdapter(private val context: Context)
         val user_image:ImageView = itemView.findViewById(R.id.user_list_row_user_imageView)
     }
 
-    //現状userデータがないのでダミーデータを格納するだけの処理になっている
     class userListItem(val user: User){}
 
     private var itemList = mutableListOf<userListItem>()
