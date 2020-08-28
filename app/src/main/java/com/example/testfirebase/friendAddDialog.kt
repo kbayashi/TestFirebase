@@ -76,9 +76,9 @@ class friendAddDialog :DialogFragment(){
 
         //年齢選択
         dialog.friend_add_dialog_age_content_textView.setOnClickListener {
-        /*   val selectDialog = selectDialogMultiple("年齢",
+            val selectDialog = selectDialogMultiple("年齢",
                dialog.friend_add_dialog_age_content_textView ,"age", selectedList)
-            selectDialog.show(childFragmentManager, "")*/
+            selectDialog.show(childFragmentManager, "")
         }
 
         //住所検索

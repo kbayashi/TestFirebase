@@ -38,6 +38,7 @@ class selectDialogMultiple(val title:String ,val textView: TextView, val dbRefNa
 
         dialog.select_dialog_title_textView.text = title
         var adapter = selectDialogMultipleAdapter(context!!)
+        dialog.select_dialog_recyclerView.adapter = adapter
         AdapterSet(adapter)
 
         //キャンセル
@@ -56,7 +57,27 @@ class selectDialogMultiple(val title:String ,val textView: TextView, val dbRefNa
 
     //アダプターにデータをセット
     private fun AdapterSet(adapter: selectDialogMultipleAdapter){
-        val ref = FirebaseFirestore.getInstance().collection(dbRefName)
+
+        when(dbRefName){
+            "hoby" ->{
+                getResources().getStringArray(R.array.hobby).forEach {
+                    adapter.add(it)
+                }
+            }
+            "sick" ->{
+                getResources().getStringArray(R.array.sick).forEach {
+                    adapter.add(it)
+                }
+            }
+            "age" -> {
+                getResources().getStringArray(R.array.age).forEach {
+                    adapter.add(it)
+                }
+            }
+
+        }
+        //dialog?.select_dialog_recyclerView?.adapter = adapter
+        /*val ref = FirebaseFirestore.getInstance().collection(dbRefName)
         ref.get().addOnSuccessListener {
             Log.d(SELECT_DIALOG_MULTIPLE, "$it" )
             it.forEach{
@@ -66,7 +87,8 @@ class selectDialogMultiple(val title:String ,val textView: TextView, val dbRefNa
             dialog?.select_dialog_recyclerView?.adapter = adapter
         }.addOnFailureListener {
             Log.d("取得失敗", it.message)
-        }
+        }*/
+
     }
 
 
