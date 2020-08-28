@@ -45,7 +45,7 @@ class UserListFragment: Fragment() {
         dummydata(groupListAdapter!!)
 
         //ユーザ取り出して表示
-        fetchUsers()
+        fetchUsers(view)
 
         //友達リストを表示・非表示
         view.user_list_friend_constraintLayout.setOnClickListener {
@@ -81,7 +81,7 @@ class UserListFragment: Fragment() {
 
     }
     //ユーザ取り出す
-    private fun fetchUsers(){
+    private fun fetchUsers(view: View){
         val db = FirebaseFirestore.getInstance()
         var loginUser:User? = null
         val loginUserRef = db.collection("user").document(uid!!)
@@ -92,7 +92,7 @@ class UserListFragment: Fragment() {
             Log.d("ユーザ取得", "ログインしているユーザ名${loginUser?.name}")
 
             //初期設定
-            setUp(view!!,loginUser!!)
+            setUp(view,loginUser!!)
 
             val users = db.collection("user")
             users.get().addOnSuccessListener {
@@ -128,8 +128,8 @@ class UserListFragment: Fragment() {
         view.user_list_group_list_recyclerView.visibility = View.GONE
 
         //recyclerviewに下線を足す
-        view.user_list_user_recyclerView.addItemDecoration(DividerItemDecoration(activity,
-            DividerItemDecoration.VERTICAL))
+        /*view.user_list_user_recyclerView.addItemDecoration(DividerItemDecoration(activity,
+            DividerItemDecoration.VERTICAL))*/
 
         view.user_list_my_name_textView.text = user.name
         view.user_list_my_pr_textView.text = user.pr
