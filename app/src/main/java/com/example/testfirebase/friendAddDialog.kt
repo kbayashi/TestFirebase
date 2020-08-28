@@ -83,8 +83,8 @@ class friendAddDialog :DialogFragment(){
 
         //住所検索
         dialog.friend_add_dialog_live_content_textView.setOnClickListener {
-//            val selectDialog = selectDialogMultiple("都道府県",  dialog.friend_add_dialog_live_content_textView,"live")
-//            selectDialog.show(childFragmentManager, "")
+           val selectDialog = selectDialogMultiple("都道府県",  dialog.friend_add_dialog_live_content_textView,"live", selectedList)
+            selectDialog.show(childFragmentManager, "")
         }
 
         //趣味選択
