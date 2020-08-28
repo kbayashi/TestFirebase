@@ -26,6 +26,8 @@ class UserListFragment: Fragment() {
     var friendDisplayFlg = false
     var groupDisplayFlg = false
 
+    val uid = FirebaseAuth.getInstance().uid
+
     //フラグメントにレイアウトを設定
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,8 +63,6 @@ class UserListFragment: Fragment() {
             Log.d(SELECT_USER, "${user.name}")
             startActivity(intent)
         }
-
-
     }
 
     override fun onAttach(context: Context) {
@@ -84,7 +84,6 @@ class UserListFragment: Fragment() {
     private fun fetchUsers(view: View){
         val db = FirebaseFirestore.getInstance()
         var loginUser:User? = null
-        val uid = FirebaseAuth.getInstance().uid
         val loginUserRef = db.collection("user").document(uid!!)
 
         loginUserRef.get().addOnSuccessListener {
@@ -110,8 +109,13 @@ class UserListFragment: Fragment() {
             }.addOnFailureListener {
                 Log.d("ユーザ取得失敗", it.message)
             }
+            //自分のプロフィール画面に飛ばしたい
+            user_list_my_profile_constraintLayout.setOnClickListener {
+                val intent = Intent(context, UserMyProfileActivity::class.java)
+                intent.putExtra(SELECT_USER, loginUser)
+                startActivity(intent)
+            }
         }
-
     }
 
     //ビューの初期化
