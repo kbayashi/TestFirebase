@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserPlofileEditActivity">
+    tools:context=".UserProfileEditActivity">
 
     <ImageView
         android:id="@+id/imageView3"
@@ -24,7 +24,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,51 +38,61 @@
                 android:layout_height="185dp"
                 tools:srcCompat="@tools:sample/avatars" />
 
-            <ListView
-                android:id="@+id/user_profile_edit_name_listview"
+            <TextView
+                android:id="@+id/user_profile_edit_name_textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="45sp" />
 
-            </ListView>
-
-            <ListView
-                android:id="@+id/user_profile_edit_pr_listview"
+            <TextView
+                android:id="@+id/user_profile_edit_pr_textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="45sp" />
 
-            </ListView>
-
-            <ListView
-                android:id="@+id/user_profile_edit_gender_listview"
+            <TextView
+                android:id="@+id/user_profile_edit_gender_textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="45sp" />
 
-            <ListView
-                android:id="@+id/user_profile_edit_old_listview"
+            <TextView
+                android:id="@+id/user_profile_edit_old_textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="45sp" />
 
-            <ListView
-                android:id="@+id/user_profile_edit_prefectures_listview"
+            <TextView
+                android:id="@+id/user_profile_edit_prefectures_textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="45sp" />
 
-            <ListView
-                android:id="@+id/user_profile_edit_hobby_listview"
+            <TextView
+                android:id="@+id/user_profile_edit_hobby_textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="45sp" />
 
-            </ListView>
-
-            <ListView
-                android:id="@+id/user_profile_edit_sick_listview"
+            <TextView
+                android:id="@+id/user_profile_edit_sick_textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="45sp" />
 
-            <ListView
-                android:id="@+id/user_profile_edit_lifeexpectancy_listview"
+            <TextView
+                android:id="@+id/user_profile_edit_lifeexpectancy_textView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="45sp" />
 
         </LinearLayout>
     </ScrollView>
