@@ -1,5 +1,6 @@
 package com.example.testfirebase
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +28,13 @@ class FriendAddActivity : AppCompatActivity() {
         friend_add_search_button.setOnClickListener {
             val dialog = friendAddDialog()
             dialog.show(supportFragmentManager, "dialog")
+        }
+
+        adapter?.setOnclickListener { user ->
+            val intent = Intent(this, UserProfileActivity::class.java)
+            intent.putExtra(UserListFragment.SELECT_USER, user)
+            Log.d(UserListFragment.SELECT_USER, "${user.name}")
+            startActivity(intent)
         }
 
     }

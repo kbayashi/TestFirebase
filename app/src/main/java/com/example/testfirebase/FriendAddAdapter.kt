@@ -19,6 +19,12 @@ class FriendAddAdapter(private val context: Context)
         val userImage: ImageView = itemView.findViewById(R.id.friend_add_row_imageView)
     }
 
+    var itemClickListner : ((User)->Unit)? = null
+
+    fun setOnclickListener(listener:(User)->Unit){
+        itemClickListner = listener
+    }
+
     //現状userデータがないのでダミーデータを格納するだけの処理になっている
     class friendListItem(val user: User){}
 
@@ -49,5 +55,9 @@ class FriendAddAdapter(private val context: Context)
         holder.userPr.text = itemList[position].user.pr
         Picasso.get().load(itemList[position].user.img).
             into(holder.userImage)
+
+        holder.itemView.setOnClickListener {
+            itemClickListner?.invoke(itemList[position].user)
+        }
     }
 }
