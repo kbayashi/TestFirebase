@@ -69,6 +69,11 @@ class selectDialogMultiple(val title:String ,val textView: TextView, val dbRefNa
                     adapter.add(it)
                 }
             }
+            "age" -> {
+                getResources().getStringArray(R.array.age).forEach {
+                    adapter.add(it)
+                }
+            }
 
         }
         //dialog?.select_dialog_recyclerView?.adapter = adapter
