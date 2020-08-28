@@ -1,5 +1,6 @@
 package com.example.testfirebase
 
+import android.app.Activity
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -11,17 +12,16 @@ import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.frind_add_dialog.*
-import kotlin.math.log
 
 class friendAddDialog :DialogFragment(){
 
+    var test:Activity? = null
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         //ダイアログのインスタンス取得
-        val dialog: Dialog = Dialog(context!!)
+        val dialog: Dialog = Dialog(activity!!)
         val getUser = mutableListOf<User>()
-        val aa = mutableMapOf<String, MutableList<String>>()
         var selectedList = mutableMapOf<String, MutableList<String>>()
-        var test2 = arrayListOf<String>("大腸癌")
         //タイトルバーなしのダイアログを表示
         dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
         //レイアウト指定
@@ -49,11 +49,11 @@ class friendAddDialog :DialogFragment(){
                     FirebaseFirestore.getInstance().collection("user")
                         .whereEqualTo(t.toString(), it).get().addOnSuccessListener {
                             it.forEach {
-                                 getUser.add(it.toObject(User::class.java))
+                                getUser.add(it.toObject(User::class.java))
                                 Log.d("検索結果", it["name"].toString())
-
                             }
                             Log.d("getUser", getUser.toString())
+                            callActivity(getUser)
                         }.addOnFailureListener {
                             Log.d("test", it.message)
                         }
@@ -62,7 +62,6 @@ class friendAddDialog :DialogFragment(){
             }
             dialog.cancel()
         }
-
         //キャンセル
         dialog.friend_add_dialog_cancel_button.setOnClickListener {
             dialog.cancel()
@@ -94,7 +93,17 @@ class friendAddDialog :DialogFragment(){
             selectDialog.show(childFragmentManager, "")
         }
 
-
         return dialog
+    }
+
+    private fun callActivity(mutableList: MutableList<User>){
+        val callingActivity = test as FriendAddActivity
+        callingActivity!!.returnDialog(mutableList)
+    }
+
+    override fun onAttach(activity: Activity) {
+        super.onAttach(activity)
+        test = activity
+
     }
 }

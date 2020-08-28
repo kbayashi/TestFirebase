@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.Menu
 import android.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_friend_add.*
 
@@ -16,18 +17,17 @@ class FriendAddActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friend_add)
-        setSupportActionBar(friend_add_toolbar)
-
         friend_add_search_result_recyclerView.layoutManager = GridLayoutManager(this,3)
         adapter = FriendAddAdapter(this)
 
+        setAdapterDate()
+        setSupportActionBar(friend_add_toolbar)
 
         //条件検索ダイアログ表示
         friend_add_search_button.setOnClickListener {
             val dialog = friendAddDialog()
-            dialog.show(supportFragmentManager, "")
+            dialog.show(supportFragmentManager, "dialog")
         }
-
 
     }
 
@@ -58,6 +58,21 @@ class FriendAddActivity : AppCompatActivity() {
         return true
     }
 
+    //初期設定
+    private fun setAdapterDate(){
+        FirebaseFirestore.getInstance().collection("user").
+        limit(5L).get().addOnSuccessListener {
+            it.forEach {
+                Log.d("friendAdd", it.toObject(User::class.java).name)
+                var getUser = it.toObject(User::class.java)
+                if(getUser.uid != FirebaseAuth.getInstance().uid) {
+                    adapter?.add(getUser)
+                }
+            }
+            friend_add_search_result_recyclerView.adapter = adapter
+        }
+    }
+
     private fun searchUser(keyword:String){
         FirebaseFirestore.getInstance().collection("user")
             .orderBy("name").startAt(keyword).endAt(keyword + "\uf8ff").get()
@@ -65,11 +80,22 @@ class FriendAddActivity : AppCompatActivity() {
                 adapter?.clear()
                 it.forEach {
                     var getUser = it.toObject(User::class.java)
-                    Log.d("ユーザ取得できたか", getUser.name)
-                    adapter?.add(getUser)
+                    if(getUser.uid != FirebaseAuth.getInstance().uid) {
+                        Log.d("ユーザ取得できたか", getUser.name)
+                        adapter?.add(getUser)
+                    }
                 }
-
                 friend_add_search_result_recyclerView.adapter = adapter
             }
+    }
+
+    //検索結果を表示
+    public fun returnDialog(mutableList: MutableList<User>){
+        adapter?.clear()
+        mutableList.forEach {
+            adapter?.add(it)
+        }
+
+        friend_add_search_result_recyclerView.adapter = adapter
     }
 }

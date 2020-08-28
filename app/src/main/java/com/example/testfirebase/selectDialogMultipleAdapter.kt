@@ -26,6 +26,10 @@ class selectDialogMultipleAdapter(private val context: Context)
         itemList.add(selectDialogListItem(text, false))
     }
 
+    fun clear(){
+        itemList.clear()
+    }
+
     fun setTextView(textView: TextView, selectList: MutableMap<String,MutableList<String>>, key:String){
         var text:String = ""
         var item = mutableListOf<String>()
