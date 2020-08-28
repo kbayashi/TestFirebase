@@ -74,6 +74,11 @@ class selectDialogMultiple(val title:String ,val textView: TextView, val dbRefNa
                     adapter.add(it)
                 }
             }
+            "live" ->{
+                getResources().getStringArray(R.array.prefecture).forEach {
+                    adapter.add(it)
+                }
+            }
 
         }
         //dialog?.select_dialog_recyclerView?.adapter = adapter
