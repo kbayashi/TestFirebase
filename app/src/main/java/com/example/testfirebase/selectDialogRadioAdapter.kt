@@ -1,18 +1,14 @@
 package com.example.testfirebase
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.RadioButton
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 
-class selectDialogAdapter(private val context: Context)
-    : RecyclerView.Adapter<selectDialogAdapter.ViewHolder>() {
+class selectDialogRadioAdapter(private val context: Context)
+    : RecyclerView.Adapter<selectDialogRadioAdapter.ViewHolder>() {
 
     //１行で使用する各部品（ビュー）を保持したもの
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -35,7 +31,7 @@ class selectDialogAdapter(private val context: Context)
         val layoutInflater = LayoutInflater.from(context)
         //ビューを生成
         val layout = layoutInflater.inflate(R.layout.select_dialog_item_row, parent, false)
-        return selectDialogAdapter.ViewHolder(layout)
+        return selectDialogRadioAdapter.ViewHolder(layout)
     }
 
     override fun getItemCount(): Int = itemList.size

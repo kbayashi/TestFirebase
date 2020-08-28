@@ -1,5 +1,6 @@
 package com.example.testfirebase
 
+import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
 import kotlinx.android.parcel.Parcelize
