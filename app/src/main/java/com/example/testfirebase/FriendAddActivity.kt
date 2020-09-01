@@ -100,8 +100,13 @@ class FriendAddActivity : AppCompatActivity() {
     //検索結果を表示
     public fun returnDialog(mutableList: MutableList<User>){
         adapter?.clear()
-        mutableList.forEach {
-            adapter?.add(it)
+        if(mutableList.size != 0) {
+            mutableList.forEach {
+                adapter?.add(it)
+            }
+            friend_add_search_textView.text = "${mutableList.size}件見つかりました!!"
+        }else{
+            friend_add_search_textView.text = "ユーザが見つかりません"
         }
 
         friend_add_search_result_recyclerView.adapter = adapter
