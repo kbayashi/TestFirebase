@@ -36,10 +36,21 @@
         android:id="@+id/friend_add_search_result_recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friend_add_search_button" />
+        app:layout_constraintTop_toBottomOf="@+id/friend_add_search_textView" />
+
+    <TextView
+        android:id="@+id/friend_add_search_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/friend_add_search_button"
+        tools:text="ユーザが見つかりません" />
 </androidx.constraintlayout.widget.ConstraintLayout>
