@@ -133,9 +133,20 @@ class UserListFragment: Fragment() {
 
         view.user_list_my_name_textView.text = user.name
         view.user_list_my_pr_textView.text = user.pr
-        //テストでネット上の画像を表示できるか試した
-        Picasso.get().load("https://i.pinimg.com/originals/31/65/6a/31656a9f20b9f8ef858038440da820e2.jpg").
-            into(view.user_list_my_circleimageView)
+
+        //自分のアイコン表示
+        val db = FirebaseFirestore.getInstance()
+        val docRef = db.collection("user").document(uid!!)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    //読み込み
+                    Picasso.get().load(document.getString("img")).into(view.user_list_my_circleimageView)
+                } else {
+                    //画像が読み込めないとき
+                    Picasso.get().load("https://cv.tipsfound.com/windows10/02014/8.png").into(view.user_list_my_circleimageView)
+                }
+            }
 
     }
 
