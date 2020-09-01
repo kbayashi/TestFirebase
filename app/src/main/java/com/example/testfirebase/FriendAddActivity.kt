@@ -55,7 +55,7 @@ class FriendAddActivity : AppCompatActivity() {
 
                 override fun onQueryTextChange(text: String?): Boolean {
                     Log.d("Search", text)
-                    if(text != null)
+                    if(text != null && text.length > 0)
                     searchUser(text)
                     return true
                 }
@@ -69,7 +69,7 @@ class FriendAddActivity : AppCompatActivity() {
     //初期設定
     private fun setAdapterDate(){
         FirebaseFirestore.getInstance().collection("user").
-        limit(5L).get().addOnSuccessListener {
+        limit(7L).get().addOnSuccessListener {
             it.forEach {
                 Log.d("friendAdd", it.toObject(User::class.java).name)
                 var getUser = it.toObject(User::class.java)
@@ -93,6 +93,7 @@ class FriendAddActivity : AppCompatActivity() {
                         adapter?.add(getUser)
                     }
                 }
+                friend_add_search_textView.text = "${it.size()}件見つかりました!!"
                 friend_add_search_result_recyclerView.adapter = adapter
             }
     }
