@@ -51,6 +51,9 @@ class ChatActivity : AppCompatActivity() {
 
                 //サイクルビューに自分のメッセージ内容を追加する
                 messageListAdapter?.add(messagedata)
+
+                //Firebaseに更新があった時は一番下にスクロールする
+                chat_recyclerView.scrollToPosition(messageListAdapter.itemCount -1)
             }
 
             //ForeachでDBに保存されているメッセージ内容をすべて取得する(過去の書き方)
