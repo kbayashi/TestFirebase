@@ -11,11 +11,9 @@
         android:theme="@style/AppTheme">
         <activity android:name=".FriendAddActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
         </activity>
         <activity android:name=".UserLoginActivity" />        
-        <activity android:name=".TitleActivity">
-        </activity>
+        <activity android:name=".TitleActivity" />
         <activity android:name=".UserRegistarActivity" />
         <activity android:name=".UserMyProfileActivity" />
         <activity android:name=".UserProfileActivity" />
