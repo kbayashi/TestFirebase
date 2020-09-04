@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class timeLineListAdapter(private val context: Context)
@@ -18,6 +19,7 @@ class timeLineListAdapter(private val context: Context)
         val ImageView: ImageView = itemView.findViewById(R.id.time_line_recyclerview_row_imageView)
         val editTextMutable:EditText = itemView.findViewById(R.id.time_line_recyclerview_row_editTextTextMultiLine)
         val goodCount:TextView = itemView.findViewById(R.id.time_line_recyclerview_row_goodCount_textView)
+        val RecyclerView:RecyclerView = itemView.findViewById(R.id.time_line_recyclerview_row_image_recyclerView)
     }
 
     //現状userデータがないのでダミーデータを格納するだけの処理になっている
@@ -42,6 +44,13 @@ class timeLineListAdapter(private val context: Context)
 
     //保持されているビューにデータなどを設定するここでリスナなどを設定する
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.RecyclerView.layoutManager = GridLayoutManager(context,2)
+
+        val imageListAdapter = imageListAdapter(context)
+        holder.RecyclerView.adapter = imageListAdapter
+        imageListAdapter.add()
+        imageListAdapter.add()
+
 
 
     }
