@@ -6,6 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".TitleActivity">
 
+    <ImageView
+        android:id="@+id/activity_title_logo_imageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/application_icon" />
+
+    <TextView
+        android:id="@+id/activity_title_explanation_textView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:fontFamily="serif"
+        android:text="共通の病を持つもの同士が痛みや苦しみを分かち合い、不安を解消することを目的としたSNSアプリです。"
+        android:textColor="#DF323232"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/title_activitiy_user_register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_title_logo_imageView" />
+
     <Button
         android:id="@+id/title_activitiy_user_login"
         android:layout_width="0dp"
@@ -34,31 +61,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/activity_title_explanation_textView"
-        android:layout_width="304dp"
-        android:layout_height="141dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="serif"
-        android:text="〇〇は終活のためのコミュニケーションツールです。"
-        android:textColor="#DF323232"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_title_logo_imageView" />
-
-    <ImageView
-        android:id="@+id/activity_title_logo_imageView"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/testfirebase" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
