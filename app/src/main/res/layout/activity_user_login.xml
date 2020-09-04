@@ -13,26 +13,31 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="195dp"
         android:text="メールアドレス"
         android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/user_login_user_mail_editText"
-        android:layout_width="291dp"
-        android:layout_height="52dp"
+        android:layout_width="350dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="13dp"
         android:ems="10"
         android:hint="228kuri@gmail"
         android:inputType="textEmailAddress"
         android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="@+id/user_login_user_mail_textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_login_user_mail_textView" />
 
     <EditText
         android:id="@+id/user_login_user_pass_editText"
-        android:layout_width="291dp"
-        android:layout_height="59dp"
+        android:layout_width="350dp"
+        android:layout_height="55dp"
         android:layout_marginTop="32dp"
         android:ems="10"
         android:hint="・・・・・・"

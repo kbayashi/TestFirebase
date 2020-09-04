@@ -13,6 +13,8 @@ class TitleActivity : AppCompatActivity() {
         val registerButton: Button = findViewById(R.id.title_activitiy_user_register)
         registerButton.setOnClickListener {
 
+            val intent = Intent(this, UserRegistarActivity::class.java)
+            startActivity(intent)
             //val intent = Intent(this, MainActivity::class.java)
             //アクティビティを起動する前に既存のアクティビティを削除してからスタックに追加
             //intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
