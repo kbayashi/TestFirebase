@@ -16,8 +16,10 @@ class UserProfileEditRadioButtonActivity : AppCompatActivity() {
         activity_user_profile_edit_radio_button_save_button.setOnClickListener{
             if(man == true){
                 db
+                finish()
             }else if(woman == true){
                 db
+                finish()
             }
         }
     }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="life_expectancy">
+        <item>半年</item>
+        <item>１年</item>
+        <item>１年半</item>
+        <item>２年</item>
+        <item>２年以上</item>
+    </string-array>
+</resources>
