@@ -42,6 +42,12 @@ class UserProfileEditActivity : AppCompatActivity() {
                 .putExtra("edit",get_user.gender)
             startActivity(intent)
         }
+        user_profile_edit_old_textView.setOnClickListener{
+            val intent = Intent(this,UserProfileEditSpinnerActivity::class.java)
+            intent.putExtra("table","old")
+                .putExtra("edit",get_user.birthday)
+            startActivity(intent)
+        }
         user_profile_edit_prefectures_textView.setOnClickListener{
             val intent = Intent(this,UserProfileEditSpinnerActivity::class.java)
             intent.putExtra("table","live")
