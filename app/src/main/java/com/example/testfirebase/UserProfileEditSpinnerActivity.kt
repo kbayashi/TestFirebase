@@ -21,11 +21,15 @@ class UserProfileEditSpinnerActivity : AppCompatActivity() {
         var edit = intent.getStringExtra("edit")
 
         if(table == "old"){
-            val adapter = ArrayAdapter.createFromResource(this,R.array.live,android.R.layout.simple_spinner_item)
+            val adapter = ArrayAdapter.createFromResource(this,R.array.age,android.R.layout.simple_spinner_item)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
-        }else if(table == "live"){
-            val adapter = ArrayAdapter.createFromResource(this,R.array.live,android.R.layout.simple_spinner_item)
+        }else if(table == "live") {
+            val adapter = ArrayAdapter.createFromResource(this, R.array.live, android.R.layout.simple_spinner_item)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }else if(table == "sick"){
+            val adapter = ArrayAdapter.createFromResource(this,R.array.sick,android.R.layout.simple_spinner_item)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
         }else{

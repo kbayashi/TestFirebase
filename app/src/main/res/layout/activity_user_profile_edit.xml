@@ -45,56 +45,64 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="45dp" />
+                android:textSize="45dp"
+                android:background="@drawable/frame"/>
 
             <TextView
                 android:id="@+id/user_profile_edit_pr_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="45sp" />
+                android:textSize="45sp"
+                android:background="@drawable/frame"/>
 
             <TextView
                 android:id="@+id/user_profile_edit_gender_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="45sp" />
+                android:textSize="45sp"
+                android:background="@drawable/frame"/>
 
             <TextView
                 android:id="@+id/user_profile_edit_old_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="45sp" />
+                android:textSize="45sp"
+                android:background="@drawable/frame"/>
 
             <TextView
                 android:id="@+id/user_profile_edit_prefectures_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="45sp" />
+                android:textSize="45sp"
+                android:background="@drawable/frame"/>
 
             <TextView
                 android:id="@+id/user_profile_edit_hobby_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="45sp" />
+                android:textSize="45sp"
+                android:background="@drawable/frame"/>
 
             <TextView
                 android:id="@+id/user_profile_edit_sick_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="45sp" />
+                android:textSize="45sp"
+                android:background="@drawable/frame"/>
 
             <TextView
                 android:id="@+id/user_profile_edit_lifeexpectancy_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="45sp" />
+                android:textSize="45sp"
+                android:background="@drawable/frame"/>
 
         </LinearLayout>
     </ScrollView>
