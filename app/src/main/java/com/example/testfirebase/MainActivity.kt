@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         verifyfyUserIsLogin()
 
         //下のナビゲーションボタンが押されたら画面を切り替える
@@ -40,13 +39,19 @@ class MainActivity : AppCompatActivity() {
                     return@setOnNavigationItemSelectedListener true
                 }
 
+                R.id.bottom_nav_time_line ->{
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.main_fragment_FrameLayout, timeLineFragment())
+                        .commit()
+                    title = "タイムライン"
+                    return@setOnNavigationItemSelectedListener true
+                }
+
 
             }
             return@setOnNavigationItemSelectedListener false
 
         }
-
-
 
         //初期化
         startFlagment()
