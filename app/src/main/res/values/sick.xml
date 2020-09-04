@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sick">
+        <item>大腸癌</item>
+        <item>乳癌</item>
+        <item>膵臓癌</item>
+        <item>肝臓癌</item>
+        <item>子宮癌</item>
+        <item>胃癌</item>
+        <item>膀胱癌</item>
+        <item>食道癌</item>
+        <item>皮膚癌</item>
+    </string-array>
+</resources>
