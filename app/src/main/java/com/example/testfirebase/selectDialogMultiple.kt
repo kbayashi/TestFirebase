@@ -13,11 +13,10 @@ import androidx.fragment.app.DialogFragment
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.select_dialog.*
 
-//ダイアログの選択項目がラジオボタンでかつ、選択した値をtextviewに入れたい場合使用してください
-//第一引数ダイアログのタイトルに格納する文字・第二引数代入したいtextview・第三引数はデータベースのテーブル名
-class selectDialogRadio(val title:String,val textView: TextView, val dbRefName: String): DialogFragment() {
+class selectDialogMultiple(val title:String ,val textView: TextView, val dbRefName: String,
+                           val mutableList: MutableMap<String,MutableList<String>>):DialogFragment() {
 
-    val SELECT_DIALOG = "SELECT_DIALOG"
+    val SELECT_DIALOG_MULTIPLE = "SELECT_DIALOG_MULTIPLE"
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         //ダイアログのインスタンス取得
@@ -28,7 +27,8 @@ class selectDialogRadio(val title:String,val textView: TextView, val dbRefName: 
         dialog.setContentView(R.layout.select_dialog)
         dialog.window?.apply {
             //フルスクリーンでダイアログを表示
-            setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN)
 
             //背景色を透明
@@ -36,38 +36,65 @@ class selectDialogRadio(val title:String,val textView: TextView, val dbRefName: 
             setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         }
 
-        var adapter = selectDialogRadioAdapter(context!!)
+        dialog.select_dialog_title_textView.text = title
+        var adapter = selectDialogMultipleAdapter(context!!)
+        dialog.select_dialog_recyclerView.adapter = adapter
         AdapterSet(adapter)
 
-        dialog.select_dialog_title_textView.text = title
-
-        //選択ボタン
-       dialog.select_dialog_select_button.setOnClickListener {
-            textView.text = adapter.checkedText
-            dialog.cancel()
-        }
-        //キャンセルにデータをセット
+        //キャンセル
         dialog.select_dialog_cansel_button.setOnClickListener {
             dialog.cancel()
         }
 
+        //選択完了
+        dialog.select_dialog_select_button.setOnClickListener {
+            adapter.setTextView(textView, mutableList, dbRefName)
+            dialog.cancel()
+        }
 
         return dialog
     }
 
     //アダプターにデータをセット
-    private fun AdapterSet(adapter: selectDialogRadioAdapter){
-        val ref = FirebaseFirestore.getInstance().collection(dbRefName)
+    private fun AdapterSet(adapter: selectDialogMultipleAdapter){
+
+        when(dbRefName){
+            "hoby" ->{
+                getResources().getStringArray(R.array.hobby).forEach {
+                    adapter.add(it)
+                }
+            }
+            "sick" ->{
+                getResources().getStringArray(R.array.sick).forEach {
+                    adapter.add(it)
+                }
+            }
+            "age" -> {
+                getResources().getStringArray(R.array.age).forEach {
+                    adapter.add(it)
+                }
+            }
+            "live" ->{
+                getResources().getStringArray(R.array.prefecture).forEach {
+                    adapter.add(it)
+                }
+            }
+
+        }
+        //dialog?.select_dialog_recyclerView?.adapter = adapter
+        /*val ref = FirebaseFirestore.getInstance().collection(dbRefName)
         ref.get().addOnSuccessListener {
-            Log.d(SELECT_DIALOG, "$it" )
+            Log.d(SELECT_DIALOG_MULTIPLE, "$it" )
             it.forEach{
-                Log.d(SELECT_DIALOG,it["title"].toString())
+                Log.d(SELECT_DIALOG_MULTIPLE,it["title"].toString())
                 adapter.add(it["title"].toString())
             }
             dialog?.select_dialog_recyclerView?.adapter = adapter
         }.addOnFailureListener {
             Log.d("取得失敗", it.message)
-        }
+        }*/
+
     }
+
 
 }

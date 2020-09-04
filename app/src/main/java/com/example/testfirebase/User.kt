@@ -1,5 +1,6 @@
 package com.example.testfirebase
 
+import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
 import kotlinx.android.parcel.Parcelize
@@ -10,11 +11,12 @@ import java.util.*
 @Parcelize
 class User (val uid:String, val name:String, val img:String,
             val gender:String, val birthday: String, val pr:String,
-            val live: String, val sick:String, val life_expectancy: String) :Parcelable{
+            val live: String, val sick:String, val life_expectancy: String,
+            val hoby: String) :Parcelable{
 
     constructor():this("", "", "", "",
         "", "", "", "",
-        "")
+        "", "")
 
 
     //年齢算出

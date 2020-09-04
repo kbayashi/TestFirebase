@@ -45,7 +45,7 @@ class UserListFragment: Fragment() {
         dummydata(groupListAdapter!!)
 
         //ユーザ取り出して表示
-        fetchUsers()
+        fetchUsers(view)
 
         //友達リストを表示・非表示
         view.user_list_friend_constraintLayout.setOnClickListener {
@@ -81,7 +81,7 @@ class UserListFragment: Fragment() {
 
     }
     //ユーザ取り出す
-    private fun fetchUsers(){
+    private fun fetchUsers(view: View){
         val db = FirebaseFirestore.getInstance()
         var loginUser:User? = null
         val loginUserRef = db.collection("user").document(uid!!)
@@ -92,7 +92,7 @@ class UserListFragment: Fragment() {
             Log.d("ユーザ取得", "ログインしているユーザ名${loginUser?.name}")
 
             //初期設定
-            setUp(view!!,loginUser!!)
+            setUp(view,loginUser!!)
 
             val users = db.collection("user")
             users.get().addOnSuccessListener {
@@ -128,14 +128,25 @@ class UserListFragment: Fragment() {
         view.user_list_group_list_recyclerView.visibility = View.GONE
 
         //recyclerviewに下線を足す
-        view.user_list_user_recyclerView.addItemDecoration(DividerItemDecoration(activity,
-            DividerItemDecoration.VERTICAL))
+        /*view.user_list_user_recyclerView.addItemDecoration(DividerItemDecoration(activity,
+            DividerItemDecoration.VERTICAL))*/
 
         view.user_list_my_name_textView.text = user.name
         view.user_list_my_pr_textView.text = user.pr
-        //テストでネット上の画像を表示できるか試した
-        Picasso.get().load("https://i.pinimg.com/originals/31/65/6a/31656a9f20b9f8ef858038440da820e2.jpg").
-            into(view.user_list_my_circleimageView)
+
+        //自分のアイコン表示
+        val db = FirebaseFirestore.getInstance()
+        val docRef = db.collection("user").document(uid!!)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    //読み込み
+                    Picasso.get().load(document.getString("img")).into(view.user_list_my_circleimageView)
+                } else {
+                    //画像が読み込めないとき
+                    Picasso.get().load("https://cv.tipsfound.com/windows10/02014/8.png").into(view.user_list_my_circleimageView)
+                }
+            }
 
     }
 

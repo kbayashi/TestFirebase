@@ -65,7 +65,7 @@ class UserRegistarActivity : AppCompatActivity() {
                 //認証
                 Log.d("認証", "認証成功 ${it.result?.user?.uid}")
                 val user = User(it.result?.user?.uid!!, name, "", ragioGender?.text.toString(),
-                    "", "", "","", "")
+                    "非公開", "非公開", "非公開","非公開", "非公開", "非公開")
                 UserSaveDB(user)
             }
             .addOnFailureListener {
