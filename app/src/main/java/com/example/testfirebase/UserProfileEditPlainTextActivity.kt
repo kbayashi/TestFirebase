@@ -1,6 +1,5 @@
 package com.example.testfirebase
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
@@ -17,9 +16,10 @@ class UserProfileEditPlainTextActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile_edit_plain_text)
 
+        val table = intent.getStringExtra("table")
         val edit = intent.getStringExtra("edit")
         val text = activity_user_profile_edit_plain_text_plainText.length()
-        if(edit == "name"){
+        if(table == "name"){
             val limit = 20
             val editText = EditText(this)
             editText.inputType = InputType.TYPE_CLASS_TEXT
@@ -35,7 +35,8 @@ class UserProfileEditPlainTextActivity : AppCompatActivity() {
             activity_user_profile_edit_plain_text_plainText.setText(edit)
         }
         activity_user_profile_edit_plain_text_savebutton.setOnClickListener{
-            db
+            //db.collection(edit).document().update()
+            finish()
         }
     }
 }

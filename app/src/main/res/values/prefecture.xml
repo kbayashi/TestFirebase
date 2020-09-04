@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="prefecture">
+    <string-array name="live">
         <item>北海道</item>
         <item>青森県</item>
         <item>岩手県</item>

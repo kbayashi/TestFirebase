@@ -6,21 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".UserProfileEditActivity">
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="50dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="200dp"
-        android:translationZ="2dp"
-        app:layout_constraintEnd_toEndOf="@+id/scrollView4"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_camera_alt_24" />
-
     <ScrollView
         android:id="@+id/scrollView4"
-        android:layout_width="598dp"
-        android:layout_height="821dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,18 +21,31 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/user_profile_edit_imageview"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="185dp"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/user_profile_edit_imageview"
+                    android:layout_width="match_parent"
+                    android:layout_height="185dp"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="50dp"
+                    android:layout_height="38dp"
+                    android:translationX="250dp"
+                    android:translationY="150dp"
+                    app:srcCompat="@drawable/ic_baseline_camera_alt_24" />
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/user_profile_edit_name_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="45sp" />
+                android:textSize="45dp" />
 
             <TextView
                 android:id="@+id/user_profile_edit_pr_textView"

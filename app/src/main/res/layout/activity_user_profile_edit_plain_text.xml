@@ -19,7 +19,7 @@
 
     <EditText
         android:id="@+id/activity_user_profile_edit_plain_text_plainText"
-        android:layout_width="597dp"
+        android:layout_width="0dp"
         android:layout_height="77dp"
         android:layout_marginBottom="20dp"
         android:ems="10"
