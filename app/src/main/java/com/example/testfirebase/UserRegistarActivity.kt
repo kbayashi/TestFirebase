@@ -64,7 +64,7 @@ class UserRegistarActivity : AppCompatActivity() {
                 if(!it.isSuccessful) return@addOnCompleteListener
                 //認証
                 Log.d("認証", "認証成功 ${it.result?.user?.uid}")
-                val user = User(it.result?.user?.uid!!, name, "", ragioGender?.text.toString(),
+                val user = User(it.result?.user?.uid!!, name, "https://firebasestorage.googleapis.com/v0/b/firevasetest-1d5b9.appspot.com/o/user_icon%2Fnoimage.png?alt=media&token=b9ae62b8-8c42-4791-9507-c84c93f6871f", ragioGender?.text.toString(),
                     "非公開", "非公開", "非公開","非公開", "非公開", "非公開")
                 UserSaveDB(user)
             }
