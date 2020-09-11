@@ -110,7 +110,7 @@ class UserListFragment: Fragment() {
                 Log.d("ユーザ取得失敗", it.message)
             }
             //自分のプロフィール画面に飛ばしたい
-            user_list_my_profile_constraintLayout.setOnClickListener {
+            view.user_list_my_profile_constraintLayout.setOnClickListener {
                 val intent = Intent(context, UserMyProfileActivity::class.java)
                 intent.putExtra(SELECT_USER, loginUser)
                 startActivity(intent)
