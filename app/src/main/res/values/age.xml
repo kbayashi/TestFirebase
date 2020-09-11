@@ -10,5 +10,6 @@
         <item>50歳前半</item>
         <item>50歳後半</item>
         <item>60歳以上</item>
+        <item>非公開</item>
     </string-array>
 </resources>
