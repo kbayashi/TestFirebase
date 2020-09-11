@@ -75,7 +75,7 @@ class selectDialogMultiple(val title:String ,val textView: TextView, val dbRefNa
                 }
             }
             "live" ->{
-                getResources().getStringArray(R.array.prefecture).forEach {
+                getResources().getStringArray(R.array.live).forEach {
                     adapter.add(it)
                 }
             }

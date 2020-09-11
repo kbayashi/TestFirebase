@@ -1,6 +1,7 @@
 package com.example.testfirebase
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +30,12 @@ class timeLineFragment:Fragment(){
         view.time_line_recyclerview.addItemDecoration(
             DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
         )
+
+        //追加画面
+        view.time_line_floatingActionButton.setOnClickListener {
+            val intent:Intent = Intent(context, TimeLineAddActivity::class.java)
+            startActivity(intent)
+        }
 
         dummy(timeLineListAdapter!!)
     }
