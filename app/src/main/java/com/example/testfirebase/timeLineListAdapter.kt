@@ -48,8 +48,8 @@ class timeLineListAdapter(private val context: Context)
 
         val imageListAdapter = imageListAdapter(context)
         holder.RecyclerView.adapter = imageListAdapter
-        imageListAdapter.add()
-        imageListAdapter.add()
+        //imageListAdapter.add()
+        //imageListAdapter.add()
 
 
 
