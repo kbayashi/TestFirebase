@@ -44,7 +44,7 @@ class UserProfileEditActivity : AppCompatActivity() {
         }
         user_profile_edit_old_textView.setOnClickListener{
             val intent = Intent(this,UserProfileEditSpinnerActivity::class.java)
-            intent.putExtra("table","old")
+            intent.putExtra("table","birthday")
                 .putExtra("edit",get_user.birthday)
             startActivity(intent)
         }
@@ -62,7 +62,7 @@ class UserProfileEditActivity : AppCompatActivity() {
         }
         user_profile_edit_lifeexpectancy_textView.setOnClickListener {
             val intent = Intent(this,UserProfileEditSpinnerActivity::class.java)
-            intent.putExtra("table","lifeexpectancy")
+            intent.putExtra("table","lifeExpectancy")
                 .putExtra("edit",get_user.life_expectancy)
             startActivity(intent)
         }
