@@ -11,6 +11,7 @@ import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_time_line_add.*
 
 class TimeLineAddActivity : AppCompatActivity() {
@@ -56,7 +57,7 @@ class TimeLineAddActivity : AppCompatActivity() {
             if(clipData!!.itemCount > 1){
                 time_line_add_select_photo_recyclerView.layoutManager = GridLayoutManager(this,2)
             }else{
-                //time_line_add_select_photo_recyclerView.layoutManager = LinearLayout
+                time_line_add_select_photo_recyclerView.layoutManager = LinearLayoutManager(this)
             }
 
             time_line_add_select_photo_recyclerView.adapter = adapter
