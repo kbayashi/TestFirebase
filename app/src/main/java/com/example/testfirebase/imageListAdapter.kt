@@ -31,6 +31,14 @@ class imageListAdapter(private val context: Context)
         itemList.add(imageListItem(bitmap,count))
     }
 
+    fun get(): MutableList<Bitmap>?{
+        var imgList:MutableList<Bitmap>? = null
+        itemList.forEach {
+            imgList?.add(it.bitmap)
+        }
+        return imgList
+    }
+
     fun clear(){
         itemList.clear()
     }
