@@ -3,6 +3,7 @@ package com.example.testfirebase
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -12,6 +13,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_time_line_add.*
 
 class TimeLineAddActivity : AppCompatActivity() {
@@ -26,11 +29,23 @@ class TimeLineAddActivity : AppCompatActivity() {
 
         time_line_add_select_photo_recyclerView.adapter = adapter
 
+        //ギャラリー起動
         time_line_add_gararry_imageView.setOnClickListener {
-            intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent = Intent(Intent.ACTION_PICK)
             intent.setType("image/*")
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            startActivityForResult(Intent.createChooser(intent,"Select Picture"), 1)
+            startActivityForResult(intent, 1)
+        }
+
+        //投稿
+        time_line_add__add_button.setOnClickListener {
+
+            val user = FirebaseAuth.getInstance().uid
+            val ref = FirebaseFirestore.getInstance().collection("time-line").document()
+            val imgList:MutableList<Bitmap>? = null
+            val setTimeLine = TimeLine(user!!,time_line_add_editTextTextMultiLine.text.toString(),0,null, adapter!!.get())
+            ref.set(setTimeLine)
+            finish()
         }
 
     }
@@ -39,7 +54,7 @@ class TimeLineAddActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         Log.d("requestcode", "${requestCode}")
         Log.d("resulttcode", "${resultCode}")
-        Log.d("data", "${data!!.data}")
+
         if(requestCode == 1 && resultCode == Activity.RESULT_OK && data!!.data != null) {
             adapter?.clear()
 

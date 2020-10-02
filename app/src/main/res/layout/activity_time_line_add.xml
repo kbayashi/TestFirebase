@@ -7,7 +7,7 @@
     tools:context=".TimeLineAddActivity">
 
     <EditText
-        android:id="@+id/editTextTextMultiLine"
+        android:id="@+id/time_line_add_editTextTextMultiLine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -50,6 +50,17 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+        app:layout_constraintTop_toBottomOf="@+id/time_line_add_editTextTextMultiLine" />
+
+    <Button
+        android:id="@+id/time_line_add__add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/dialog_select_button"
+        android:text="投稿"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/time_line_add_editTextTextMultiLine" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
