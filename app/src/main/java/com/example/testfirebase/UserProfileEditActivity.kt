@@ -1,11 +1,8 @@
 package com.example.testfirebase
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import com.squareup.picasso.Picasso
 import com.example.testfirebase.UserListFragment.Companion.SELECT_USER
 import kotlinx.android.synthetic.main.activity_user_profile_edit.*

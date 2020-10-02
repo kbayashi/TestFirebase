@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/user_profile_edit_imageview"
                     android:layout_width="match_parent"
                     android:layout_height="185dp"
@@ -33,10 +33,10 @@
 
                 <ImageView
                     android:id="@+id/imageView3"
-                    android:layout_width="50dp"
-                    android:layout_height="38dp"
-                    android:translationX="250dp"
-                    android:translationY="150dp"
+                    android:layout_width="44dp"
+                    android:layout_height="39dp"
+                    android:layout_gravity="bottom|center"
+                    android:layout_marginLeft="60dp"
                     app:srcCompat="@drawable/ic_baseline_camera_alt_24" />
             </FrameLayout>
 
@@ -47,21 +47,21 @@
                 android:descendantFocusability="blocksDescendants">
 
                 <TextView
-                    android:id="@+id/user_profile_edit_user_name_textView"
+                    android:id="@+id/user_profile_edit_name_textView"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@id/name_arrow"
-                    android:padding="8dp"
-                    android:textSize="24sp" />
+                    android:padding="8dp" />
 
                 <TextView
-                    android:id="@+id/user_profile_edit_name_textView"
+                    android:id="@+id/user_profile_edit_user_name_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/user_profile_edit_user_name_textView"
+                    android:layout_below="@id/user_profile_edit_name_textView"
                     android:layout_toLeftOf="@id/name_arrow"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:textSize="24sp" />
 
                 <ImageView
                     android:id="@+id/name_arrow"
@@ -73,6 +73,11 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
             <RelativeLayout
                 android:id="@+id/pr_relativelayout"
                 android:layout_width="match_parent"
@@ -80,21 +85,21 @@
                 android:descendantFocusability="blocksDescendants">
 
                 <TextView
-                    android:id="@+id/user_profile_edit_user_pr_textView"
+                    android:id="@+id/user_profile_edit_pr_textView"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@id/pr_arrow"
-                    android:padding="8dp"
-                    android:textSize="24sp" />
+                    android:padding="8dp" />
 
                 <TextView
-                    android:id="@+id/user_profile_edit_pr_textView"
+                    android:id="@+id/user_profile_edit_user_pr_textView"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/user_profile_edit_user_pr_textView"
+                    android:layout_below="@id/user_profile_edit_pr_textView"
                     android:layout_toLeftOf="@id/pr_arrow"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:textSize="24sp" />
 
                 <ImageView
                     android:id="@+id/pr_arrow"
@@ -106,6 +111,11 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
             <RelativeLayout
                 android:id="@+id/gender_relativelayout"
                 android:layout_width="match_parent"
@@ -113,21 +123,21 @@
                 android:descendantFocusability="blocksDescendants">
 
                 <TextView
-                    android:id="@+id/user_profile_edit_user_gender_textView"
+                    android:id="@+id/user_profile_edit_gender_textView"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@id/gender_arrow"
-                    android:padding="8dp"
-                    android:textSize="24sp" />
+                    android:padding="8dp" />
 
                 <TextView
-                    android:id="@+id/user_profile_edit_gender_textView"
+                    android:id="@+id/user_profile_edit_user_gender_textView"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/user_profile_edit_user_gender_textView"
+                    android:layout_below="@id/user_profile_edit_gender_textView"
                     android:layout_toLeftOf="@id/gender_arrow"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:textSize="24sp" />
 
                 <ImageView
                     android:id="@+id/gender_arrow"
@@ -139,6 +149,11 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
             <RelativeLayout
                 android:id="@+id/old_relativelayout"
                 android:layout_width="match_parent"
@@ -146,21 +161,21 @@
                 android:descendantFocusability="blocksDescendants">
 
                 <TextView
-                    android:id="@+id/user_profile_edit_user_old_textView"
+                    android:id="@+id/user_profile_edit_old_textView"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@id/old_arrow"
-                    android:padding="8dp"
-                    android:textSize="24sp" />
+                    android:padding="8dp" />
 
                 <TextView
-                    android:id="@+id/user_profile_edit_old_textView"
+                    android:id="@+id/user_profile_edit_user_old_textView"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/user_profile_edit_user_old_textView"
+                    android:layout_below="@id/user_profile_edit_old_textView"
                     android:layout_toLeftOf="@id/old_arrow"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:textSize="24sp" />
 
                 <ImageView
                     android:id="@+id/old_arrow"
@@ -172,6 +187,11 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
             <RelativeLayout
                 android:id="@+id/prefecture_relativelayout"
                 android:layout_width="match_parent"
@@ -179,21 +199,21 @@
                 android:descendantFocusability="blocksDescendants">
 
                 <TextView
-                    android:id="@+id/user_profile_edit_user_prefectures_textView"
+                    android:id="@+id/user_profile_edit_prefectures_textView"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@id/prefectures_arrow"
-                    android:padding="8dp"
-                    android:textSize="24sp" />
+                    android:padding="8dp" />
 
                 <TextView
-                    android:id="@+id/user_profile_edit_prefectures_textView"
+                    android:id="@+id/user_profile_edit_user_prefectures_textView"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/user_profile_edit_user_prefectures_textView"
+                    android:layout_below="@id/user_profile_edit_prefectures_textView"
                     android:layout_toLeftOf="@id/prefectures_arrow"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:textSize="24sp" />
 
                 <ImageView
                     android:id="@+id/prefectures_arrow"
@@ -205,6 +225,11 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
             <RelativeLayout
                 android:id="@+id/hobby_relativelayout"
                 android:layout_width="match_parent"
@@ -212,21 +237,21 @@
                 android:descendantFocusability="blocksDescendants">
 
                 <TextView
-                    android:id="@+id/user_profile_edit_user_hobby_textView"
+                    android:id="@+id/user_profile_edit_hobby_textView"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@id/hobby_arrow"
-                    android:padding="8dp"
-                    android:textSize="24sp" />
+                    android:padding="8dp" />
 
                 <TextView
-                    android:id="@+id/user_profile_edit_hobby_textView"
+                    android:id="@+id/user_profile_edit_user_hobby_textView"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/user_profile_edit_user_hobby_textView"
+                    android:layout_below="@id/user_profile_edit_hobby_textView"
                     android:layout_toLeftOf="@id/hobby_arrow"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:textSize="24sp" />
 
                 <ImageView
                     android:id="@+id/hobby_arrow"
@@ -238,6 +263,11 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
             <RelativeLayout
                 android:id="@+id/sick_relativelayout"
                 android:layout_width="match_parent"
@@ -245,21 +275,21 @@
                 android:descendantFocusability="blocksDescendants">
 
                 <TextView
-                    android:id="@+id/user_profile_edit_user_sick_textView"
+                    android:id="@+id/user_profile_edit_sick_textView"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@id/sick_arrow"
-                    android:padding="8dp"
-                    android:textSize="24sp" />
+                    android:padding="8dp" />
 
                 <TextView
-                    android:id="@+id/user_profile_edit_sick_textView"
+                    android:id="@+id/user_profile_edit_user_sick_textView"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/user_profile_edit_user_sick_textView"
+                    android:layout_below="@id/user_profile_edit_sick_textView"
                     android:layout_toLeftOf="@id/sick_arrow"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:textSize="24sp" />
 
                 <ImageView
                     android:id="@+id/sick_arrow"
@@ -271,6 +301,11 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
             <RelativeLayout
                 android:id="@+id/lifeexpectancy_relativelayout"
                 android:layout_width="match_parent"
@@ -278,21 +313,21 @@
                 android:descendantFocusability="blocksDescendants">
 
                 <TextView
-                    android:id="@+id/user_profile_edit_user_lifeexpectancy_textView"
+                    android:id="@+id/user_profile_edit_lifeexpectancy_textView"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@id/lifeexpectancy_arrow"
-                    android:padding="8dp"
-                    android:textSize="24sp" />
+                    android:padding="8dp" />
 
                 <TextView
-                    android:id="@+id/user_profile_edit_lifeexpectancy_textView"
+                    android:id="@+id/user_profile_edit_user_lifeexpectancy_textView"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/user_profile_edit_user_lifeexpectancy_textView"
+                    android:layout_below="@id/user_profile_edit_lifeexpectancy_textView"
                     android:layout_toLeftOf="@id/lifeexpectancy_arrow"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:textSize="24sp" />
 
                 <ImageView
                     android:id="@+id/lifeexpectancy_arrow"
