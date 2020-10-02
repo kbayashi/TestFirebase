@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.time_line_fragment.view.*
 
 class timeLineFragment:Fragment(){
@@ -37,7 +38,13 @@ class timeLineFragment:Fragment(){
             startActivity(intent)
         }
 
-        dummy(timeLineListAdapter!!)
+        val dbRef = FirebaseFirestore.getInstance().collection("time-line").get().addOnSuccessListener {
+            it.forEach {
+                timeLineListAdapter?.add(it.toObject(TimeLine::class.java))
+            }
+            view.time_line_recyclerview.adapter = timeLineListAdapter
+        }
+
     }
 
     override fun onAttach(context: Context) {
@@ -45,9 +52,4 @@ class timeLineFragment:Fragment(){
         timeLineListAdapter = timeLineListAdapter(context)
     }
 
-    fun dummy(timeLineListAdapter: timeLineListAdapter){
-        timeLineListAdapter.add()
-        timeLineListAdapter.add()
-        timeLineListAdapter.add()
-    }
 }

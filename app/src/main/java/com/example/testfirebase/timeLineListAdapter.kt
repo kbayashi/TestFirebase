@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
 
 class timeLineListAdapter(private val context: Context)
     : RecyclerView.Adapter<timeLineListAdapter.ViewHolder>() {
@@ -23,12 +24,12 @@ class timeLineListAdapter(private val context: Context)
     }
 
     //現状userデータがないのでダミーデータを格納するだけの処理になっている
-    class timeLineListItem(){}
+    class timeLineListItem(val timeLine: TimeLine){}
 
     private var itemList = mutableListOf<timeLineListItem>()
 
-    fun add(){
-        itemList.add(timeLineListItem())
+    fun add(timeLine: TimeLine){
+        itemList.add(timeLineListItem(timeLine))
     }
 
 
@@ -44,14 +45,13 @@ class timeLineListAdapter(private val context: Context)
 
     //保持されているビューにデータなどを設定するここでリスナなどを設定する
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.RecyclerView.layoutManager = GridLayoutManager(context,2)
 
-        val imageListAdapter = imageListAdapter(context)
-        holder.RecyclerView.adapter = imageListAdapter
-        //imageListAdapter.add()
-        //imageListAdapter.add()
+        holder.editTextMutable.setText(itemList[position].timeLine.text)
+        holder.goodCount.text = itemList[position].timeLine.good.toString()
 
-
+        //holder.RecyclerView.layoutManager = GridLayoutManager(context,2)
+        //val imageListAdapter = imageListAdapter(context)
+        //holder.RecyclerView.adapter = imageListAdapter
 
     }
 
