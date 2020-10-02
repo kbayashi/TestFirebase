@@ -37,16 +37,15 @@ class imageListAdapter(private val context: Context)
         itemList.add(imageListItem(bitmap,count, uri))
     }
 
-    fun get(): ArrayList<String>?{
-        var imgList:MutableList<String>? = null
+    fun get(): String?{
+        var refName = UUID.randomUUID().toString()
         itemList.forEach {
             var filename = UUID.randomUUID().toString()
             var ref = FirebaseStorage.getInstance().getReference("/time_line/$filename")
             ref.putFile(it.uri).addOnSuccessListener {
                 Log.d("アップロード成功", "成功")
-                imgList?.add(it.toString())
                 val uid = FirebaseAuth.getInstance().uid
-                val dbRef = FirebaseFirestore.getInstance().collection("time-line-img").document(uid!!).collection("test").document()
+                val dbRef = FirebaseFirestore.getInstance().collection("time-line-img").document(uid!!).collection(refName).document()
                 ref.downloadUrl.addOnSuccessListener {
                     var hashMap = hashMapOf(
                         "test" to it.toString()
@@ -56,9 +55,9 @@ class imageListAdapter(private val context: Context)
             }.addOnFailureListener {
                 Log.d("アップロード失敗", it.message)
             }
+
         }
-        Log.d("リストの中身", "$imgList")
-        return imgList as ArrayList<String>?
+        return refName
     }
 
     fun clear(){

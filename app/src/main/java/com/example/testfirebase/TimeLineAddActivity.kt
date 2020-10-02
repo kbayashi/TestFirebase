@@ -44,12 +44,6 @@ class TimeLineAddActivity : AppCompatActivity() {
             val ref = FirebaseFirestore.getInstance().collection("time-line").document()
             val setTimeLine = TimeLine(user!!,time_line_add_editTextTextMultiLine.text.toString(),0,null, adapter!!.get())
             ref.set(setTimeLine)
-            /*val ref = FirebaseFirestore.getInstance().collection("test").document()
-            val arrayList = arrayListOf<String?>("1", "2")
-            val data = hashMapOf(
-                "test" to arrayList
-            )
-            ref.set(data)*/
             finish()
         }
 
