@@ -42,9 +42,14 @@ class TimeLineAddActivity : AppCompatActivity() {
 
             val user = FirebaseAuth.getInstance().uid
             val ref = FirebaseFirestore.getInstance().collection("time-line").document()
-            val imgList:MutableList<Bitmap>? = null
             val setTimeLine = TimeLine(user!!,time_line_add_editTextTextMultiLine.text.toString(),0,null, adapter!!.get())
             ref.set(setTimeLine)
+            /*val ref = FirebaseFirestore.getInstance().collection("test").document()
+            val arrayList = arrayListOf<String?>("1", "2")
+            val data = hashMapOf(
+                "test" to arrayList
+            )
+            ref.set(data)*/
             finish()
         }
 
@@ -67,7 +72,7 @@ class TimeLineAddActivity : AppCompatActivity() {
                 var item = clipData!!.getItemAt(i)
                 var selectPhotUri = item.uri
                 var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectPhotUri)
-                adapter?.add(bitmap, clipData!!.itemCount)
+                adapter?.add(bitmap, clipData!!.itemCount,selectPhotUri)
             }
             if(clipData!!.itemCount > 1){
                 time_line_add_select_photo_recyclerView.layoutManager = GridLayoutManager(this,2)

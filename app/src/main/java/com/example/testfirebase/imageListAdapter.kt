@@ -2,12 +2,18 @@ package com.example.testfirebase
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import java.util.*
+import kotlin.collections.ArrayList
 
 class imageListAdapter(private val context: Context)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -23,20 +29,36 @@ class imageListAdapter(private val context: Context)
 
 
     //現状userデータがないのでダミーデータを格納するだけの処理になっている
-    class imageListItem(val bitmap: Bitmap, val count: Int){}
+    class imageListItem(val bitmap: Bitmap, val count: Int,val uri:Uri){}
 
     private var itemList = mutableListOf<imageListItem>()
 
-    fun add(bitmap: Bitmap, count: Int){
-        itemList.add(imageListItem(bitmap,count))
+    fun add(bitmap: Bitmap, count: Int, uri: Uri){
+        itemList.add(imageListItem(bitmap,count, uri))
     }
 
-    fun get(): MutableList<Bitmap>?{
-        var imgList:MutableList<Bitmap>? = null
+    fun get(): ArrayList<String>?{
+        var imgList:MutableList<String>? = null
         itemList.forEach {
-            imgList?.add(it.bitmap)
+            var filename = UUID.randomUUID().toString()
+            var ref = FirebaseStorage.getInstance().getReference("/time_line/$filename")
+            ref.putFile(it.uri).addOnSuccessListener {
+                Log.d("アップロード成功", "成功")
+                imgList?.add(it.toString())
+                val uid = FirebaseAuth.getInstance().uid
+                val dbRef = FirebaseFirestore.getInstance().collection("time-line-img").document(uid!!).collection("test").document()
+                ref.downloadUrl.addOnSuccessListener {
+                    var hashMap = hashMapOf(
+                        "test" to it.toString()
+                    )
+                    dbRef.set(hashMap)
+                }
+            }.addOnFailureListener {
+                Log.d("アップロード失敗", it.message)
+            }
         }
-        return imgList
+        Log.d("リストの中身", "$imgList")
+        return imgList as ArrayList<String>?
     }
 
     fun clear(){
