@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="sick">
+        <item>新型コロナウイルス</item>
         <item>大腸癌</item>
         <item>乳癌</item>
         <item>膵臓癌</item>

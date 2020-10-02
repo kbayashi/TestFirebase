@@ -1,8 +1,11 @@
 package com.example.testfirebase
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import com.squareup.picasso.Picasso
 import com.example.testfirebase.UserListFragment.Companion.SELECT_USER
 import kotlinx.android.synthetic.main.activity_user_profile_edit.*
@@ -52,7 +55,7 @@ class UserProfileEditActivity : AppCompatActivity() {
         }
         old_relativelayout.setOnClickListener{
             val intent = Intent(this,UserProfileEditSpinnerActivity::class.java)
-            intent.putExtra("table","old")
+            intent.putExtra("table","birthday")
                 .putExtra("edit",get_user.birthday)
             startActivity(intent)
         }
@@ -70,9 +73,53 @@ class UserProfileEditActivity : AppCompatActivity() {
         }
         lifeexpectancy_relativelayout.setOnClickListener {
             val intent = Intent(this,UserProfileEditSpinnerActivity::class.java)
-            intent.putExtra("table","lifeexpectancy")
+            intent.putExtra("table","lifeExpectancy")
                 .putExtra("edit",get_user.life_expectancy)
             startActivity(intent)
         }
+
+        //アイコン
+        user_profile_edit_imageview.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, 0)
+        }
     }
+
+    /*
+    //写真アプリで写真を選択後に呼び出される
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //写真選択アプリが呼び出され、ちゃんと操作して、データが入っていたら
+        if(requestCode == 0 && resultCode == Activity.RESULT_OK && data != null){
+            //写真をボタンの背景に設定
+            Log.e("UserRegistarActivity","Photo select")
+            Log.d("UserRegistarActivity","${data.data}")
+            selectedPhotoUri = data.data
+            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotoUri)
+            user_registar_select_photo.setImageBitmap(bitmap)
+            user_registar_select_photo_button.alpha = 0f
+        }
+    }
+
+    private fun uploadImageFirebaseStorage(){
+        if(selectedPhotoUri == null) return
+        val filename = UUID.randomUUID().toString()
+        val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
+        ref.putFile(selectedPhotoUri!!)
+            .addOnSuccessListener {
+                Log.d(USER_REGISTAR, "アップロード成功${it.metadata?.path}")
+                ref.downloadUrl.addOnSuccessListener {
+                    saveUserToFirebaseDatabase(it.toString())
+                    Log.d(USER_REGISTAR, "File 場所$it")
+                }
+            }
+            .addOnFailureListener{
+                //do same logging here
+                Log.d(USER_REGISTAR, "作成に失敗しました ${it.message}")
+                Toast.makeText(this, "作成に失敗しました ${it.message}", Toast.LENGTH_SHORT)
+                    .show()
+            }
+    }
+    */
 }
