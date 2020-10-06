@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_time_line_add.*
+import java.util.*
 
 class TimeLineAddActivity : AppCompatActivity() {
 
@@ -41,8 +42,9 @@ class TimeLineAddActivity : AppCompatActivity() {
         time_line_add__add_button.setOnClickListener {
 
             val user = FirebaseAuth.getInstance().uid
-            val ref = FirebaseFirestore.getInstance().collection("time-line").document()
-            val setTimeLine = TimeLine(user!!,time_line_add_editTextTextMultiLine.text.toString(),0,null, adapter!!.get())
+            val id = UUID.randomUUID()
+            val ref = FirebaseFirestore.getInstance().collection("time-line").document(id.toString())
+            val setTimeLine = TimeLine(user!!,time_line_add_editTextTextMultiLine.text.toString(),0,null, adapter!!.get(), id.toString())
             ref.set(setTimeLine)
             finish()
         }

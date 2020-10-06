@@ -32,6 +32,12 @@ class timeLineFragment:Fragment(){
             DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
         )
 
+        timeLineListAdapter?.setOnclickListener {
+            val intent = Intent(context, TimeLineCommentActivity::class.java)
+            intent.putExtra("TimeLine", it)
+            startActivity(intent)
+        }
+
         //追加画面
         view.time_line_floatingActionButton.setOnClickListener {
             val intent:Intent = Intent(context, TimeLineAddActivity::class.java)

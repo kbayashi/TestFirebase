@@ -78,7 +78,6 @@ class timeLineImageListAdapter (private val context: Context):
                 val holder = holder as timeLineImageListAdapter.OneViewHolder
                 Picasso.get().load(itemList[position].string).
                 into(holder.ImageView)
-                //holder.ImageView.setImageBitmap(itemList[position].bitmap)
             }
         }
 
