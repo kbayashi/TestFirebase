@@ -1,6 +1,7 @@
 package com.example.testfirebase
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
+import timeLineImageListAdapter
 
 class timeLineListAdapter(private val context: Context)
     : RecyclerView.Adapter<timeLineListAdapter.ViewHolder>() {
@@ -48,10 +50,27 @@ class timeLineListAdapter(private val context: Context)
 
         holder.editTextMutable.setText(itemList[position].timeLine.text)
         holder.goodCount.text = itemList[position].timeLine.good.toString()
+        val adapter = timeLineImageListAdapter(context)
 
-        //holder.RecyclerView.layoutManager = GridLayoutManager(context,2)
-        //val imageListAdapter = imageListAdapter(context)
-        //holder.RecyclerView.adapter = imageListAdapter
+        if(itemList[position].timeLine.imgRef != null) {
+            FirebaseFirestore.getInstance().collection("time-line-img").document("get")
+                .collection(itemList[position].timeLine.imgRef!!).get().addOnSuccessListener { item ->
+                    item.forEach {
+                        Log.d("test",it.toString())
+
+                        if(item.size() > 1){
+                            holder.RecyclerView.layoutManager = GridLayoutManager(context,2)
+                        }
+                       adapter.add(item.size(),it["test"].toString())
+                    }
+                    holder.RecyclerView.adapter = adapter
+                    Log.d("TEST", "${item.size()}")
+
+                }
+
+        }
+
+
 
     }
 

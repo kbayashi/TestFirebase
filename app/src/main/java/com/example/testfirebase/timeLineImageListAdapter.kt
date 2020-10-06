@@ -1,4 +1,4 @@
-package com.example.testfirebase
+//package com.example.testfirebase
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -9,14 +9,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.testfirebase.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 import java.util.*
-import kotlin.collections.ArrayList
 
-class imageListAdapter(private val context: Context)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+//タイムラインに表示する画像
+class timeLineImageListAdapter (private val context: Context):
+    RecyclerView.Adapter<RecyclerView.ViewHolder>()
+{
 
     //１行で使用する各部品（ビュー）を保持したもの
     class OneViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -24,44 +27,17 @@ class imageListAdapter(private val context: Context)
     }
 
     class MultiViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val MultiImageView:ImageView = itemView.findViewById(R.id.image_list_multi_row_imageView)
+        val MultiImageView: ImageView = itemView.findViewById(R.id.image_list_multi_row_imageView)
     }
 
-
-    class imageListItem(val bitmap: Bitmap, val count: Int,val uri:Uri){}
+    class imageListItem(val count: Int, val string: String){}
 
     private var itemList = mutableListOf<imageListItem>()
 
-    fun add(bitmap: Bitmap, count: Int, uri: Uri){
-        itemList.add(imageListItem(bitmap,count, uri))
+    fun add(count: Int, string: String){
+        itemList.add(imageListItem(count, string))
     }
 
-    fun get(): String?{
-        var refName = UUID.randomUUID().toString()
-        itemList.forEach {
-            var filename = UUID.randomUUID().toString()
-            var ref = FirebaseStorage.getInstance().getReference("/time_line/$filename")
-            ref.putFile(it.uri).addOnSuccessListener {
-                Log.d("アップロード成功", "成功")
-                val uid = FirebaseAuth.getInstance().uid
-                val dbRef = FirebaseFirestore.getInstance().collection("time-line-img").document("get").collection(refName).document(filename)
-                ref.downloadUrl.addOnSuccessListener {
-                    var hashMap = hashMapOf(
-                        "test" to it.toString()
-                    )
-                    dbRef.set(hashMap)
-                }
-            }.addOnFailureListener {
-                Log.d("アップロード失敗", it.message)
-            }
-
-        }
-        return refName
-    }
-
-    fun clear(){
-        itemList.clear()
-    }
 
 
     //セルが必要になるたびに呼び出される。
@@ -70,10 +46,10 @@ class imageListAdapter(private val context: Context)
         //ビューを生成
         if(viewType == 0) {
             val layout = layoutInflater.inflate(R.layout.image_list_multi_row, parent, false)
-            return imageListAdapter.MultiViewHolder(layout)
+            return timeLineImageListAdapter.MultiViewHolder(layout)
         }else{
             val layout = layoutInflater.inflate(R.layout.image_list_row, parent, false)
-            return imageListAdapter.OneViewHolder(layout)
+            return timeLineImageListAdapter.OneViewHolder(layout)
         }
     }
 
@@ -94,14 +70,19 @@ class imageListAdapter(private val context: Context)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder.itemViewType) {
             0->{
-                val holder = holder as MultiViewHolder
-                holder.MultiImageView.setImageBitmap(itemList[position].bitmap)
+                val holder = holder as timeLineImageListAdapter.MultiViewHolder
+                Picasso.get().load(itemList[position].string).
+                into(holder.MultiImageView)
             }
             1->{
-                val holder = holder as OneViewHolder
-                holder.ImageView.setImageBitmap(itemList[position].bitmap)
+                val holder = holder as timeLineImageListAdapter.OneViewHolder
+                Picasso.get().load(itemList[position].string).
+                into(holder.ImageView)
+                //holder.ImageView.setImageBitmap(itemList[position].bitmap)
             }
         }
 
     }
+
+
 }

@@ -41,6 +41,7 @@ class timeLineFragment:Fragment(){
         val dbRef = FirebaseFirestore.getInstance().collection("time-line").get().addOnSuccessListener {
             it.forEach {
                 timeLineListAdapter?.add(it.toObject(TimeLine::class.java))
+
             }
             view.time_line_recyclerview.adapter = timeLineListAdapter
         }
