@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.squareup.picasso.Picasso
 import timeLineImageListAdapter
 
 class timeLineListAdapter(private val context: Context)
@@ -72,6 +74,11 @@ class timeLineListAdapter(private val context: Context)
             itemList[position].timeLine.good += 1
             ref.set(itemList[position].timeLine)
             holder.GoodButton.isEnabled = false
+        }
+
+        FirebaseFirestore.getInstance().collection("user").document(FirebaseAuth.getInstance().uid!!).get().addOnSuccessListener {
+            Picasso.get().load(it["img"].toString()).
+            into(holder.ImageView)
         }
 
 
