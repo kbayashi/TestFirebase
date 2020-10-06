@@ -20,131 +20,166 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/user_my_profile_user_imageview"
                 android:layout_width="match_parent"
                 android:layout_height="185dp"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
-                android:id="@+id/user_my_profile_user_name_title_textview"
-                android:layout_width="match_parent"
+                android:id="@+id/user_my_profile_name_textView"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#808080"
-                android:text="名前"
-                android:textSize="30sp" />
+                android:layout_alignParentTop="true"
+                android:padding="8dp" />
 
             <TextView
-                android:id="@+id/user_my_profile_user_name_textview"
+                android:id="@+id/user_my_profile_user_name_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="名前(内容)"
-                android:textSize="30sp" />
+                android:layout_below="@id/user_profile_edit_name_textView"
+                android:padding="8dp"
+                android:textSize="24sp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
 
             <TextView
-                android:id="@+id/user_my_profile_user_pr_title_textview"
-                android:layout_width="match_parent"
+                android:id="@+id/user_my_profile_pr_textView"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#808080"
-                android:text="自己紹介"
-                android:textSize="30sp" />
+                android:layout_alignParentTop="true"
+                android:padding="8dp" />
 
             <TextView
-                android:id="@+id/user_my_profile_user_pr_textview"
-                android:layout_width="match_parent"
+                android:id="@+id/user_my_profile_user_pr_textView"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="自己紹介(内容)"
-                android:textSize="30sp" />
+                android:layout_below="@id/user_profile_edit_pr_textView"
+                android:padding="8dp"
+                android:textSize="24sp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
 
             <TextView
-                android:id="@+id/user_my_profile_user_gender_title_textview"
-                android:layout_width="match_parent"
+                android:id="@+id/user_my_profile_gender_textView"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#808080"
-                android:text="性別"
-                android:textSize="30sp" />
+                android:layout_alignParentTop="true"
+                android:padding="8dp" />
 
             <TextView
-                android:id="@+id/user_my_profile_user_gender_textview"
-                android:layout_width="match_parent"
+                android:id="@+id/user_my_profile_user_gender_textView"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="性別(内容)"
-                android:textSize="30sp" />
+                android:layout_below="@id/user_profile_edit_gender_textView"
+                android:padding="8dp"
+                android:textSize="24sp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
 
             <TextView
-                android:id="@+id/user_my_profile_user_old_title_textview"
-                android:layout_width="match_parent"
+                android:id="@+id/user_my_profile_old_textView"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#808080"
-                android:text="年齢"
-                android:textSize="30sp" />
+                android:layout_alignParentTop="true"
+                android:padding="8dp" />
 
             <TextView
-                android:id="@+id/user_my_profile_user_old_textview"
-                android:layout_width="match_parent"
+                android:id="@+id/user_my_profile_user_old_textView"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="年齢(内容)"
-                android:textSize="30sp" />
+                android:layout_below="@id/user_profile_edit_old_textView"
+                android:padding="8dp"
+                android:textSize="24sp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
 
             <TextView
-                android:id="@+id/user_my_profile_user_prefectures_title_textview"
-                android:layout_width="match_parent"
+                android:id="@+id/user_my_profile_prefectures_textView"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#808080"
-                android:text="都道府県"
-                android:textSize="30sp" />
+                android:layout_alignParentTop="true"
+                android:padding="8dp" />
 
             <TextView
-                android:id="@+id/user_my_profile_user_prefectures_textview"
-                android:layout_width="match_parent"
+                android:id="@+id/user_my_profile_user_prefectures_textView"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="都道府県(内容)"
-                android:textSize="30sp" />
+                android:layout_below="@id/user_profile_edit_prefectures_textView"
+                android:padding="8dp"
+                android:textSize="24sp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
 
             <TextView
-                android:id="@+id/user_my_profile_user_hobby_title_textview"
-                android:layout_width="match_parent"
+                android:id="@+id/user_my_profile_hobby_textView"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#808080"
-                android:text="趣味"
-                android:textSize="30sp" />
+                android:layout_alignParentTop="true"
+                android:padding="8dp" />
 
             <TextView
-                android:id="@+id/user_my_profile_user_hobby_textview"
-                android:layout_width="match_parent"
+                android:id="@+id/user_my_profile_user_hobby_textView"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="趣味(内容)"
-                android:textSize="30sp" />
+                android:layout_below="@id/user_profile_edit_hobby_textView"
+                android:padding="8dp"
+                android:textSize="24sp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
 
             <TextView
-                android:id="@+id/user_my_profile_user_sick_title_textview"
-                android:layout_width="match_parent"
+                android:id="@+id/user_my_profile_sick_textView"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#808080"
-                android:text="病名"
-                android:textSize="30sp" />
+                android:layout_alignParentTop="true"
+                android:padding="8dp" />
 
             <TextView
-                android:id="@+id/user_my_profile_user_sick_textview"
-                android:layout_width="match_parent"
+                android:id="@+id/user_my_profile_user_sick_textView"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="病名(内容)"
-                android:textSize="30sp" />
+                android:layout_below="@id/user_profile_edit_sick_textView"
+                android:padding="8dp"
+                android:textSize="24sp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
 
             <TextView
-                android:id="@+id/user_my_profile_lifeexpectancy_title_textview"
-                android:layout_width="match_parent"
+                android:id="@+id/user_my_profile_lifeexpectancy_textView"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#808080"
-                android:text="余命"
-                android:textSize="30sp" />
+                android:layout_alignParentTop="true"
+                android:padding="8dp" />
 
             <TextView
-                android:id="@+id/user_my_profile_user_lifeexpectancy_textview"
-                android:layout_width="match_parent"
+                android:id="@+id/user_my_profile_user_lifeexpectancy_textView"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="余命(内容)"
-                android:textSize="30sp" />
+                android:layout_below="@id/user_profile_edit_lifeexpectancy_textView"
+                android:padding="8dp"
+                android:textSize="24sp" />
 
         </LinearLayout>
     </ScrollView>
