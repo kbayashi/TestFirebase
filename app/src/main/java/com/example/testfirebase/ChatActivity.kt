@@ -15,8 +15,8 @@ private lateinit var auth: FirebaseAuth
 class ChatActivity : AppCompatActivity() {
 
     //自分のユーザ情報を取得
-    public val auth = FirebaseAuth.getInstance()
-    public val me = auth.currentUser
+    val auth = FirebaseAuth.getInstance()
+    val me = auth.currentUser
     //データベースオブジェクト
     val db = FirebaseFirestore.getInstance()
 
@@ -50,23 +50,8 @@ class ChatActivity : AppCompatActivity() {
                 Log.d("documentChange", messagedata.message)
 
                 //サイクルビューに自分のメッセージ内容を追加する
-                messageListAdapter?.add(messagedata)
+                messageListAdapter.add(messagedata)
             }
-
-            //ForeachでDBに保存されているメッセージ内容をすべて取得する(過去の書き方)
-            /*snapshot?.forEach {
-                var messagedata = it.toObject(Message::class.java)
-                Log.d("message-database",messagedata.message)
-            }*/
-
-            /*
-            なくても通るが、以下の処理はおそらく例外処理と思われる。
-            if (snapshot != null && snapshot.exists()) {
-                Log.d("TAG", "Current data: ${snapshot.data}")
-            } else {
-                Log.d("TAG", "Current data: null")
-            }
-             */
         }
 
         //メッセージ送信(MessageDBに登録)
@@ -105,6 +90,7 @@ class ChatActivity : AppCompatActivity() {
             .addOnFailureListener{
                 Log.d("DB", "データベースにメッセージの登録が失敗しました ${it.message}")
             }
+
         //最新トーク一覧のデータ
         val ref3 = db.collection("user-latest").document("les").collection(me!!.uid).document(you.uid).set(message)
             .addOnSuccessListener{
@@ -120,6 +106,7 @@ class ChatActivity : AppCompatActivity() {
             .addOnFailureListener{
                 Log.d("DB", "データベースにメッセージの登録が失敗しました ${it.message}")
             }
+
         //テキストボックスの内容をすべて削除
         message_editText.text = null
     }

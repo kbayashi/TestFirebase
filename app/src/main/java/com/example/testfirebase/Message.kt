@@ -2,8 +2,6 @@ package com.example.testfirebase
 
 import java.text.SimpleDateFormat
 import java.util.*
-import java.sql.Timestamp
-import java.text.SimpleDateFormat
 
 class Message(val message: String,val send_user:String,val receive_user: String,val time: Long) {
     constructor():this("", "", "", -1L)
