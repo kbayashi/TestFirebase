@@ -84,7 +84,7 @@ class messageAdapter(private val context: Context)
                 val holder_me = holder as ViewMeHolder
                 holder_me.me_msg.text = itemList[position].message.message
                 holder_me.me_time.text = itemList[position].message.sendTimestampToString(itemList[position].message.time)
-                //ユーザアイコンの写真を取りに行く
+                //自分のユーザアイコンを取りに行く
                 val docRef = db.collection("user").document(itemList[position].message.send_user)
                 docRef.get()
                     .addOnSuccessListener { document ->
@@ -101,8 +101,8 @@ class messageAdapter(private val context: Context)
                 val holder_you = holder as ViewYouHolder
                 holder_you.you_msg.text = itemList[position].message.message
                 holder_you.you_time.text = itemList[position].message.sendTimestampToString(itemList[position].message.time)
-                //ユーザアイコンの写真を取りに行く
-                val docRef = db.collection("user").document(itemList[position].message.receive_user)
+                //相手のユーザアイコンを取りに行く
+                val docRef = db.collection("user").document(itemList[position].message.send_user)
                 docRef.get()
                     .addOnSuccessListener { document ->
                         if (document != null) {
