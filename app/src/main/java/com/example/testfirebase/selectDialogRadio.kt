@@ -11,7 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.select_dialog_radio.*
+import kotlinx.android.synthetic.main.select_dialog.*
 
 //ダイアログの選択項目がラジオボタンでかつ、選択した値をtextviewに入れたい場合使用してください
 //第一引数ダイアログのタイトルに格納する文字・第二引数代入したいtextview・第三引数はデータベースのテーブル名
@@ -25,7 +25,7 @@ class selectDialogRadio(val title:String,val textView: TextView, val dbRefName: 
         //タイトルバーなしのダイアログを表示
         dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
         //レイアウト指定
-        dialog.setContentView(R.layout.select_dialog_radio)
+        dialog.setContentView(R.layout.select_dialog)
         dialog.window?.apply {
             //フルスクリーンでダイアログを表示
             setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -36,7 +36,7 @@ class selectDialogRadio(val title:String,val textView: TextView, val dbRefName: 
             setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         }
 
-        var adapter = selectDialogAdapter(context!!)
+        var adapter = selectDialogRadioAdapter(context!!)
         AdapterSet(adapter)
 
         dialog.select_dialog_title_textView.text = title
@@ -56,7 +56,7 @@ class selectDialogRadio(val title:String,val textView: TextView, val dbRefName: 
     }
 
     //アダプターにデータをセット
-    private fun AdapterSet(adapter: selectDialogAdapter){
+    private fun AdapterSet(adapter: selectDialogRadioAdapter){
         val ref = FirebaseFirestore.getInstance().collection(dbRefName)
         ref.get().addOnSuccessListener {
             Log.d(SELECT_DIALOG, "$it" )

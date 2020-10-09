@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -15,7 +16,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
         verifyfyUserIsLogin()
 
@@ -39,6 +39,14 @@ class MainActivity : AppCompatActivity() {
                     return@setOnNavigationItemSelectedListener true
                 }
 
+                R.id.bottom_nav_time_line ->{
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.main_fragment_FrameLayout, timeLineFragment())
+                        .commit()
+                    title = "タイムライン"
+                    return@setOnNavigationItemSelectedListener true
+                }
+
 
             }
             return@setOnNavigationItemSelectedListener false
@@ -57,6 +65,16 @@ class MainActivity : AppCompatActivity() {
         val inflater = menuInflater
         inflater.inflate(R.menu.user_list_fragment_menu, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item?.itemId){
+            R.id.user_list_fragment_menu_friend_add -> {
+                val intent = Intent(this, FriendAddActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     //初期化

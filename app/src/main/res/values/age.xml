@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="age">
+        <item>20歳前半</item>
+        <item>20歳後半</item>
+        <item>30歳前半</item>
+        <item>30歳後半</item>
+        <item>40歳前半</item>
+        <item>40歳後半</item>
+        <item>50歳前半</item>
+        <item>50歳後半</item>
+        <item>60歳以上</item>
+        <item>非公開</item>
+    </string-array>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="hobby">
+        <item>ゲーム</item>
+        <item>筋トレ</item>
+        <item>映画</item>
+        <item>アニメ</item>
+        <item>ボードゲーム</item>
+        <item>自転車</item>
+        <item>車</item>
+        <item>ヨガ</item>
+        <item>釣り</item>
+        <item>キャンプ</item>
+        <item>登山</item>
+        <item>ヨガ</item>
+        <item>旅行</item>
+        <item>スポーツ</item>
+        <item>その他</item>
+    </string-array>
+</resources>

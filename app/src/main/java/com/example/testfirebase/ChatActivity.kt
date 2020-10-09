@@ -50,7 +50,10 @@ class ChatActivity : AppCompatActivity() {
                 Log.d("documentChange", messagedata.message)
 
                 //サイクルビューに自分のメッセージ内容を追加する
-                messageListAdapter.add(messagedata)
+                messageListAdapter?.add(messagedata)
+
+                //Firebaseに更新があった時は一番下にスクロールする
+                chat_recyclerView.scrollToPosition(messageListAdapter.itemCount -1)
             }
         }
 

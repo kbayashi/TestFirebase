@@ -7,10 +7,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <ImageView
+        android:id="@+id/user_list_fragment_advertisement_imageView"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/advertisement"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:src="@drawable/ecc_karaoke"
+        tools:srcCompat="@drawable/advertisement" />
+
+    <ScrollView
+        android:id="@+id/scrollView5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/user_list_fragment_advertisement_imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -42,17 +56,6 @@
                         app:layout_constraintTop_toTopOf="@+id/user_list_group_title_textView"
                         app:srcCompat="@drawable/ic_expand_less_24dp" />
 
-                    <ImageView
-                        android:id="@+id/user_list_group_title_imageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_people_outline_black_24dp" />
-
                     <TextView
                         android:id="@+id/user_list_group_title_textView"
                         android:layout_width="0dp"
@@ -66,6 +69,17 @@
                         app:layout_constraintEnd_toStartOf="@+id/user_list_group_title_arrow_imageView"
                         app:layout_constraintStart_toEndOf="@+id/user_list_group_title_imageView"
                         app:layout_constraintTop_toTopOf="@+id/user_list_group_title_imageView" />
+
+                    <ImageView
+                        android:id="@+id/user_list_group_title_imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_people_outline_black_24dp" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -73,10 +87,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/user_list_friend_constraintLayout"
                     app:layout_constraintStart_toStartOf="@+id/user_list_friend_constraintLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/user_list_friend_constraintLayout" />
+                    app:layout_constraintTop_toBottomOf="@+id/user_list_friend_constraintLayout">
+
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/user_list_group_list_recyclerView"
@@ -177,6 +192,7 @@
                         app:layout_constraintTop_toTopOf="parent"></de.hdodenhof.circleimageview.CircleImageView>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </LinearLayout>
     </ScrollView>
 
