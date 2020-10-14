@@ -1,5 +1,6 @@
 package com.example.testfirebase
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.squareup.picasso.Picasso
@@ -39,47 +40,59 @@ class UserProfileEditActivity : AppCompatActivity() {
             Picasso.get().load(my_user?.img).into(user_profile_edit_imageview)
         }
 
-        /*
+        // 名前
         name_relativelayout.setOnClickListener{
             val intent = Intent(this,UserProfileEditPlainTextActivity::class.java)
             intent.putExtra("table", "name")
-                .putExtra("edit",get_user.name)
+                .putExtra("edit",user_profile_edit_user_name_textView.text)
             startActivity(intent)
         }
+
+        // 自己紹介
         pr_relativelayout.setOnClickListener{
             val intent = Intent(this,UserProfileEditPlainTextActivity::class.java)
             intent.putExtra("table","pr")
-                .putExtra("edit",get_user.pr)
+                .putExtra("edit",user_profile_edit_pr_textView.text)
             startActivity(intent)
         }
+
+        // 性別
         gender_relativelayout.setOnClickListener{
             val intent = Intent(this,UserProfileEditRadioButtonActivity::class.java)
             intent.putExtra("table","gender")
-                .putExtra("edit",get_user.gender)
+                .putExtra("edit",user_profile_edit_gender_textView.text)
             startActivity(intent)
         }
+
+        // 生年月日
         old_relativelayout.setOnClickListener{
             val intent = Intent(this,UserProfileEditSpinnerActivity::class.java)
             intent.putExtra("table","birthday")
-                .putExtra("edit",get_user.birthday)
+                .putExtra("edit",user_profile_edit_old_textView.text)
             startActivity(intent)
         }
+
+        // 住所
         prefecture_relativelayout.setOnClickListener{
             val intent = Intent(this,UserProfileEditSpinnerActivity::class.java)
             intent.putExtra("table","live")
-                .putExtra("edit",get_user.live)
+                .putExtra("edit",user_profile_edit_prefectures_textView.text)
             startActivity(intent)
         }
+
+        // 病名
         sick_relativelayout.setOnClickListener {
             val intent = Intent(this,UserProfileEditSpinnerActivity::class.java)
             intent.putExtra("table","sick")
-                .putExtra("edit",get_user.sick)
+                .putExtra("edit",user_profile_edit_sick_textView.text)
             startActivity(intent)
         }
+
+        // 余命
         lifeexpectancy_relativelayout.setOnClickListener {
             val intent = Intent(this,UserProfileEditSpinnerActivity::class.java)
             intent.putExtra("table","lifeExpectancy")
-                .putExtra("edit",get_user.life_expectancy)
+                .putExtra("edit",user_profile_edit_lifeexpectancy_textView.text)
             startActivity(intent)
         }
 
@@ -90,9 +103,6 @@ class UserProfileEditActivity : AppCompatActivity() {
             startActivityForResult(intent, 0)
         }
 
-         */
-
-         */
     }
 
 }

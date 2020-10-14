@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_user_profile_edit_plain_text.*
 
-
 class UserProfileEditPlainTextActivity : AppCompatActivity() {
 
     //自分のユーザインスタンスを生成

@@ -28,7 +28,7 @@
         <activity android:name=".UserProfileEditActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".UserMyProfileActivity" />
         </activity>
         <activity android:name=".UserProfileEditPlainTextActivity" />
         <activity android:name=".UserProfileEditRadioButtonActivity" />
