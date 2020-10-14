@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -96,20 +97,17 @@ class timeLineListAdapter(private val context: Context)
         //画像の設定
         if(itemList[position].timeLine.imgRef != null) {
             FirebaseFirestore.getInstance().collection("time-line-img").document("get")
-                .collection(itemList[position].timeLine.imgRef!!).get().addOnSuccessListener { item ->
-                    item.forEach {
-                        Log.d("test",it.toString())
-
-                        if(item.size() > 1){
+                .collection(itemList[position].timeLine.imgRef!!).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    querySnapshot?.forEach {
+                        if(querySnapshot.size() > 1){
                             holder.RecyclerView.layoutManager = GridLayoutManager(context,2)
+                        }else{
+                            holder.RecyclerView.layoutManager = LinearLayoutManager(context)
                         }
-                       adapter.add(item.size(),it["test"].toString())
+                        adapter.add(querySnapshot.size(),it["test"].toString())
                     }
                     holder.RecyclerView.adapter = adapter
-                    Log.d("TEST", "${item.size()}")
-
                 }
-
         }
 
 
