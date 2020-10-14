@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_launcher_round"
-        tools:srcCompat="@tools:sample/avatars"/>
+        tools:srcCompat="@tools:sample/avatars" />
 
 
     <TextView
@@ -93,5 +93,17 @@
         app:layout_constraintTop_toTopOf="@+id/time_line_recyclerview_row_goodCount_textView"
         app:layout_constraintVertical_bias="0.25"
         app:srcCompat="@drawable/ic_chat_black_24dp" />
+
+    <TextView
+        android:id="@+id/time_line_recyclerview_row_time_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_line_recyclerview_row_good_textView"
+        tools:text="10月４日" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.time_line_fragment.view.*
 
 class timeLineFragment:Fragment(){
@@ -32,6 +33,7 @@ class timeLineFragment:Fragment(){
             DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
         )
 
+        //チャットボタンを押すと画面遷移
         timeLineListAdapter?.setOnclickListener {
             val intent = Intent(context, TimeLineCommentActivity::class.java)
             intent.putExtra("TimeLine", it)
@@ -44,13 +46,15 @@ class timeLineFragment:Fragment(){
             startActivity(intent)
         }
 
-        val dbRef = FirebaseFirestore.getInstance().collection("time-line").get().addOnSuccessListener {
-            it.forEach {
+        //タイムライン取得
+        FirebaseFirestore.getInstance().collection("time-line").orderBy("time", Query.Direction.DESCENDING).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            timeLineListAdapter?.clear()
+            querySnapshot?.forEach {
                 timeLineListAdapter?.add(it.toObject(TimeLine::class.java))
-
             }
             view.time_line_recyclerview.adapter = timeLineListAdapter
         }
+
 
     }
 

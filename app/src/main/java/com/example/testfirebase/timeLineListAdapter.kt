@@ -32,6 +32,7 @@ class timeLineListAdapter(private val context: Context)
         val RecyclerView:RecyclerView = itemView.findViewById(R.id.time_line_recyclerview_row_image_recyclerView)
         val GoodButton:Button = itemView.findViewById(R.id.time_line_recyclerview_row_good_textView)
         val comment: ImageView = itemView.findViewById(R.id.time_line_recycletview_row_comment_imageView)
+        val time:TextView = itemView.findViewById(R.id.time_line_recyclerview_row_time_textView)
     }
 
     //現状userデータがないのでダミーデータを格納するだけの処理になっている
@@ -41,6 +42,10 @@ class timeLineListAdapter(private val context: Context)
 
     fun add(timeLine: TimeLine){
         itemList.add(timeLineListItem(timeLine))
+    }
+
+    fun clear(){
+        itemList.clear()
     }
 
 
@@ -58,11 +63,18 @@ class timeLineListAdapter(private val context: Context)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.editTextMutable.setText(itemList[position].timeLine.text)
+
+        holder.time.text = itemList[position].timeLine.getTime(itemList[position].timeLine.time)
+
         //コメント画面へ移動
         holder.comment.setOnClickListener {
             itemClickListner?.invoke(itemList[position].timeLine)
         }
+
+        Log.d("document",itemList[position].timeLine.id)
+
         FirebaseFirestore.getInstance().collection("time-line").document(itemList[position].timeLine.id).addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
             val test = documentSnapshot?.toObject(TimeLine::class.java)
             holder.goodCount.text = test?.good.toString()
         }

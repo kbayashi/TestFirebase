@@ -41,16 +41,18 @@ class TimeLineAddActivity : AppCompatActivity() {
         //投稿
         time_line_add__add_button.setOnClickListener {
 
+            val millis = System.currentTimeMillis()
             val user = FirebaseAuth.getInstance().uid
             val id = UUID.randomUUID()
             val ref = FirebaseFirestore.getInstance().collection("time-line").document(id.toString())
-            val setTimeLine = TimeLine(user!!,time_line_add_editTextTextMultiLine.text.toString(),0,null, adapter!!.get(), id.toString())
+            val setTimeLine = TimeLine(user!!,time_line_add_editTextTextMultiLine.text.toString(),0,null, adapter!!.get(), id.toString(),millis)
             ref.set(setTimeLine)
             finish()
         }
 
     }
 
+    //ギャラリーまたはカメラ画像を取得
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         Log.d("requestcode", "${requestCode}")
