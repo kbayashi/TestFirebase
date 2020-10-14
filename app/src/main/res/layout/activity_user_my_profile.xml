@@ -31,7 +31,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:text="名前" />
 
             <TextView
                 android:id="@+id/user_my_profile_user_name_textView"
@@ -51,7 +52,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:text="自己紹介" />
 
             <TextView
                 android:id="@+id/user_my_profile_user_pr_textView"
@@ -71,7 +73,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:text="性別" />
 
             <TextView
                 android:id="@+id/user_my_profile_user_gender_textView"
@@ -91,7 +94,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:text="生年月日" />
 
             <TextView
                 android:id="@+id/user_my_profile_user_old_textView"
@@ -111,7 +115,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:text="都道府県" />
 
             <TextView
                 android:id="@+id/user_my_profile_user_prefectures_textView"
@@ -131,7 +136,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:text="趣味" />
 
             <TextView
                 android:id="@+id/user_my_profile_user_hobby_textView"
@@ -151,7 +157,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:text="病名" />
 
             <TextView
                 android:id="@+id/user_my_profile_user_sick_textView"
@@ -171,7 +178,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:text="余命" />
 
             <TextView
                 android:id="@+id/user_my_profile_user_lifeexpectancy_textView"
