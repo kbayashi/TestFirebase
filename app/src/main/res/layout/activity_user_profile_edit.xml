@@ -52,7 +52,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@id/name_arrow"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:text="名前" />
 
                 <TextView
                     android:id="@+id/user_profile_edit_user_name_textView"
@@ -90,7 +91,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@id/pr_arrow"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:text="自己紹介" />
 
                 <TextView
                     android:id="@+id/user_profile_edit_user_pr_textView"
@@ -128,7 +130,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@id/gender_arrow"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:text="性別" />
 
                 <TextView
                     android:id="@+id/user_profile_edit_user_gender_textView"
@@ -166,7 +169,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@id/old_arrow"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:text="生年月日" />
 
                 <TextView
                     android:id="@+id/user_profile_edit_user_old_textView"
@@ -204,7 +208,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@id/prefectures_arrow"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:text="都道府県" />
 
                 <TextView
                     android:id="@+id/user_profile_edit_user_prefectures_textView"
@@ -242,7 +247,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@id/hobby_arrow"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:text="趣味" />
 
                 <TextView
                     android:id="@+id/user_profile_edit_user_hobby_textView"
@@ -280,7 +286,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@id/sick_arrow"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:text="病名" />
 
                 <TextView
                     android:id="@+id/user_profile_edit_user_sick_textView"
@@ -318,7 +325,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@id/lifeexpectancy_arrow"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:text="余命" />
 
                 <TextView
                     android:id="@+id/user_profile_edit_user_lifeexpectancy_textView"
