@@ -1,16 +1,11 @@
 package com.example.testfirebase
 
 import android.app.Activity
-import android.content.ContentResolver
 import android.content.Intent
-import android.graphics.Bitmap
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.GridLayout
-import android.widget.ImageView
-import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -85,4 +80,5 @@ class TimeLineAddActivity : AppCompatActivity() {
 
 
     }
+
 }

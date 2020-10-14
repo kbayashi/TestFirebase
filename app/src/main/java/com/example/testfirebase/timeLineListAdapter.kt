@@ -35,6 +35,7 @@ class timeLineListAdapter(private val context: Context)
         val time:TextView = itemView.findViewById(R.id.time_line_recyclerview_row_time_textView)
     }
 
+
     //現状userデータがないのでダミーデータを格納するだけの処理になっている
     class timeLineListItem(val timeLine: TimeLine){}
 
@@ -65,6 +66,7 @@ class timeLineListAdapter(private val context: Context)
         holder.editTextMutable.setText(itemList[position].timeLine.text)
 
         holder.time.text = itemList[position].timeLine.getTime(itemList[position].timeLine.time)
+        holder.goodCount.text = itemList[position].timeLine.good.toString()
 
         //コメント画面へ移動
         holder.comment.setOnClickListener {
@@ -73,11 +75,7 @@ class timeLineListAdapter(private val context: Context)
 
         Log.d("document",itemList[position].timeLine.id)
 
-        FirebaseFirestore.getInstance().collection("time-line").document(itemList[position].timeLine.id).addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
 
-            val test = documentSnapshot?.toObject(TimeLine::class.java)
-            holder.goodCount.text = test?.good.toString()
-        }
         val adapter = timeLineImageListAdapter(context)
 
         //カウントアップ
@@ -86,6 +84,7 @@ class timeLineListAdapter(private val context: Context)
             itemList[position].timeLine.good += 1
             ref.set(itemList[position].timeLine)
             holder.GoodButton.isEnabled = false
+            holder.goodCount.text = itemList[position].timeLine.good.toString()
         }
 
         FirebaseFirestore.getInstance().collection("user").document(FirebaseAuth.getInstance().uid!!).get().addOnSuccessListener {

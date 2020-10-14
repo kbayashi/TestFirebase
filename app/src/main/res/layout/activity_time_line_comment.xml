@@ -7,23 +7,25 @@
     tools:context=".TimeLineCommentActivity">
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/time_line_comment_editTextTextPersonName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="コメントする"
         android:inputType="textPersonName"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/recyclerView" />
+        app:layout_constraintEnd_toStartOf="@+id/time_line_send_button_mageView"
+        app:layout_constraintStart_toStartOf="@+id/time_line_comment_recyclerView" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/time_line_comment_recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/time_line_comment_editTextTextPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,13 +33,12 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/time_line_send_button_mageView"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginStart="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName"
-        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/time_line_comment_editTextTextPersonName"
         app:srcCompat="@drawable/ic_baseline_brightness_1_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

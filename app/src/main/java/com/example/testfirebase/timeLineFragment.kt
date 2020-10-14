@@ -3,6 +3,7 @@ package com.example.testfirebase
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,14 +47,6 @@ class timeLineFragment:Fragment(){
             startActivity(intent)
         }
 
-        //タイムライン取得
-        FirebaseFirestore.getInstance().collection("time-line").orderBy("time", Query.Direction.DESCENDING).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-            timeLineListAdapter?.clear()
-            querySnapshot?.forEach {
-                timeLineListAdapter?.add(it.toObject(TimeLine::class.java))
-            }
-            view.time_line_recyclerview.adapter = timeLineListAdapter
-        }
 
 
     }
@@ -61,6 +54,23 @@ class timeLineFragment:Fragment(){
     override fun onAttach(context: Context) {
         super.onAttach(context)
         timeLineListAdapter = timeLineListAdapter(context)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getTimeLine()
+    }
+
+    //タイムライン取得
+    fun getTimeLine(){
+        FirebaseFirestore.getInstance().collection("time-line").orderBy("time", Query.Direction.DESCENDING).get()
+            .addOnSuccessListener {
+            timeLineListAdapter?.clear()
+            it.forEach {
+                timeLineListAdapter?.add(it.toObject(TimeLine::class.java))
+            }
+            view?.time_line_recyclerview?.adapter = timeLineListAdapter
+        }
     }
 
 }
