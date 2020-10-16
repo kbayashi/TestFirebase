@@ -6,11 +6,10 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NavUtils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_user_profile_edit_plain_text.*
 import kotlinx.android.synthetic.main.activity_user_profile_edit_spinner.*
 
 class UserProfileEditSpinnerActivity : AppCompatActivity() {
@@ -29,18 +28,26 @@ class UserProfileEditSpinnerActivity : AppCompatActivity() {
         var edit = intent.getStringExtra("edit")
 
         if(table == "birthday"){
+            // タイトル
+            setTitle("年代を選択してください")
             val adapter = ArrayAdapter.createFromResource(this,R.array.age,android.R.layout.simple_spinner_item)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
         }else if(table == "live") {
+            // タイトル
+            setTitle("所在地を選択してください")
             val adapter = ArrayAdapter.createFromResource(this, R.array.live, android.R.layout.simple_spinner_item)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
         }else if(table == "sick"){
+            // タイトル
+            setTitle("持病を選択してください")
             val adapter = ArrayAdapter.createFromResource(this,R.array.sick,android.R.layout.simple_spinner_item)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
         }else{
+            // タイトル
+            setTitle("余命を選択してください")
             val adapter = ArrayAdapter.createFromResource(this,R.array.life_expectancy,android.R.layout.simple_spinner_item)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
@@ -116,7 +123,20 @@ class UserProfileEditSpinnerActivity : AppCompatActivity() {
                     }
             }
 
-            finish()
+            //自アプリに戻る
+            val upIntent = NavUtils.getParentActivityIntent(this)
+            if (upIntent != null) {
+                NavUtils.navigateUpTo(this, upIntent)
+            }
+        }
+    }
+
+    //戻るボタン押下時はこの画面を削除する
+    override fun onBackPressed() {
+        //自アプリに戻る
+        val upIntent = NavUtils.getParentActivityIntent(this)
+        if (upIntent != null) {
+            NavUtils.navigateUpTo(this, upIntent)
         }
     }
 }
