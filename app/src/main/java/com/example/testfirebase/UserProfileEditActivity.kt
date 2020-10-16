@@ -1,13 +1,22 @@
 package com.example.testfirebase
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.NavUtils
+import android.provider.MediaStore
+import android.util.Log
+import android.widget.Toast
 import com.squareup.picasso.Picasso
+import com.example.testfirebase.UserListFragment.Companion.SELECT_USER
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_user_profile_edit.*
+import java.util.*
 
 class UserProfileEditActivity : AppCompatActivity() {
 
@@ -96,9 +105,8 @@ class UserProfileEditActivity : AppCompatActivity() {
                 .putExtra("edit",user_profile_edit_lifeexpectancy_textView.text)
             startActivity(intent)
         }
-
         //アイコン
-        user_profile_edit_imageview.setOnClickListener {
+        imageView3.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult(intent, 0)
@@ -113,6 +121,43 @@ class UserProfileEditActivity : AppCompatActivity() {
         if (upIntent != null) {
             NavUtils.navigateUpTo(this, upIntent)
         }
+    }
+
+    var selectedPhotoUri: Uri? = null
+    //写真アプリで写真を選択後に呼び出される
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //写真選択アプリが呼び出され、ちゃんと操作して、データが入っていたら
+        if(requestCode == 0 && resultCode == Activity.RESULT_OK && data != null){
+            //写真をボタンの背景に設定
+            Log.e("UserRegistarActivity","Photo select")
+            Log.d("UserRegistarActivity","${data.data}")
+            selectedPhotoUri = data.data
+            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotoUri)
+            user_profile_edit_imageview.setImageBitmap(bitmap)
+            uploadImageFirebaseStorage()
+        }
+    }
+    private fun uploadImageFirebaseStorage(){
+
+        if(selectedPhotoUri == null) return
+        val filename = UUID.randomUUID().toString()
+        val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
+        ref.putFile(selectedPhotoUri!!)
+            .addOnSuccessListener {
+                Log.d(USER_REGISTAR, "アップロード成功${it.metadata?.path}")
+                ref.downloadUrl.addOnSuccessListener {
+                    get_user?.img = it.toString()
+                    Log.d(USER_REGISTAR, "File 場所$it")
+                    FirebaseFirestore.getInstance().collection("user").document(get_user!!.uid).set(get_user!!)
+                }
+            }
+            .addOnFailureListener{
+                //do same logging here
+                Log.d(USER_REGISTAR, "作成に失敗しました ${it.message}")
+                Toast.makeText(this, "作成に失敗しました ${it.message}", Toast.LENGTH_SHORT)
+                    .show()
+            }
     }
 
 }
