@@ -35,8 +35,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".UserProfileEditActivity" />
         </activity>
-        <activity android:name=".UserProfileEditRadioButtonActivity" />
-        <activity android:name=".UserProfileEditSpinnerActivity" />
+        <activity android:name=".UserProfileEditRadioButtonActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UserProfileEditActivity" />
+        </activity>
+        <activity android:name=".UserProfileEditSpinnerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UserProfileEditActivity" />
+        </activity>
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".ChatActivity">
             <meta-data
