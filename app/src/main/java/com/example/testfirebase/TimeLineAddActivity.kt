@@ -1,11 +1,16 @@
 package com.example.testfirebase
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
+import android.content.pm.PackageManager
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -31,6 +36,18 @@ class TimeLineAddActivity : AppCompatActivity() {
             intent.setType("image/*")
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             startActivityForResult(intent, 1)
+        }
+
+        //カメラ起動
+        time_line_add_camera_imageView.setOnClickListener {
+            // カメラ機能を実装したアプリが存在するかチェック
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).resolveActivity(packageManager)?.let {
+                if (checkCameraPermission()) {
+                    takePicture()
+                } else {
+                    grantCameraPermission()
+                }
+            } ?: Toast.makeText(this, "カメラを扱うアプリがありません", Toast.LENGTH_LONG).show()
         }
 
         //投稿
@@ -77,8 +94,36 @@ class TimeLineAddActivity : AppCompatActivity() {
 
         }
 
+    }
 
+    //カメラ起動
+    private fun takePicture() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+            addCategory(Intent.CATEGORY_DEFAULT)
+        }
+        startActivityForResult(intent, 2)
+    }
 
+    //カメラ使用権限確認
+    private fun checkCameraPermission() = PackageManager.PERMISSION_GRANTED ==
+            ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.CAMERA)
+
+    //権限取得
+    private fun grantCameraPermission() =
+        ActivityCompat.requestPermissions(this,
+            arrayOf(Manifest.permission.CAMERA),
+            3)
+
+    //権限取得シた場合カメラ起動
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<out String>,
+                                            grantResults: IntArray) {
+        if (requestCode == 3) {
+            if (grantResults.isNotEmpty() &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                takePicture()
+            }
+        }
     }
 
 }
