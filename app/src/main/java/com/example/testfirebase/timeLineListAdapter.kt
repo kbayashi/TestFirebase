@@ -88,9 +88,10 @@ class timeLineListAdapter(private val context: Context)
             holder.goodCount.text = itemList[position].timeLine.good.toString()
         }
 
-        FirebaseFirestore.getInstance().collection("user").document(FirebaseAuth.getInstance().uid!!).get().addOnSuccessListener {
+        FirebaseFirestore.getInstance().collection("user").document(itemList[position].timeLine.uid).get().addOnSuccessListener {
             Picasso.get().load(it["img"].toString()).
             into(holder.ImageView)
+            holder.name.text = it["name"].toString()
         }
 
 
