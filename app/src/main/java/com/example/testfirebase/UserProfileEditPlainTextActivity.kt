@@ -7,9 +7,11 @@ import android.text.InputType
 import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NavUtils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_user_profile_edit_plain_text.*
+
 
 class UserProfileEditPlainTextActivity : AppCompatActivity() {
 
@@ -29,12 +31,16 @@ class UserProfileEditPlainTextActivity : AppCompatActivity() {
         val editText = EditText(this)
 
         if(table == "name"){
+            // タイトル
+            setTitle("名前を変更")
             val limit = 20
             editText.inputType = InputType.TYPE_CLASS_TEXT
             editText.filters = arrayOf<InputFilter>(LengthFilter(limit))
             activity_user_profile_edit_plain_text_limitTextView.text = text.toString()+"/"+limit.toString()+"までです"
             activity_user_profile_edit_plain_text_plainText.setText(edit)
         }else{
+            // タイトル
+            setTitle("自己紹介文を変更")
             val limit = 300
             editText.inputType = InputType.TYPE_CLASS_TEXT
             editText.filters = arrayOf<InputFilter>(LengthFilter(limit))
@@ -95,8 +101,21 @@ class UserProfileEditPlainTextActivity : AppCompatActivity() {
                 }
             }
 
-            //画面を閉じる
-            finish()
+            //自アプリに戻る
+            val upIntent = NavUtils.getParentActivityIntent(this)
+            if (upIntent != null) {
+                NavUtils.navigateUpTo(this, upIntent)
+            }
         }
     }
+
+    //戻るボタン押下時はこの画面を削除する
+    override fun onBackPressed() {
+        //自アプリに戻る
+        val upIntent = NavUtils.getParentActivityIntent(this)
+        if (upIntent != null) {
+            NavUtils.navigateUpTo(this, upIntent)
+        }
+    }
+
 }

@@ -3,6 +3,7 @@ package com.example.testfirebase
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.app.NavUtils
 import com.squareup.picasso.Picasso
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -39,7 +40,7 @@ class UserProfileEditActivity : AppCompatActivity() {
             user_profile_edit_user_lifeexpectancy_textView.text = my_user?.life_expectancy
             Picasso.get().load(my_user?.img).into(user_profile_edit_imageview)
         }
-
+        
         // 名前
         name_relativelayout.setOnClickListener{
             val intent = Intent(this,UserProfileEditPlainTextActivity::class.java)
@@ -52,7 +53,7 @@ class UserProfileEditActivity : AppCompatActivity() {
         pr_relativelayout.setOnClickListener{
             val intent = Intent(this,UserProfileEditPlainTextActivity::class.java)
             intent.putExtra("table","pr")
-                .putExtra("edit",user_profile_edit_pr_textView.text)
+                .putExtra("edit",user_profile_edit_user_pr_textView.text)
             startActivity(intent)
         }
 
@@ -103,6 +104,15 @@ class UserProfileEditActivity : AppCompatActivity() {
             startActivityForResult(intent, 0)
         }
 
+    }
+
+    //戻るボタン押下時はこの画面を削除する
+    override fun onBackPressed() {
+        //自アプリに戻る
+        val upIntent = NavUtils.getParentActivityIntent(this)
+        if (upIntent != null) {
+            NavUtils.navigateUpTo(this, upIntent)
+        }
     }
 
 }
