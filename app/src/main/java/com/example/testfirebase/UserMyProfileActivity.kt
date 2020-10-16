@@ -3,6 +3,7 @@ package com.example.testfirebase
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.app.NavUtils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_user_my_profile.*
@@ -44,6 +45,15 @@ class UserMyProfileActivity : AppCompatActivity() {
         user_my_profile_user_edit_floatingActionButton.setOnClickListener {
             val intent = Intent(this, UserProfileEditActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    //戻るボタン押下時はこの画面を削除する
+    override fun onBackPressed() {
+        //自アプリに戻る
+        val upIntent = NavUtils.getParentActivityIntent(this)
+        if (upIntent != null) {
+            NavUtils.navigateUpTo(this, upIntent)
         }
     }
 }
