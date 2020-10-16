@@ -76,7 +76,6 @@ class timeLineListAdapter(private val context: Context)
 
         Log.d("document",itemList[position].timeLine.id)
 
-
         val adapter = timeLineImageListAdapter(context)
 
         //カウントアップ
@@ -97,21 +96,28 @@ class timeLineListAdapter(private val context: Context)
 
         //画像の設定
         if(itemList[position].timeLine.imgRef != null) {
+            var count = 0
             FirebaseFirestore.getInstance().collection("time-line-img").document("get")
                 .collection(itemList[position].timeLine.imgRef!!).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    adapter.cler()
+                    Log.d("colection", "$querySnapshot")
                     querySnapshot?.forEach {
+
+                        Log.d("ドキュメンt","$it")
+                        Log.d("size", "${querySnapshot.size()}")
                         if(querySnapshot.size() > 1){
                             holder.RecyclerView.layoutManager = GridLayoutManager(context,2)
                         }else{
                             holder.RecyclerView.layoutManager = LinearLayoutManager(context)
                         }
+
+                        count++
                         adapter.add(querySnapshot.size(),it["test"].toString())
                     }
+                    Log.d("count", "$count")
                     holder.RecyclerView.adapter = adapter
                 }
         }
-
-
 
     }
 

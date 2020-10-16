@@ -38,6 +38,9 @@ class timeLineImageListAdapter (private val context: Context):
         itemList.add(imageListItem(count, string))
     }
 
+    fun cler(){
+        itemList.clear()
+    }
 
 
     //セルが必要になるたびに呼び出される。
