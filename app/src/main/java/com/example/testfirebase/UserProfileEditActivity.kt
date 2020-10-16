@@ -10,9 +10,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import com.squareup.picasso.Picasso
-import com.example.testfirebase.UserListFragment.Companion.SELECT_USER
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_user_profile_edit.*
@@ -20,6 +18,10 @@ import java.util.*
 
 class UserProfileEditActivity : AppCompatActivity() {
 
+    //companion：static変数、メソッドの代わり
+    companion object {
+        val USER_REGISTAR = "Register Activity"
+    }
     private var my_user:User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -147,9 +149,9 @@ class UserProfileEditActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Log.d(USER_REGISTAR, "アップロード成功${it.metadata?.path}")
                 ref.downloadUrl.addOnSuccessListener {
-                    get_user?.img = it.toString()
+                    my_user?.img = it.toString()
                     Log.d(USER_REGISTAR, "File 場所$it")
-                    FirebaseFirestore.getInstance().collection("user").document(get_user!!.uid).set(get_user!!)
+                    FirebaseFirestore.getInstance().collection("user").document(my_user!!.uid).set(my_user!!)
                 }
             }
             .addOnFailureListener{
