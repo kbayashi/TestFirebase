@@ -1,5 +1,6 @@
 package com.example.testfirebase
 
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
@@ -42,7 +43,7 @@ class UserProfileEditPlainTextActivity : AppCompatActivity() {
             limit = 20
         }else{
             // タイトル
-            setTitle("自己紹介文を変更")
+            setTitle("自己紹介を変更")
             limit = 300
         }
 
@@ -64,6 +65,13 @@ class UserProfileEditPlainTextActivity : AppCompatActivity() {
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 // 文字数をカウント
+                if (textEdit.length() == limit){
+                    // リミットになった時は赤色
+                    textCountView.setTextColor(Color.RED)
+                }else{
+                    // それ以外は黒色
+                    textCountView.setTextColor(Color.GRAY)
+                }
                 textCountView.text = textEdit.length().toString() + "/" + limit.toString()
             }
             override fun afterTextChanged(p0: Editable?) {
@@ -72,7 +80,7 @@ class UserProfileEditPlainTextActivity : AppCompatActivity() {
         })
 
         //保存ボタン
-        activity_user_profile_edit_plain_text_savebutton.setOnClickListener{
+        subBtn.setOnClickListener{
 
             //文字列が格納されているか判定
             if (activity_user_profile_edit_plain_text_plainText.text.length > 0){

@@ -8,9 +8,10 @@
 
     <Spinner
         android:id="@+id/activity_user_profile_edit_spinner_spinner"
-        android:layout_width="390dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:spinnerMode="dialog"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,6 +23,7 @@
         android:layout_height="61dp"
         android:layout_marginTop="20dp"
         android:text="保存"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_user_profile_edit_spinner_spinner" />
