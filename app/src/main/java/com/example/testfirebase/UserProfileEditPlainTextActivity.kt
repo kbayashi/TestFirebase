@@ -43,7 +43,7 @@ class UserProfileEditPlainTextActivity : AppCompatActivity() {
             limit = 20
         }else{
             // タイトル
-            setTitle("自己紹介文を変更")
+            setTitle("自己紹介を変更")
             limit = 300
         }
 
