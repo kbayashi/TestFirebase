@@ -79,6 +79,11 @@ class TimeLineAddActivity : AppCompatActivity() {
             adapter?.clear()
             if (requestCode == 1) {
                 val clipData = data?.clipData
+                //画像の枚数が6枚以上ならキャンセル
+                if(clipData!!.itemCount > 6) {
+                    Toast.makeText(this,"投稿する写真は写真は６枚以下でお願いします。", Toast.LENGTH_LONG).show()
+                    return
+                }
                 for (i in 0..(clipData!!.itemCount - 1)) {
 
                     Log.d("count", "$i")

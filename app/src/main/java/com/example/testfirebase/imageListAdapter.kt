@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -22,10 +23,12 @@ class imageListAdapter(private val context: Context)
     //１行で使用する各部品（ビュー）を保持したもの
     class OneViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val ImageView: ImageView = itemView.findViewById(R.id.image_list_row_imageView)
+        val FloatingActionButton:FloatingActionButton = itemView.findViewById(R.id.image_list_row_floatingActionButton)
     }
 
     class MultiViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val MultiImageView:ImageView = itemView.findViewById(R.id.image_list_multi_row_imageView)
+        val MultiFloatingActionButton:FloatingActionButton = itemView.findViewById(R.id.image_list_multi_row_floatingActionButton)
     }
 
 
@@ -35,6 +38,7 @@ class imageListAdapter(private val context: Context)
 
     fun add(bitmap: Bitmap, count: Int, uri: Uri?){
         itemList.add(imageListItem(bitmap,count, uri))
+
     }
 
     //参照先を返す
@@ -94,6 +98,12 @@ class imageListAdapter(private val context: Context)
         itemList.clear()
     }
 
+    fun remove(position: Int){
+        itemList.removeAt(position)
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, itemList.size);
+    }
+
 
     //セルが必要になるたびに呼び出される。
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):  RecyclerView.ViewHolder {
@@ -127,10 +137,16 @@ class imageListAdapter(private val context: Context)
             0->{
                 val holder = holder as MultiViewHolder
                 holder.MultiImageView.setImageBitmap(itemList[position].bitmap)
+                holder.MultiFloatingActionButton.setOnClickListener {
+                    remove(position)
+                }
             }
             1->{
                 val holder = holder as OneViewHolder
                 holder.ImageView.setImageBitmap(itemList[position].bitmap)
+                holder.FloatingActionButton.setOnClickListener {
+                    remove(position)
+                }
             }
         }
 

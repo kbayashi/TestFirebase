@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testfirebase.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -24,10 +25,12 @@ class timeLineImageListAdapter (private val context: Context):
     //１行で使用する各部品（ビュー）を保持したもの
     class OneViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val ImageView: ImageView = itemView.findViewById(R.id.image_list_row_imageView)
+        val FloatingActionButton: FloatingActionButton = itemView.findViewById(R.id.image_list_row_floatingActionButton)
     }
 
     class MultiViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val MultiImageView: ImageView = itemView.findViewById(R.id.image_list_multi_row_imageView)
+        val MultiFloatingActionButton:FloatingActionButton = itemView.findViewById(R.id.image_list_multi_row_floatingActionButton)
     }
 
     class imageListItem(val count: Int, val string: String){}
@@ -74,11 +77,13 @@ class timeLineImageListAdapter (private val context: Context):
         when(holder.itemViewType) {
             0->{
                 val holder = holder as timeLineImageListAdapter.MultiViewHolder
+                holder.MultiFloatingActionButton.setVisibility(View.GONE)
                 Picasso.get().load(itemList[position].string).
                 into(holder.MultiImageView)
             }
             1->{
                 val holder = holder as timeLineImageListAdapter.OneViewHolder
+                holder.FloatingActionButton.visibility = View.GONE
                 Picasso.get().load(itemList[position].string).
                 into(holder.ImageView)
             }
