@@ -1,11 +1,15 @@
 package com.example.testfirebase
 
 import android.Manifest
+import android.R.attr
+import android.R.attr.bitmap
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.content.pm.PackageManager
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_time_line_add.*
 import java.util.*
+
 
 class TimeLineAddActivity : AppCompatActivity() {
 
@@ -72,26 +77,35 @@ class TimeLineAddActivity : AppCompatActivity() {
 
         if(requestCode == 1 && resultCode == Activity.RESULT_OK && data!!.data != null) {
             adapter?.clear()
+            if (requestCode == 1) {
+                val clipData = data?.clipData
+                for (i in 0..(clipData!!.itemCount - 1)) {
 
+                    Log.d("count", "$i")
+                    var item = clipData!!.getItemAt(i)
+                    var selectPhotUri = item.uri
+                    var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectPhotUri)
+                    adapter?.add(bitmap, clipData!!.itemCount, selectPhotUri)
+                }
+                if (clipData!!.itemCount > 1) {
+                    time_line_add_select_photo_recyclerView.layoutManager =
+                        GridLayoutManager(this, 2)
+                } else {
+                    time_line_add_select_photo_recyclerView.layoutManager =
+                        LinearLayoutManager(this)
+                }
 
-            val clipData = data?.clipData
+                time_line_add_select_photo_recyclerView.adapter = adapter
 
-            for (i in 0.. (clipData!!.itemCount-1)) {
-
-                Log.d("count", "$i")
-                var item = clipData!!.getItemAt(i)
-                var selectPhotUri = item.uri
-                var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectPhotUri)
-                adapter?.add(bitmap, clipData!!.itemCount,selectPhotUri)
             }
-            if(clipData!!.itemCount > 1){
-                time_line_add_select_photo_recyclerView.layoutManager = GridLayoutManager(this,2)
-            }else{
-                time_line_add_select_photo_recyclerView.layoutManager = LinearLayoutManager(this)
-            }
+        }else if(requestCode == 2 ){
+            adapter?.clear()
+            val bitmap = data!!.getExtras()!!.get("data") as Bitmap
 
+            adapter?.add( bitmap,1, null)
+            time_line_add_select_photo_recyclerView.layoutManager =
+                LinearLayoutManager(this)
             time_line_add_select_photo_recyclerView.adapter = adapter
-
         }
 
     }

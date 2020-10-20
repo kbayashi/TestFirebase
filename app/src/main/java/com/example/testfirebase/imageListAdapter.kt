@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -28,31 +29,61 @@ class imageListAdapter(private val context: Context)
     }
 
 
-    class imageListItem(val bitmap: Bitmap, val count: Int,val uri:Uri){}
+    class imageListItem(val bitmap: Bitmap, val count: Int,val uri:Uri?){}
 
     private var itemList = mutableListOf<imageListItem>()
 
-    fun add(bitmap: Bitmap, count: Int, uri: Uri){
+    fun add(bitmap: Bitmap, count: Int, uri: Uri?){
         itemList.add(imageListItem(bitmap,count, uri))
     }
 
+    //参照先を返す
     fun get(): String?{
-        var refName = UUID.randomUUID().toString()
+        val refName = UUID.randomUUID().toString()
+
         itemList.forEach {
-            var filename = UUID.randomUUID().toString()
-            var ref = FirebaseStorage.getInstance().getReference("/time_line/$filename")
-            ref.putFile(it.uri).addOnSuccessListener {
-                Log.d("アップロード成功", "成功")
-                val uid = FirebaseAuth.getInstance().uid
-                val dbRef = FirebaseFirestore.getInstance().collection("time-line-img").document("get").collection(refName).document(filename)
-                ref.downloadUrl.addOnSuccessListener {
-                    var hashMap = hashMapOf(
-                        "test" to it.toString()
-                    )
-                    dbRef.set(hashMap)
+            if(it.uri !=null) {
+                var filename = UUID.randomUUID().toString()
+                var ref = FirebaseStorage.getInstance().getReference("/time_line/$filename")
+                ref.putFile(it.uri).addOnSuccessListener {
+                    Log.d("アップロード成功", "成功")
+                    val dbRef =
+                        FirebaseFirestore.getInstance().collection("time-line-img").document("get")
+                            .collection(refName).document(filename)
+                    ref.downloadUrl.addOnSuccessListener {
+                        var hashMap = hashMapOf(
+                            "test" to it.toString()
+                        )
+                        dbRef.set(hashMap)
+                    }
+                }.addOnFailureListener {
+                    Log.d("アップロード失敗", it.message)
                 }
-            }.addOnFailureListener {
-                Log.d("アップロード失敗", it.message)
+            }else if(it.uri == null){
+                var filename = UUID.randomUUID().toString()
+                var ref = FirebaseStorage.getInstance().getReference("/time_line/$filename")
+                val baos = ByteArrayOutputStream()
+                it.bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val data = baos.toByteArray()
+
+                ref.putBytes(data).addOnSuccessListener {
+                    Log.d("アップロード成功", "成功")
+                    val dbRef =
+                        FirebaseFirestore.getInstance().collection("time-line-img").document("get")
+                            .collection(refName).document(filename)
+                    ref.downloadUrl.addOnSuccessListener {
+                        Log.d("filename", filename.toString())
+                        Log.d("refname", refName.toString())
+                        Log.d("アップロードURi", it.toString())
+                        var hashMap = hashMapOf(
+                            "test" to it.toString()
+                        )
+                        dbRef.set(hashMap)
+                    }
+
+                }.addOnFailureListener{
+                    Log.d("アップロード失敗", it.message)
+                }
             }
 
         }
