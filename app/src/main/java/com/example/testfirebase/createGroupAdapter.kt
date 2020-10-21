@@ -38,7 +38,7 @@ class createGroupAdapter(private val context: Context)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
         //ビューを生成
-        val layout = layoutInflater.inflate(R.layout.create_group_user_list, parent, false)
+        val layout = layoutInflater.inflate(R.layout.create_group_user_list_row, parent, false)
         return ViewHolder(layout)
     }
 
