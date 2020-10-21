@@ -62,7 +62,7 @@ class TimeLineAddActivity : AppCompatActivity() {
             val user = FirebaseAuth.getInstance().uid
             val id = UUID.randomUUID()
             val ref = FirebaseFirestore.getInstance().collection("time-line").document(id.toString())
-            val setTimeLine = TimeLine(user!!,time_line_add_editTextTextMultiLine.text.toString(),0,null, adapter!!.get(), id.toString(),millis)
+            val setTimeLine = TimeLine(user!!,time_line_add_editTextTextMultiLine.text.toString(),null,null, adapter!!.get(), id.toString(),millis)
             ref.set(setTimeLine)
             finish()
         }
