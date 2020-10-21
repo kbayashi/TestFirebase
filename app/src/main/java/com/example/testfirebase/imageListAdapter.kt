@@ -44,7 +44,7 @@ class imageListAdapter(private val context: Context)
     //参照先を返す
     fun get(): String?{
         val refName = UUID.randomUUID().toString()
-
+        var fileNum = 0
         itemList.forEach {
             if(it.uri !=null) {
                 var filename = UUID.randomUUID().toString()
@@ -53,7 +53,8 @@ class imageListAdapter(private val context: Context)
                     Log.d("アップロード成功", "成功")
                     val dbRef =
                         FirebaseFirestore.getInstance().collection("time-line-img").document("get")
-                            .collection(refName).document(filename)
+                            .collection(refName).document(fileNum.toString())
+                    fileNum++
                     ref.downloadUrl.addOnSuccessListener {
                         var hashMap = hashMapOf(
                             "test" to it.toString()

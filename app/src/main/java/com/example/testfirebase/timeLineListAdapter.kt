@@ -1,12 +1,16 @@
 package com.example.testfirebase
 
 import android.content.Context
-import android.content.Intent
+import android.content.DialogInterface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +19,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import timeLineImageListAdapter
+
 
 class timeLineListAdapter(private val context: Context)
     : RecyclerView.Adapter<timeLineListAdapter.ViewHolder>() {
@@ -35,6 +40,7 @@ class timeLineListAdapter(private val context: Context)
         val GoodButton:Button = itemView.findViewById(R.id.time_line_recyclerview_row_good_textView)
         val comment: ImageView = itemView.findViewById(R.id.time_line_recycletview_row_comment_imageView)
         val time:TextView = itemView.findViewById(R.id.time_line_recyclerview_row_time_textView)
+        val setting:ImageView = itemView.findViewById(R.id.time_line_recyclerview_row_setting_imageView)
     }
 
     //現状userデータがないのでダミーデータを格納するだけの処理になっている
@@ -48,6 +54,12 @@ class timeLineListAdapter(private val context: Context)
 
     fun clear(){
         itemList.clear()
+    }
+
+    fun remove(position: Int){
+        itemList.removeAt(position)
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, itemList.size)
     }
 
 
@@ -69,8 +81,37 @@ class timeLineListAdapter(private val context: Context)
             .collection("get")
 
         holder.editTextMutable.setText(itemList[position].timeLine.text)
-
         holder.time.text = itemList[position].timeLine.getTime(itemList[position].timeLine.time)
+        if(uid != itemList[position].timeLine.uid){
+            holder.setting.visibility = View.GONE
+        }
+
+        //設定ダイアログを表示
+        holder.setting.setOnClickListener {
+
+            val builder =  AlertDialog.Builder(context)
+            val items =
+                arrayOf("タイムライン編集", "削除")
+
+            builder.setItems(items, DialogInterface.OnClickListener { dialogInterface, i ->
+                when(i){
+                    //編集
+                    0 ->{
+
+                    }
+                    //削除
+                    1->{
+
+                        deleteTimeLine(position)
+
+                        Log.d("タイムライン自体削除", "aaaaa")
+
+                    }
+
+                }
+            }).show()
+
+        }
 
         //カウント取得
         getCount(goodRef,holder)
@@ -163,5 +204,56 @@ class timeLineListAdapter(private val context: Context)
         }.addOnFailureListener {
 
         }
+    }
+
+    //タイムライン削除
+    private fun deleteTimeLine(position: Int) {
+
+        //good
+        FirebaseFirestore.getInstance().collection("time-line-good")
+            .document(itemList[position].timeLine.id)
+            .collection("get").get().addOnSuccessListener {
+                Log.d("document????", "$it")
+                it.forEach {
+                    Log.d("なにこれ?", it.id.toString())
+                    FirebaseFirestore.getInstance().collection("time-line-good")
+                        .document(itemList[position].timeLine.id)
+                        .collection("get").document(it.id).delete()
+
+                }
+            }
+
+        //コメント
+        FirebaseFirestore.getInstance().collection("time-line-comment")
+            .document(itemList[position].timeLine.id)
+            .collection("get").get().addOnSuccessListener {
+                it.forEach { item ->
+                    Log.d("湖面t－", item.id)
+                    FirebaseFirestore.getInstance().collection("time-line-comment")
+                        .document(itemList[position].timeLine.id)
+                        .collection("get").document(item.id).delete()
+                }
+
+                Log.d("米mンと削除チュ", "こめんと")
+                FirebaseFirestore.getInstance().collection("time-line").document(itemList[position].timeLine.id).delete()
+                remove(position)
+            }
+
+        //イメージ
+        if (itemList[position].timeLine.imgRef != null){
+            FirebaseFirestore.getInstance().collection("time-line-img")
+                .document("get").collection(itemList[position].timeLine.imgRef!!)
+                .get().addOnSuccessListener {
+                    for (i in 0..(it.size() - 1)) {
+                        FirebaseFirestore.getInstance().collection("time-line-img")
+                            .document("get")
+                            .collection(itemList[position].timeLine.imgRef!!)
+                            .document(i.toString()).delete()
+                    }
+                }
+        }
+
+        //タイムライン
+
     }
 }

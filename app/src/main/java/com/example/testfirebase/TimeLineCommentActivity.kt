@@ -43,10 +43,7 @@ class TimeLineCommentActivity : AppCompatActivity() {
                 val id = UUID.randomUUID()
                 val comment = Comment(id.toString(),FirebaseAuth.getInstance().uid.toString(), time_line_comment_editTextTextPersonName.text.toString(),  System.currentTimeMillis())
                 FirebaseFirestore.getInstance().collection("time-line-comment").document(timeLineData.id).collection("get")
-                    .document().set(comment).addOnSuccessListener {
-                    timeLineData.comment = comment.id
-                    FirebaseFirestore.getInstance().collection("time-line").document(timeLineData.id).set(timeLineData)
-                }
+                    .document(id.toString()).set(comment)
                 time_line_comment_editTextTextPersonName.text.clear()
             }
         }

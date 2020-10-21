@@ -64,14 +64,20 @@ class timeLineFragment:Fragment(){
 
     //タイムライン取得
     fun getTimeLine(){
-        FirebaseFirestore.getInstance().collection("time-line").orderBy("time", Query.Direction.DESCENDING).get()
-            .addOnSuccessListener {
+        FirebaseFirestore.getInstance().collection("time-line").orderBy("time", Query.Direction.DESCENDING).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            timeLineListAdapter?.clear()
+            querySnapshot?.forEach {
+                timeLineListAdapter?.add(it.toObject(TimeLine::class.java))
+            }
+            view?.time_line_recyclerview?.adapter = timeLineListAdapter
+        }
+            /*.addOnSuccessListener {
             timeLineListAdapter?.clear()
             it.forEach {
                 timeLineListAdapter?.add(it.toObject(TimeLine::class.java))
             }
             view?.time_line_recyclerview?.adapter = timeLineListAdapter
-        }
+        }*/
     }
 
 }
