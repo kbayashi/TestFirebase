@@ -16,7 +16,7 @@ android {
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId "com.example.testfirebase"
-        minSdkVersion 29
+        minSdkVersion 25
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
