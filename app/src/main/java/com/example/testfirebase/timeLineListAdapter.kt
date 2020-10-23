@@ -24,11 +24,23 @@ import timeLineImageListAdapter
 class timeLineListAdapter(private val context: Context)
     : RecyclerView.Adapter<timeLineListAdapter.ViewHolder>() {
 
-    var itemClickListner : ((TimeLine)->Unit)? = null
-
-    fun setOnclickListener(listener:(TimeLine)->Unit){
-        itemClickListner = listener
+    companion object{
+        val TIME_LINE_EDIT = "TIME_LINE_EDIT"
     }
+
+    //コメント表示画面に画面遷移
+    var commentButtonClickListner : ((TimeLine)->Unit)? = null
+
+    fun setOnCommentClickListener(listener:(TimeLine)->Unit){
+        commentButtonClickListner = listener
+    }
+    //タイムライン編集画面に遷移
+    var timeLineEditClickListner:((TimeLine)->Unit)? = null
+
+    fun setOnTimeLineEditListner(listener:(TimeLine)->Unit){
+        timeLineEditClickListner = listener
+    }
+
 
     //１行で使用する各部品（ビュー）を保持したもの
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -97,13 +109,12 @@ class timeLineListAdapter(private val context: Context)
                 when(i){
                     //編集
                     0 ->{
-
+                        timeLineEditClickListner?.invoke(itemList[position].timeLine)
                     }
                     //削除
                     1->{
 
                         deleteTimeLine(position)
-
                         Log.d("タイムライン自体削除", "aaaaa")
 
                     }
@@ -118,7 +129,7 @@ class timeLineListAdapter(private val context: Context)
 
         //コメント画面へ移動
         holder.comment.setOnClickListener {
-            itemClickListner?.invoke(itemList[position].timeLine)
+            commentButtonClickListner?.invoke(itemList[position].timeLine)
         }
 
         Log.d("document",itemList[position].timeLine.id)

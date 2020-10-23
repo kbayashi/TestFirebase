@@ -3,7 +3,6 @@ package com.example.testfirebase
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,9 +34,16 @@ class timeLineFragment:Fragment(){
         )
 
         //チャットボタンを押すと画面遷移
-        timeLineListAdapter?.setOnclickListener {
+        timeLineListAdapter?.setOnCommentClickListener {
             val intent = Intent(context, TimeLineCommentActivity::class.java)
-            intent.putExtra("TimeLine", it)
+            intent.putExtra("TimeLin", it)
+            startActivity(intent)
+        }
+
+        //タイムライン編集
+        timeLineListAdapter?.setOnTimeLineEditListner {
+            val intent = Intent(context, TimeLineAddActivity::class.java)
+            intent.putExtra("TIME_LINE_EDIT", it)
             startActivity(intent)
         }
 

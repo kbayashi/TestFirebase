@@ -41,6 +41,10 @@ class imageListAdapter(private val context: Context)
 
     }
 
+    fun getItem():Bitmap{
+        return itemList[0].bitmap
+    }
+
     //参照先を返す
     fun get(): String?{
         val refName = UUID.randomUUID().toString()
