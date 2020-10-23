@@ -8,4 +8,6 @@
     <string name="user_registar_sick_title_textView">病名(任意)</string>
     <string name="user_registar_life_expancy_title_textView">余命(任意)</string>
 
+    <string name="default_notification_channel_id" translatable="false">my_app_fcm_default_channel</string>
+    <string name="default_notification_channel_name" translatable="false">my_app_fcm_default_channel</string>
 </resources>
