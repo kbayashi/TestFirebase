@@ -13,12 +13,6 @@ import com.squareup.picasso.Picasso
 class createGroupAdapter(private val context: Context)
     : RecyclerView.Adapter<createGroupAdapter.ViewHolder>(){
 
-    var itemClickListener: ((User)->Unit)? = null
-
-    fun setOnclickListener(listener:(User)->Unit){
-        itemClickListener = listener
-    }
-
     //１行で使用する各部品（ビュー）を保持したもの
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val user_name: TextView = itemView.findViewById(R.id.create_group_list_user_name_textView)
