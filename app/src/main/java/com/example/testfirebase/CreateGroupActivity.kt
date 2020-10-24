@@ -101,8 +101,8 @@ class CreateGroupActivity : AppCompatActivity() {
         //写真選択アプリが呼び出され、ちゃんと操作して、データが入っていたら
         if(requestCode == 0 && resultCode == Activity.RESULT_OK && data != null){
             //写真をボタンの背景に設定
-            Log.e("GroupRegistarActivity","Photo select")
-            Log.d("GroupRegistarActivity","${data.data}")
+            Log.e("GroupIcon","Photo select")
+            Log.d("GroupIcon","${data.data}")
             selectedPhotoUri = data.data
             val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotoUri)
             group_icon_imageView.setImageBitmap(bitmap)

@@ -1,51 +1,43 @@
 package com.example.testfirebase
 
-import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.Switch
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+class createGroupAdapter internal constructor(private var rowDataList: List<RowData>) : RecyclerView.Adapter<MainViewHolder>(){
 
-class createGroupAdapter(private val context: Context)
-    : RecyclerView.Adapter<createGroupAdapter.ViewHolder>(){
-
-    //１行で使用する各部品（ビュー）を保持したもの
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val user_name: TextView = itemView.findViewById(R.id.create_group_list_user_name_textView)
-        val user_icon: ImageView = itemView.findViewById(R.id.create_group_list_user_icon_imageView)
-        val user_swit: Switch = itemView.findViewById(R.id.create_group_list_user_select_switch)
+    /**
+     * ViewHolder作るメソッド
+     * 最初しか呼ばれない。
+     * ここでViewHolderのlayoutファイルをインフレーとして生成したViewHolderをRecyclerViewに返す。
+     * @param parent
+     * @param viewType
+     * @return
+     */
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_holder_main, parent, false)
+        return MainViewHolder(view)
     }
 
-    class userListItem(val user: User)
-
-    private var itemList = mutableListOf<userListItem>()
-
-    fun add(user: User){
-        itemList.add(userListItem(user))
+    /**
+     * ViewHolderとRecyclerViewをバインドする
+     * 一行のViewに対して共通でやりたい処理をここで書く。今回はテキストのセットしかしてないけど。
+     * @param holder
+     * @param position
+     */
+    override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
+        val rowData = rowDataList[position]
+        holder.hogeTitle.text = rowData.hogeTitle
+        holder.hogeContents.text = rowData.hogeContents
     }
 
-    //セルが必要になるたびに呼び出される
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layoutInflater = LayoutInflater.from(context)
-        //ビューを生成
-        val layout = layoutInflater.inflate(R.layout.create_group_user_list_row, parent, false)
-        return ViewHolder(layout)
+    /**
+     * リストの行数
+     * @return
+     */
+    override fun getItemCount(): Int {
+        return rowDataList.size
     }
+}
 
-    override fun getItemCount(): Int = itemList.size
+class MainViewHolder(itemView: View) : ViewHolder(itemView) {
+    var hogeTitle: TextView = itemView.findViewById(R.id.hoge_title_text_view)
+    var hogeContents: TextView = itemView.findViewById(R.id.hoge_contents_text_view)
 
-    //保持されているビューにデータなどを設定するここでリスナなどを設定する
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.user_name.text = itemList[position].user.name
-        holder.user_swit.setChecked(false)
-        if(itemList[position].user.img.isNotEmpty()){
-            Picasso.get().load(itemList[position].user.img).into(holder.user_icon)
-        }else{
-            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/firevasetest-1d5b9.appspot.com/o/user_icon%2Fnoimage.png?alt=media&token=b9ae62b8-8c42-4791-9507-c84c93f6871f").into(holder.user_icon)
-        }
-    }
 }
