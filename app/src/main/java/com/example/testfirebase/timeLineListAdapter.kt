@@ -68,11 +68,11 @@ class timeLineListAdapter(private val context: Context)
         itemList.clear()
     }
 
-    fun remove(position: Int){
+    /*fun remove(position: Int){
         itemList.removeAt(position)
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, itemList.size)
-    }
+    }*/
 
 
     //セルが必要になるたびに呼び出される。
@@ -163,7 +163,7 @@ class timeLineListAdapter(private val context: Context)
         FirebaseFirestore.getInstance().collection("time-line-img").document("get")
             .collection(itemList[position].timeLine.imgRef!!).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 adapter.cler()
-                Log.d("colection", "$querySnapshot")
+                //Log.d("colection", "$querySnapshot")
                 querySnapshot?.forEach {
 
                     Log.d("ドキュメンt","$it")
@@ -187,7 +187,7 @@ class timeLineListAdapter(private val context: Context)
 
         goodRef.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
             if(querySnapshot!!.size() > 0) {
-                Log.d("gooodの数",querySnapshot.size().toString())
+                //Log.d("gooodの数",querySnapshot.size().toString())
                 holder.goodCount.text = querySnapshot.size().toString()
             }else{
                 holder.goodCount.text = "0"
@@ -201,8 +201,8 @@ class timeLineListAdapter(private val context: Context)
         val ref = FirebaseFirestore.getInstance().collection("time-line-good").document(itemList[position].timeLine.id)
             .collection("get").document(uid)
         ref.get().addOnSuccessListener {
-            Log.d("なんだこれ", "${it.reference}")
-            Log.d("good取得成功" ,"${it.toObject(Good::class.java)}")
+            //Log.d("なんだこれ", "${it.reference}")
+            //Log.d("good取得成功" ,"${it.toObject(Good::class.java)}")
             if(it.toObject(Good::class.java) == null){
                 var hashMap = hashMapOf(
                     "goood" to "good"
@@ -224,45 +224,51 @@ class timeLineListAdapter(private val context: Context)
         FirebaseFirestore.getInstance().collection("time-line-good")
             .document(itemList[position].timeLine.id)
             .collection("get").get().addOnSuccessListener {
-                Log.d("document????", "$it")
+                //Log.d("document????", "$it")
                 it.forEach {
-                    Log.d("なにこれ?", it.id.toString())
+                    //Log.d("なにこれ?", it.id.toString())
                     FirebaseFirestore.getInstance().collection("time-line-good")
                         .document(itemList[position].timeLine.id)
                         .collection("get").document(it.id).delete()
 
                 }
-            }
+                //コメント
+                FirebaseFirestore.getInstance().collection("time-line-comment")
+                    .document(itemList[position].timeLine.id)
+                    .collection("get").get().addOnSuccessListener {
+                        it.forEach { item ->
+                            //Log.d("湖面t－", item.id)
+                            FirebaseFirestore.getInstance().collection("time-line-comment")
+                                .document(itemList[position].timeLine.id)
+                                .collection("get").document(item.id).delete()
+                        }
 
-        //コメント
-        FirebaseFirestore.getInstance().collection("time-line-comment")
-            .document(itemList[position].timeLine.id)
-            .collection("get").get().addOnSuccessListener {
-                it.forEach { item ->
-                    Log.d("湖面t－", item.id)
-                    FirebaseFirestore.getInstance().collection("time-line-comment")
-                        .document(itemList[position].timeLine.id)
-                        .collection("get").document(item.id).delete()
-                }
+                        //Log.d("米mンと削除チュ", "こめんと")
 
-                Log.d("米mンと削除チュ", "こめんと")
-                FirebaseFirestore.getInstance().collection("time-line").document(itemList[position].timeLine.id).delete()
-                remove(position)
-            }
 
-        //イメージ
-        if (itemList[position].timeLine.imgRef != null){
-            FirebaseFirestore.getInstance().collection("time-line-img")
-                .document("get").collection(itemList[position].timeLine.imgRef!!)
-                .get().addOnSuccessListener {
-                    for (i in 0..(it.size() - 1)) {
-                        FirebaseFirestore.getInstance().collection("time-line-img")
-                            .document("get")
-                            .collection(itemList[position].timeLine.imgRef!!)
-                            .document(i.toString()).delete()
+                        //イメージ
+                        if (itemList[position].timeLine.imgRef != null){
+                            FirebaseFirestore.getInstance().collection("time-line-img")
+                                .document("get").collection(itemList[position].timeLine.imgRef!!)
+                                .get().addOnSuccessListener {
+                                    for (i in 0..(it.size() - 1)) {
+                                        FirebaseFirestore.getInstance().collection("time-line-img")
+                                            .document("get")
+                                            .collection(itemList[position].timeLine.imgRef!!)
+                                            .document(i.toString()).delete()
+                                    }
+                                    FirebaseFirestore.getInstance().collection("time-line").document(itemList[position].timeLine.id).delete().addOnSuccessListener {
+                                    }
+
+                                }
+
+                        }
                     }
-                }
-        }
+            }
+
+
+
+
 
         //タイムライン
 

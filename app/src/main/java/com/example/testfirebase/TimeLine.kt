@@ -7,7 +7,7 @@ import org.w3c.dom.Comment
 import java.text.SimpleDateFormat
 
 @Parcelize
-class TimeLine(val uid:String, val text:String, var good:String?, var comment: String?, val imgRef:String?, val id:String, val time:Long) :
+class TimeLine(val uid:String, var text:String, var good:String?, var comment: String?, var imgRef:String?, val id:String, val time:Long) :
     Parcelable {
     constructor():this("", "",null, null,null, "",0L)
 

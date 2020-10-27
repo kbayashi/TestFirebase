@@ -41,18 +41,17 @@ class imageListAdapter(private val context: Context)
 
     }
 
-    fun getItem():Bitmap{
-        return itemList[0].bitmap
-    }
 
     //参照先を返す
     fun get(): String?{
         val refName = UUID.randomUUID().toString()
         var fileNum = 0
+        Log.d("Adapterの数", itemList.size.toString())
         itemList.forEach {
-            if(it.uri !=null) {
-                var filename = UUID.randomUUID().toString()
-                var ref = FirebaseStorage.getInstance().getReference("/time_line/$filename")
+            var filename = UUID.randomUUID().toString()
+            var ref = FirebaseStorage.getInstance().getReference("/time_line/$filename")
+            //uriがある場合
+            if(it.uri !=null && TimeLineAddActivity.editFlg == false) {
                 ref.putFile(it.uri).addOnSuccessListener {
                     Log.d("アップロード成功", "成功")
                     val dbRef =
@@ -68,9 +67,8 @@ class imageListAdapter(private val context: Context)
                 }.addOnFailureListener {
                     Log.d("アップロード失敗", it.message)
                 }
-            }else if(it.uri == null){
-                var filename = UUID.randomUUID().toString()
-                var ref = FirebaseStorage.getInstance().getReference("/time_line/$filename")
+                //uriがない場合
+            }else if(it.uri == null && TimeLineAddActivity.editFlg == false){
                 val baos = ByteArrayOutputStream()
                 it.bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                 val data = baos.toByteArray()
@@ -79,11 +77,9 @@ class imageListAdapter(private val context: Context)
                     Log.d("アップロード成功", "成功")
                     val dbRef =
                         FirebaseFirestore.getInstance().collection("time-line-img").document("get")
-                            .collection(refName).document(filename)
+                            .collection(refName).document(fileNum.toString())
+                    fileNum++
                     ref.downloadUrl.addOnSuccessListener {
-                        Log.d("filename", filename.toString())
-                        Log.d("refname", refName.toString())
-                        Log.d("アップロードURi", it.toString())
                         var hashMap = hashMapOf(
                             "test" to it.toString()
                         )
@@ -93,9 +89,44 @@ class imageListAdapter(private val context: Context)
                 }.addOnFailureListener{
                     Log.d("アップロード失敗", it.message)
                 }
+                //編集モード
+            }else if(TimeLineAddActivity.editFlg == true){
+                FirebaseFirestore.getInstance().collection("time-line-img").document("get")
+                    .collection(TimeLineAddActivity.REFID!!).get().addOnSuccessListener {items->
+                        items.forEach {item->
+                            FirebaseFirestore.getInstance().collection("time-line-img").document("get")
+                                .collection(TimeLineAddActivity.REFID!!).document(item.id).delete()
+                        }
+                    }
+
+                var filename = UUID.randomUUID().toString()
+                var ref = FirebaseStorage.getInstance().getReference("/time_line/$filename")
+                val baos = ByteArrayOutputStream()
+                it.bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val data = baos.toByteArray()
+                Log.d("RFID", "${TimeLineAddActivity.REFID}")
+                ref.putBytes(data).addOnSuccessListener {
+                    //Log.d("RFID2", "${TimeLineAddActivity.REFID}")
+                    // Log.d("アップロード成功", "成功")
+                    //Log.d("FileNum", fileNum.toString())
+                    val dbRef =
+                        FirebaseFirestore.getInstance().collection("time-line-img").document("get")
+                            .collection(TimeLineAddActivity.REFID!!).document(fileNum.toString())
+                    fileNum++
+                    ref.downloadUrl.addOnSuccessListener {
+                        var hashMap = hashMapOf(
+                            "test" to it.toString()
+                        )
+                        dbRef.set(hashMap)
+
+                    }
+
+                }
+
             }
 
         }
+
         return refName
     }
 
@@ -126,7 +157,7 @@ class imageListAdapter(private val context: Context)
 
     //複数画像がある場合レイアウトを切り替える
     override fun getItemViewType(position: Int): Int {
-        Log.d("adapter", "${itemList[position].count}")
+        //Log.d("adapter", "${itemList[position].count}")
         if(itemList[position].count > 1){
             return 0
         }else{

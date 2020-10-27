@@ -36,7 +36,7 @@ class timeLineFragment:Fragment(){
         //チャットボタンを押すと画面遷移
         timeLineListAdapter?.setOnCommentClickListener {
             val intent = Intent(context, TimeLineCommentActivity::class.java)
-            intent.putExtra("TimeLin", it)
+            intent.putExtra("TimeLine", it)
             startActivity(intent)
         }
 
@@ -52,8 +52,6 @@ class timeLineFragment:Fragment(){
             val intent:Intent = Intent(context, TimeLineAddActivity::class.java)
             startActivity(intent)
         }
-
-
 
     }
 

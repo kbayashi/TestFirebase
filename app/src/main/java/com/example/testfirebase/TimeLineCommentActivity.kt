@@ -21,13 +21,13 @@ class TimeLineCommentActivity : AppCompatActivity() {
 
         time_line_comment_recyclerView.adapter = timeLineCommentAdapter
 
-        Log.d("Comment", timeLineData.id)
+        //Log.d("Comment", timeLineData.id)
 
             FirebaseFirestore.getInstance().collection("time-line-comment")
                 .document(timeLineData.id).collection("get").orderBy("time", Query.Direction.DESCENDING).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                     timeLineCommentAdapter.clear()
                     querySnapshot?.forEach {
-                        Log.d("Comment", "${it["comment"]}")
+                        //Log.d("Comment", "${it["comment"]}")
                         timeLineCommentAdapter.add(it.toObject(Comment::class.java))
                     }
                     time_line_comment_recyclerView.adapter = timeLineCommentAdapter
@@ -35,7 +35,7 @@ class TimeLineCommentActivity : AppCompatActivity() {
 
 
         //getData(timeLineData)
-        Log.d("TimeLineComment","$timeLineData")
+        //Log.d("TimeLineComment","$timeLineData")
 
         //コメントを投稿
         time_line_send_button_imageView.setOnClickListener {
@@ -53,7 +53,7 @@ class TimeLineCommentActivity : AppCompatActivity() {
         FirebaseFirestore.getInstance().collection("time-line-comment").document(timeLine.uid).
         collection("get").get().addOnSuccessListener {
             it.forEach {
-                Log.d("Comment", "$it")
+                //Log.d("Comment", "$it")
                 timeLineCommentAdapter.add(it.toObject(Comment::class.java))
             }
             time_line_comment_recyclerView.adapter = timeLineCommentAdapter
