@@ -15,7 +15,8 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_create_group.*
@@ -23,7 +24,7 @@ import java.util.*
 
 class CreateGroupActivity : AppCompatActivity() {
 
-    // 画像アップロード
+    // 画像選択
     private var selectedPhotoUri: Uri? = null
 
     // 画面生成
@@ -35,11 +36,58 @@ class CreateGroupActivity : AppCompatActivity() {
         val icon = findViewById<CircleImageView>(R.id.group_icon_imageView)
         val edit = findViewById<EditText>(R.id.group_name_editText)
         val cont = findViewById<TextView>(R.id.group_name_count_textView)
-        val recy = findViewById<RecyclerView>(R.id.user_list_recyclerView)
         val subb = findViewById<Button>(R.id.submit_button)
+
+        // Firebase
+        val auth = FirebaseAuth.getInstance()
+        val me = auth.currentUser
+        val db = FirebaseFirestore.getInstance()
+
+        // ユーザオブジェクト
+        var loginUser: User?
+        var getUser: User?
+
+        // アダプタ
+        var createUserListAdapter = createGroupAdapter(this)
+        user_list_recyclerView.adapter = createUserListAdapter
 
         // アクションバー表記変更
         supportActionBar?.title = "グループを作成"
+
+        // DBから取得してきたデータをアダプタに格納
+        val loginUserRef = db.collection("user").document(me!!.uid)
+        loginUserRef.get().addOnSuccessListener {
+            loginUser = it.toObject(User::class.java)
+            Log.d("GET_USER", "${it.data}")
+            Log.d("GET_USER", "${loginUser?.name}")
+
+            val users = db.collection("user")
+            users.get().addOnSuccessListener {
+                it.forEach {
+                    // 自分のユーザオブジェクトを取得
+                    getUser = it.toObject(User::class.java)
+                    Log.d("GET_USER","${it.toObject(User::class.java)}")
+                    Log.d("GET_USER","${getUser!!.name}")
+
+                    if(!(loginUser?.name == getUser!!.name)) {
+                        createUserListAdapter?.add(getUser!!)
+                        Log.d("USER" ,"${loginUser}")
+                        Log.d("USER", "${getUser}")
+                    }
+                }
+            }.addOnFailureListener {
+                Log.d("GET_FAILED", it.message)
+            }
+
+        }.addOnFailureListener {
+            Log.d("GET_FAILED", it.message)
+        }
+
+
+
+        /* 以下はアダプター処理とは関係ありません */
+
+
 
         // グループアイコン変更の処理
         icon.setOnClickListener {
