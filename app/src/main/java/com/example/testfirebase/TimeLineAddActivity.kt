@@ -135,7 +135,7 @@ class TimeLineAddActivity : AppCompatActivity() {
         time_line_add__add_button.setOnClickListener {
             postOrEdit()
 
-            finish()
+
         }
 
     }
@@ -266,6 +266,11 @@ class TimeLineAddActivity : AppCompatActivity() {
 
             //追加
         }else {
+            //からの投稿を防ぐ
+            if(time_line_add_editTextTextMultiLine.text.length < 1 && adapter!!.itemCount < 1){
+                Toast.makeText(this,"空で投稿しないでください", Toast.LENGTH_LONG).show()
+                return
+            }
             val millis = System.currentTimeMillis()
             val user = FirebaseAuth.getInstance().uid
             val id = UUID.randomUUID()
@@ -284,6 +289,7 @@ class TimeLineAddActivity : AppCompatActivity() {
             ref.set(setTimeLine)
 
         }
+        finish()
     }
 
 }
