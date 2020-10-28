@@ -11,7 +11,8 @@
         android:id="@+id/create_group_list_user_select_switch"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginLeft="10dp"
+        android:enabled="false" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/create_group_list_user_icon_imageView"

@@ -134,11 +134,6 @@ class CreateGroupActivity : AppCompatActivity() {
             }else{
 
                 // メンバー規定の分岐
-                /*for (i in 0 .. recy.adapter?.itemCount!!){
-                    Log.d("Test", recy.adapter!!.getItemId(i).toString())
-                }*/
-
-                // メンバー数が1人も選択されていない
                 /*
                 AlertDialog.Builder(this)
                     .setTitle(R.string.app_name)
@@ -146,7 +141,6 @@ class CreateGroupActivity : AppCompatActivity() {
                     .setPositiveButton("OK"){ dialog, which -> }
                     .show()
                  */
-
             }
         }
     }
