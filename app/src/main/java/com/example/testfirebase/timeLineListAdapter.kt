@@ -262,6 +262,9 @@ class timeLineListAdapter(private val context: Context)
 
                                 }
 
+                        }else{
+                            FirebaseFirestore.getInstance().collection("time-line").document(itemList[position].timeLine.id).delete().addOnSuccessListener {
+                            }
                         }
                     }
             }
