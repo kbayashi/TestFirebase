@@ -75,6 +75,7 @@ class CreateGroupActivity : AppCompatActivity() {
                         Log.d("USER", "${getUser}")
                     }
                 }
+                user_list_recyclerView.adapter = createUserListAdapter
             }.addOnFailureListener {
                 Log.d("GET_FAILED", it.message)
             }
