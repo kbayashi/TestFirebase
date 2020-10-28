@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.testfirebase">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity android:name=".TimeLineEditActivity"></activity>
+        <activity android:name=".TimeLineCommentActivity" />
         <activity android:name=".TitleActivity" />
         <activity android:name=".UserRegistarActivity" />
         <activity android:name=".UserLoginActivity" />
@@ -20,6 +28,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".FriendAddActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".UserMyProfileActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -52,9 +63,6 @@
                 android:value=".MainActivity" />
         </activity>
         <activity android:name=".TimeLineAddActivity" />
-        <activity
-            android:name=".FriendAddActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>
