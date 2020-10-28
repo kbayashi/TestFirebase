@@ -40,8 +40,7 @@ class createGroupAdapter(private val context: Context)
     override fun getItemCount(): Int = itemList.size
 
     override fun onBindViewHolder(holder:ViewHolder, position: Int) {
-        // スイッチを予めFalseに初期設定する処理だが、実際は必要はないはず。
-        // holder.user_select.setChecked(false)
+        holder.user_select.setChecked(false)
         Picasso.get().load(itemList[position].user.img).into(holder.user_icon)
         holder.user_name.text = itemList[position].user.name
     }

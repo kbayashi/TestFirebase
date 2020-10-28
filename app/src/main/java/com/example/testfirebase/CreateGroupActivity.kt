@@ -54,6 +54,32 @@ class CreateGroupActivity : AppCompatActivity() {
         // アクションバー表記変更
         supportActionBar?.title = "グループを作成"
 
+        // グループアイコン変更の処理
+        icon.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, 0)
+        }
+
+        // 文字数関係の処理
+        edit!!.addTextChangedListener(object : TextWatcher {
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                // 文字数をカウント
+                if (edit.length() > 20) {
+                    // リミットになった時は赤色
+                    cont.setTextColor(Color.MAGENTA)
+                } else {
+                    // それ以外は黒色
+                    cont.setTextColor(Color.GRAY)
+                }
+                cont.text = edit.length().toString() + "/20"
+            }
+            override fun afterTextChanged(p0: Editable?) {}
+
+        })
+
         // DBから取得してきたデータをアダプタに格納
         val loginUserRef = db.collection("user").document(me!!.uid)
         loginUserRef.get().addOnSuccessListener {
@@ -83,38 +109,6 @@ class CreateGroupActivity : AppCompatActivity() {
         }.addOnFailureListener {
             Log.d("GET_FAILED", it.message)
         }
-
-
-
-        /* 以下はアダプター処理とは関係ありません */
-
-
-
-        // グループアイコン変更の処理
-        icon.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, 0)
-        }
-
-        // 文字数関係の処理
-        edit!!.addTextChangedListener(object : TextWatcher {
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                // 文字数をカウント
-                if (edit.length() > 20) {
-                    // リミットになった時は赤色
-                    cont.setTextColor(Color.MAGENTA)
-                } else {
-                    // それ以外は黒色
-                    cont.setTextColor(Color.GRAY)
-                }
-                cont.text = edit.length().toString() + "/20"
-            }
-            override fun afterTextChanged(p0: Editable?) {}
-
-        })
 
         // ボタン押下時のアクション
         subb.setOnClickListener {
