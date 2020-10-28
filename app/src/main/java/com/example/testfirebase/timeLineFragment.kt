@@ -76,7 +76,9 @@ class timeLineFragment:Fragment(){
             }
             view?.time_line_recyclerview?.adapter = timeLineListAdapter
             if(timeLineListAdapter!!.itemCount > 0){
-                time_line_fragment_textView.visibility = View.GONE
+                time_line_textView.visibility = View.INVISIBLE
+            }else{
+                time_line_textView.visibility = View.VISIBLE
             }
         }
             /*.addOnSuccessListener {
