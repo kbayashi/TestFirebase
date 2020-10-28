@@ -32,7 +32,7 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
-        android:id="@+id/time_line_fragment_textView"
+        android:id="@+id/time_line_textView"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:text="タイムラインがまだありません"

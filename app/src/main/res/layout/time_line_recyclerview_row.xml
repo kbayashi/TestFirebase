@@ -63,7 +63,6 @@
         android:id="@+id/time_line_recyclerview_row_image_recyclerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="@+id/time_line_recyclerview_row_editTextTextMultiLine"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="@+id/time_line_recyclerview_row_editTextTextMultiLine"
