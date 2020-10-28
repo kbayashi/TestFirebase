@@ -15,6 +15,9 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.forEach
+import androidx.core.view.get
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -36,6 +39,7 @@ class CreateGroupActivity : AppCompatActivity() {
         val icon = findViewById<CircleImageView>(R.id.group_icon_imageView)
         val edit = findViewById<EditText>(R.id.group_name_editText)
         val cont = findViewById<TextView>(R.id.group_name_count_textView)
+        val recy = findViewById<RecyclerView>(R.id.user_list_recyclerView)
         val subb = findViewById<Button>(R.id.submit_button)
 
         // Firebase
@@ -49,7 +53,6 @@ class CreateGroupActivity : AppCompatActivity() {
 
         // アダプタ
         var createUserListAdapter = createGroupAdapter(this)
-        user_list_recyclerView.adapter = createUserListAdapter
 
         // アクションバー表記変更
         supportActionBar?.title = "グループを作成"
@@ -101,7 +104,9 @@ class CreateGroupActivity : AppCompatActivity() {
                         Log.d("USER", "${getUser}")
                     }
                 }
-                user_list_recyclerView.adapter = createUserListAdapter
+                // アダプタに関連付け
+                recy.adapter = createUserListAdapter
+
             }.addOnFailureListener {
                 Log.d("GET_FAILED", it.message)
             }
@@ -113,28 +118,36 @@ class CreateGroupActivity : AppCompatActivity() {
         // ボタン押下時のアクション
         subb.setOnClickListener {
 
+            // グループ名規定の分岐
             if(edit.text.isEmpty()){
                 AlertDialog.Builder(this)
                     .setTitle(R.string.app_name)
                     .setMessage("グループ名を入力してください")
                     .setPositiveButton("OK"){ dialog, which -> }
                     .show()
-            }else if (edit.length() <= 20){
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.app_name)
-                    .setMessage("WELCOME TO UNDERGROUND")
-                    .setPositiveButton("OK"){ dialog, which -> }
-                    .show()
-            }else{
+            }else if (edit.length() > 20){
                 AlertDialog.Builder(this)
                     .setTitle(R.string.app_name)
                     .setMessage("文字数が多いです（"+edit.length()+"/20）")
                     .setPositiveButton("OK"){ dialog, which -> }
                     .show()
-            }
+            }else{
 
-            // メンバーが誰も指定されていないとき
-            // Toast.makeText(applicationContext, "メンバーを最低1人以上は指定してください", Toast.LENGTH_SHORT).show()
+                // メンバー規定の分岐
+                /*for (i in 0 .. recy.adapter?.itemCount!!){
+                    Log.d("Test", recy.adapter!!.getItemId(i).toString())
+                }*/
+
+                // メンバー数が1人も選択されていない
+                /*
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.app_name)
+                    .setMessage("メンバーを最低1人以上は指定してください")
+                    .setPositiveButton("OK"){ dialog, which -> }
+                    .show()
+                 */
+
+            }
         }
     }
 

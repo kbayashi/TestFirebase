@@ -1,6 +1,7 @@
 package com.example.testfirebase
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 class createGroupAdapter(private val context: Context)
     :RecyclerView.Adapter<createGroupAdapter.ViewHolder>(){
 
+    // ビューホルダ
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val user_select: Switch = itemView.findViewById(R.id.create_group_list_user_select_switch)
         val user_icon: CircleImageView = itemView.findViewById(R.id.create_group_list_user_icon_imageView)
