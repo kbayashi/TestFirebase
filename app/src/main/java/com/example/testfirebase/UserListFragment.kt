@@ -112,7 +112,6 @@ class UserListFragment: Fragment() {
             //自分のプロフィール画面に飛ばしたい
             view.user_list_my_profile_constraintLayout.setOnClickListener {
                 val intent = Intent(context, UserMyProfileActivity::class.java)
-                intent.putExtra(SELECT_USER, loginUser)
                 startActivity(intent)
             }
         }

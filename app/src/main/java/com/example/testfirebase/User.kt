@@ -9,7 +9,7 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 @Parcelize
-class User (val uid:String, val name:String, val img:String,
+class User (val uid:String, val name:String, var img:String,
             val gender:String, val birthday: String, val pr:String,
             val live: String, val sick:String, val life_expectancy: String,
             val hoby: String) :Parcelable{

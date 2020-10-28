@@ -25,84 +25,328 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/user_profile_edit_imageview"
                     android:layout_width="match_parent"
                     android:layout_height="185dp"
+                    android:layout_marginTop="16dp"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <ImageView
                     android:id="@+id/imageView3"
-                    android:layout_width="50dp"
-                    android:layout_height="38dp"
-                    android:translationX="250dp"
-                    android:translationY="150dp"
+                    android:layout_width="44dp"
+                    android:layout_height="39dp"
+                    android:layout_gravity="bottom|center"
+                    android:layout_marginLeft="60dp"
                     app:srcCompat="@drawable/ic_baseline_camera_alt_24" />
             </FrameLayout>
 
-            <TextView
-                android:id="@+id/user_profile_edit_name_textView"
+            <RelativeLayout
+                android:id="@+id/name_relativelayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="45dp"
-                android:background="@drawable/frame"/>
+                android:descendantFocusability="blocksDescendants">
 
-            <TextView
-                android:id="@+id/user_profile_edit_pr_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="45sp"
-                android:background="@drawable/frame"/>
+                <TextView
+                    android:id="@+id/user_profile_edit_name_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@id/name_arrow"
+                    android:padding="8dp"
+                    android:text="名前" />
 
-            <TextView
-                android:id="@+id/user_profile_edit_gender_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="45sp"
-                android:background="@drawable/frame"/>
+                <TextView
+                    android:id="@+id/user_profile_edit_user_name_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/user_profile_edit_name_textView"
+                    android:layout_toLeftOf="@id/name_arrow"
+                    android:padding="8dp"
+                    android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/user_profile_edit_old_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="45sp"
-                android:background="@drawable/frame"/>
+                <ImageView
+                    android:id="@+id/name_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
-            <TextView
-                android:id="@+id/user_profile_edit_prefectures_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="45sp"
-                android:background="@drawable/frame"/>
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/user_profile_edit_hobby_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="45sp"
-                android:background="@drawable/frame"/>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
 
-            <TextView
-                android:id="@+id/user_profile_edit_sick_textView"
+            <RelativeLayout
+                android:id="@+id/pr_relativelayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="45sp"
-                android:background="@drawable/frame"/>
+                android:descendantFocusability="blocksDescendants">
 
-            <TextView
-                android:id="@+id/user_profile_edit_lifeexpectancy_textView"
+                <TextView
+                    android:id="@+id/user_profile_edit_pr_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@id/pr_arrow"
+                    android:padding="8dp"
+                    android:text="自己紹介" />
+
+                <TextView
+                    android:id="@+id/user_profile_edit_user_pr_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/user_profile_edit_pr_textView"
+                    android:layout_toLeftOf="@id/pr_arrow"
+                    android:padding="8dp"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/pr_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <RelativeLayout
+                android:id="@+id/gender_relativelayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="45sp"
-                android:background="@drawable/frame"/>
+                android:descendantFocusability="blocksDescendants">
+
+                <TextView
+                    android:id="@+id/user_profile_edit_gender_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@id/gender_arrow"
+                    android:padding="8dp"
+                    android:text="性別" />
+
+                <TextView
+                    android:id="@+id/user_profile_edit_user_gender_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/user_profile_edit_gender_textView"
+                    android:layout_toLeftOf="@id/gender_arrow"
+                    android:padding="8dp"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/gender_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <RelativeLayout
+                android:id="@+id/old_relativelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
+
+                <TextView
+                    android:id="@+id/user_profile_edit_old_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@id/old_arrow"
+                    android:padding="8dp"
+                    android:text="生年月日" />
+
+                <TextView
+                    android:id="@+id/user_profile_edit_user_old_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/user_profile_edit_old_textView"
+                    android:layout_toLeftOf="@id/old_arrow"
+                    android:padding="8dp"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/old_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <RelativeLayout
+                android:id="@+id/prefecture_relativelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
+
+                <TextView
+                    android:id="@+id/user_profile_edit_prefectures_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@id/prefectures_arrow"
+                    android:padding="8dp"
+                    android:text="都道府県" />
+
+                <TextView
+                    android:id="@+id/user_profile_edit_user_prefectures_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/user_profile_edit_prefectures_textView"
+                    android:layout_toLeftOf="@id/prefectures_arrow"
+                    android:padding="8dp"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/prefectures_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <RelativeLayout
+                android:id="@+id/hobby_relativelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
+
+                <TextView
+                    android:id="@+id/user_profile_edit_hobby_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@id/hobby_arrow"
+                    android:padding="8dp"
+                    android:text="趣味" />
+
+                <TextView
+                    android:id="@+id/user_profile_edit_user_hobby_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/user_profile_edit_hobby_textView"
+                    android:layout_toLeftOf="@id/hobby_arrow"
+                    android:padding="8dp"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/hobby_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <RelativeLayout
+                android:id="@+id/sick_relativelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
+
+                <TextView
+                    android:id="@+id/user_profile_edit_sick_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@id/sick_arrow"
+                    android:padding="8dp"
+                    android:text="病名" />
+
+                <TextView
+                    android:id="@+id/user_profile_edit_user_sick_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/user_profile_edit_sick_textView"
+                    android:layout_toLeftOf="@id/sick_arrow"
+                    android:padding="8dp"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/sick_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <RelativeLayout
+                android:id="@+id/lifeexpectancy_relativelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
+
+                <TextView
+                    android:id="@+id/user_profile_edit_lifeexpectancy_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@id/lifeexpectancy_arrow"
+                    android:padding="8dp"
+                    android:text="余命" />
+
+                <TextView
+                    android:id="@+id/user_profile_edit_user_lifeexpectancy_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/user_profile_edit_lifeexpectancy_textView"
+                    android:layout_toLeftOf="@id/lifeexpectancy_arrow"
+                    android:padding="8dp"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/lifeexpectancy_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>

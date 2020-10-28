@@ -16,7 +16,8 @@
         android:background="@drawable/button_round_me"
         android:maxEms="20"
         android:padding="10dp"
-        android:text="ECCコンピュータ専門学校"
+        android:text="あなたのメッセージです"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/chat_me_row_pic_imageView"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,8 +28,6 @@
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
-
-
 
     <TextView
         android:id="@+id/chat_me_row_time_textView"
