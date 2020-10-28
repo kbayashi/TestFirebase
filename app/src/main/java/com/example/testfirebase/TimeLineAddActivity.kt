@@ -173,7 +173,9 @@ class TimeLineAddActivity : AppCompatActivity() {
                 time_line_add_select_photo_recyclerView.adapter = adapter
 
             }
-        }else if(requestCode == 2 && data!!.data != null){
+        }else if(requestCode == 2 && data?.extras != null){
+            Log.d("カメラ", "$data")
+            Log.d("カメラ2", "$resultCode")
             val bitmap = data!!.getExtras()!!.get("data") as Bitmap
 
             adapter?.add( bitmap,1, null)
