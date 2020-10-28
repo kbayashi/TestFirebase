@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import kotlinx.android.synthetic.main.time_line_fragment.*
 import kotlinx.android.synthetic.main.time_line_fragment.view.*
 
 class timeLineFragment:Fragment(){
@@ -74,6 +75,9 @@ class timeLineFragment:Fragment(){
                 timeLineListAdapter?.add(it.toObject(TimeLine::class.java))
             }
             view?.time_line_recyclerview?.adapter = timeLineListAdapter
+            if(timeLineListAdapter!!.itemCount > 0){
+                time_line_fragment_textView.visibility = View.GONE
+            }
         }
             /*.addOnSuccessListener {
             timeLineListAdapter?.clear()
