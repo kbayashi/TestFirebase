@@ -134,13 +134,12 @@ class CreateGroupActivity : AppCompatActivity() {
             }else{
 
                 // メンバー規定の分岐
-                /*
                 AlertDialog.Builder(this)
                     .setTitle(R.string.app_name)
-                    .setMessage("メンバーを最低1人以上は指定してください")
+                    .setMessage(createUserListAdapter.itemCount.toString())
                     .setPositiveButton("OK"){ dialog, which -> }
                     .show()
-                 */
+
             }
         }
     }

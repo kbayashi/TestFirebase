@@ -32,6 +32,13 @@ class createGroupAdapter(private val context: Context)
         itemList.add(userListItem(user))
     }
 
+    // ユーザ選択
+    fun selectUsers(){
+        itemList.forEach {
+
+        }
+    }
+
     // ビューを生成
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
@@ -46,6 +53,7 @@ class createGroupAdapter(private val context: Context)
         Picasso.get().load(itemList[position].user.img).into(holder.user_icon)
         holder.user_name.text = itemList[position].user.name
 
+        // ユーザの選択
         holder.itemView.setOnClickListener{
             if (holder.user_select.isChecked == false){
                 holder.user_select.setChecked(true)
