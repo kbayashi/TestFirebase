@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.android.synthetic.main.activity_time_line_add.*
+import java.io.IOException
 import java.io.InputStream
 import java.net.URL
 import java.util.*
@@ -82,21 +83,34 @@ class TimeLineAddActivity : AppCompatActivity() {
                                     }
                                     // 非同期処理
                                     override fun doInBackground(vararg p0: QuerySnapshot?): MutableList<Bitmap>? {
-                                        var MutableList:MutableList<Bitmap> =  mutableListOf<Bitmap>()
-                                        val options = BitmapFactory.Options()
-                                        p0[0]?.forEach {
-                                            var url = URL(it["test"].toString())
+                                        try {
+                                            var MutableList: MutableList<Bitmap> =
+                                                mutableListOf<Bitmap>()
+                                            val options = BitmapFactory.Options()
+                                            p0[0]?.forEach {
+                                                var url = URL(it["test"].toString())
 
-                                            // 実際に読み込む
-                                            options.inJustDecodeBounds = false
-                                            val stream =
-                                                url.content as InputStream
-                                            MutableList.add(BitmapFactory.decodeStream(stream , null, options)!!)
-                                            stream.close()
+                                                // 実際に読み込む
+                                                options.inJustDecodeBounds = false
+                                                val stream =
+                                                    url.content as InputStream
+                                                MutableList.add(
+                                                    BitmapFactory.decodeStream(
+                                                        stream,
+                                                        null,
+                                                        options
+                                                    )!!
+                                                )
+                                                stream.close()
+                                            }
+
+                                            Log.d("mutableSize", MutableList?.size.toString())
+                                            return MutableList
+                                        }catch (e: IOException){
+                                            Log.d("IIOException", "IOException")
+                                            finish()
+                                            return null
                                         }
-
-                                        Log.d("mutableSize", MutableList?.size.toString())
-                                        return MutableList
                                     }
                                 }.execute(it) // J画像のURL
 
