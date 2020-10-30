@@ -14,8 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".TimeLineEditActivity"></activity>
+        <activity android:name=".PasswordForgetActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UserLoginActivity" />
+        </activity>
+        <activity android:name=".TimeLineEditActivity" />
         <activity android:name=".TimeLineCommentActivity" />
         <activity android:name=".TitleActivity" />
         <activity android:name=".UserRegistarActivity" />
@@ -25,6 +29,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
