@@ -132,14 +132,8 @@ class CreateGroupActivity : AppCompatActivity() {
                     .setPositiveButton("OK"){ dialog, which -> }
                     .show()
             }else{
-
                 // メンバー規定の分岐
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.app_name)
-                    .setMessage(createUserListAdapter.itemCount.toString())
-                    .setPositiveButton("OK"){ dialog, which -> }
-                    .show()
-
+                createUserListAdapter.selectUsers(recy)
             }
         }
     }

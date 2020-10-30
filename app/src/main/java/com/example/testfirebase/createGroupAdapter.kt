@@ -1,7 +1,6 @@
 package com.example.testfirebase
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,11 +31,9 @@ class createGroupAdapter(private val context: Context)
         itemList.add(userListItem(user))
     }
 
-    // ユーザ選択
-    fun selectUsers(){
-        itemList.forEach {
-
-        }
+    // ユーザ選択メソッド
+    fun selectUsers(r: RecyclerView){
+        // val vh = ViewHolder()
     }
 
     // ビューを生成
