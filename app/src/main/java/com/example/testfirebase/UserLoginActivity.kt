@@ -44,5 +44,13 @@ class UserLoginActivity : AppCompatActivity() {
 
         }
 
+        //パスワードを忘れた場合
+        user_login_forget_textView.setOnClickListener {
+
+            val intent = Intent(this, PasswordForgetActivity::class.java)
+            startActivity(intent)
+
+        }
+
     }
 }
