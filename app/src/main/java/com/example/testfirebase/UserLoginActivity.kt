@@ -40,6 +40,9 @@ class UserLoginActivity : AppCompatActivity() {
                     //アクティビティを起動する前に既存のアクティビティを削除してからスタックに追加
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
+                }.addOnFailureListener {
+                    Log.d("ログインエラー？", it.message)
+                    user_login_user_alarm_textView.text = "ネットワークに接続できません"
                 }
 
         }
