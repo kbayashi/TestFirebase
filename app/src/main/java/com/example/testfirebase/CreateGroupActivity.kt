@@ -133,7 +133,11 @@ class CreateGroupActivity : AppCompatActivity() {
                     .show()
             }else{
                 // メンバー規定の分岐
-                createUserListAdapter.selectUsers(recy)
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.app_name)
+                    .setMessage(createUserListAdapter.selectUsers(recy).toString())
+                    .setPositiveButton("OK"){ dialog, which -> }
+                    .show()
             }
         }
     }

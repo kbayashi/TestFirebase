@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
+import androidx.core.view.forEach
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -32,8 +33,19 @@ class createGroupAdapter(private val context: Context)
     }
 
     // ユーザ選択メソッド
-    fun selectUsers(r: RecyclerView){
-        // val vh = ViewHolder()
+    fun selectUsers(r: RecyclerView): Int {
+
+        // リサイクルビューに格納されているアイテム分ループ
+        var vh: ViewHolder
+        var cnt = 0
+
+        for (i in 0 .. 4) {
+            vh = r.findViewHolderForAdapterPosition(i) as ViewHolder
+            if (vh.user_select.isChecked) {
+                cnt += 1
+            }
+        }
+        return cnt
     }
 
     // ビューを生成
