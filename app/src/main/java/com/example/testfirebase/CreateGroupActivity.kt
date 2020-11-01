@@ -106,6 +106,8 @@ class CreateGroupActivity : AppCompatActivity() {
                 }
                 // アダプタに関連付け
                 recy.adapter = createUserListAdapter
+                // ボタンを有効化
+                subb.setEnabled(true)
 
             }.addOnFailureListener {
                 Log.d("GET_FAILED", it.message)
@@ -132,10 +134,29 @@ class CreateGroupActivity : AppCompatActivity() {
                     .setPositiveButton("OK"){ dialog, which -> }
                     .show()
             }else{
+
+                // ユーザID配列
+                var uid_array: Array<String?> = arrayOfNulls(createUserListAdapter.itemCount)
+
+                // 配列用数分呼び出し 4
+                for (i in 0 .. createUserListAdapter.itemCount){
+                    uid_array[i] = createUserListAdapter.selectUsers(recy, i)
+                }
+                /*
+                uid_array[0] = createUserListAdapter.selectUsers(recy, 0)
+                uid_array[1] = createUserListAdapter.selectUsers(recy, 1)
+                uid_array[2] = createUserListAdapter.selectUsers(recy, 2)
+                uid_array[3] = createUserListAdapter.selectUsers(recy, 3)
+                uid_array[4] = createUserListAdapter.selectUsers(recy, 4)
+                uid_array[5] = createUserListAdapter.selectUsers(recy, 5)
+                uid_array[6] = createUserListAdapter.selectUsers(recy, 6)
+                uid_array[7] = createUserListAdapter.selectUsers(recy, 7)
+                */
+
                 // メンバー規定の分岐
                 AlertDialog.Builder(this)
                     .setTitle(R.string.app_name)
-                    .setMessage(createUserListAdapter.selectUsers(recy).toString())
+                    .setMessage(uid_array[0])
                     .setPositiveButton("OK"){ dialog, which -> }
                     .show()
             }

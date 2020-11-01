@@ -19,6 +19,7 @@ class createGroupAdapter(private val context: Context)
         val user_select: Switch = itemView.findViewById(R.id.create_group_list_user_select_switch)
         val user_icon: CircleImageView = itemView.findViewById(R.id.create_group_list_user_icon_imageView)
         val user_name: TextView = itemView.findViewById(R.id.create_group_list_user_name_textView)
+        var user_id: String = "none"
     }
 
     // ユーザオブジェクトデータを格納
@@ -33,19 +34,12 @@ class createGroupAdapter(private val context: Context)
     }
 
     // ユーザ選択メソッド
-    fun selectUsers(r: RecyclerView): Int {
+    // 返り値<String>: ユーザID or "none"
+    fun selectUsers(r: RecyclerView, i: Int): String {
 
         // リサイクルビューに格納されているアイテム分ループ
-        var vh: ViewHolder
-        var cnt = 0
-
-        for (i in 0 .. 4) {
-            vh = r.findViewHolderForAdapterPosition(i) as ViewHolder
-            if (vh.user_select.isChecked) {
-                cnt += 1
-            }
-        }
-        return cnt
+        val vh: ViewHolder = r.findViewHolderForAdapterPosition(i) as ViewHolder
+        return vh.user_id
     }
 
     // ビューを生成
@@ -61,6 +55,7 @@ class createGroupAdapter(private val context: Context)
         holder.user_select.setChecked(false)
         Picasso.get().load(itemList[position].user.img).into(holder.user_icon)
         holder.user_name.text = itemList[position].user.name
+        holder.user_id = itemList[position].user.uid
 
         // ユーザの選択
         holder.itemView.setOnClickListener{

@@ -76,5 +76,6 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/button_round_blue"
+        android:enabled="false"
         android:text="作成" />
 </LinearLayout>
