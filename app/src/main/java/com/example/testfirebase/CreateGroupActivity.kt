@@ -15,8 +15,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.forEach
-import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -57,6 +55,39 @@ class CreateGroupActivity : AppCompatActivity() {
         // アクションバー表記変更
         supportActionBar?.title = "グループを作成"
 
+        // DBから取得してきたデータをアダプタに格納
+        val loginUserRef = db.collection("user").document(me!!.uid)
+        loginUserRef.get().addOnSuccessListener {
+            loginUser = it.toObject(User::class.java)
+            Log.d("LOGIN_USER", "${it.data}")
+            Log.d("LOGIN_USER", "${loginUser?.name}")
+
+            val users = db.collection("user")
+            users.get().addOnSuccessListener {
+                it.forEach {
+                    // 自分のユーザオブジェクトを取得
+                    getUser = it.toObject(User::class.java)
+                    Log.d("GET_USER","${it.toObject(User::class.java)}")
+                    Log.d("GET_USER","${getUser!!.name}")
+
+                    if(!(loginUser?.name == getUser!!.name)) {
+                        createUserListAdapter?.add(getUser!!)
+                        Log.d("ADD_USER", "${getUser}")
+                    }
+                }
+                // アダプタに関連付け
+                recy.adapter = createUserListAdapter
+                // ボタンを有効化
+                subb.setEnabled(true)
+
+            }.addOnFailureListener {
+                Log.d("GET_FAILED", it.message)
+            }
+
+        }.addOnFailureListener {
+            Log.d("GET_FAILED", it.message)
+        }
+
         // グループアイコン変更の処理
         icon.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
@@ -83,40 +114,6 @@ class CreateGroupActivity : AppCompatActivity() {
 
         })
 
-        // DBから取得してきたデータをアダプタに格納
-        val loginUserRef = db.collection("user").document(me!!.uid)
-        loginUserRef.get().addOnSuccessListener {
-            loginUser = it.toObject(User::class.java)
-            Log.d("GET_USER", "${it.data}")
-            Log.d("GET_USER", "${loginUser?.name}")
-
-            val users = db.collection("user")
-            users.get().addOnSuccessListener {
-                it.forEach {
-                    // 自分のユーザオブジェクトを取得
-                    getUser = it.toObject(User::class.java)
-                    Log.d("GET_USER","${it.toObject(User::class.java)}")
-                    Log.d("GET_USER","${getUser!!.name}")
-
-                    if(!(loginUser?.name == getUser!!.name)) {
-                        createUserListAdapter?.add(getUser!!)
-                        Log.d("USER" ,"${loginUser}")
-                        Log.d("USER", "${getUser}")
-                    }
-                }
-                // アダプタに関連付け
-                recy.adapter = createUserListAdapter
-                // ボタンを有効化
-                subb.setEnabled(true)
-
-            }.addOnFailureListener {
-                Log.d("GET_FAILED", it.message)
-            }
-
-        }.addOnFailureListener {
-            Log.d("GET_FAILED", it.message)
-        }
-
         // ボタン押下時のアクション
         subb.setOnClickListener {
 
@@ -138,8 +135,8 @@ class CreateGroupActivity : AppCompatActivity() {
                 // ユーザID配列
                 var uid_array: Array<String?> = arrayOfNulls(createUserListAdapter.itemCount)
 
-                // 配列用数分呼び出し 4
-                for (i in 0 .. createUserListAdapter.itemCount){
+                // 配列用数分呼び出し
+                for (i in 0 .. 4){
                     uid_array[i] = createUserListAdapter.selectUsers(recy, i)
                 }
                 /*
