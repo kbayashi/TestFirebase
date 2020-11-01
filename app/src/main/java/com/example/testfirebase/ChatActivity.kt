@@ -10,8 +10,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_chat.*
 import messageAdapter
 
-private lateinit var auth: FirebaseAuth
-
 class ChatActivity : AppCompatActivity() {
 
     //自分のユーザ情報を取得
