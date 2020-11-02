@@ -36,6 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:background="#00000000"
         android:ems="10"
         android:focusable="false"
         android:gravity="start|top"
@@ -63,9 +64,10 @@
         android:id="@+id/time_line_recyclerview_row_image_recyclerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/time_line_recyclerview_row_editTextTextMultiLine"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="@+id/time_line_recyclerview_row_editTextTextMultiLine"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/time_line_recyclerview_row_editTextTextMultiLine" />
 
     <TextView

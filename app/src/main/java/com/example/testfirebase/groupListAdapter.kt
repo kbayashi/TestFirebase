@@ -41,6 +41,4 @@ class groupListAdapter(private val context: Context)
 
     }
 
-
-
 }
