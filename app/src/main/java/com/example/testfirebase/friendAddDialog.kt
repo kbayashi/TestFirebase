@@ -92,8 +92,10 @@ class friendAddDialog :DialogFragment(){
             val selectDialog = selectDialogMultiple("趣味",  dialog.friend_add_dialog_hobby_content_textView,"hoby", selectedList)
             selectDialog.show(childFragmentManager, "")
         }
+        
 
         return dialog
+        
     }
 
     private fun callActivity(mutableList: MutableList<User>){

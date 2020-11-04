@@ -95,20 +95,16 @@ class UserListFragment: Fragment() {
             setUp(view,loginUser!!)
 
             val users = db.collection("user")
-            users.get().addOnSuccessListener {
-                it.forEach {
-                    Log.d("ユーザ取得","${it.toObject(User::class.java)}")
-                    var getUser = it.toObject(User::class.java)
-                    Log.d("ユーザ取得","${getUser.name}")
-                    if(!(loginUser?.name == getUser.name)) {
-                        Log.d("ユーザ" ,"${loginUser}")
-                        Log.d("ユーザ", "${getUser}")
-                        userListAdapter?.add(getUser)
+            db.collection("user-friend")
+                .document("get").collection(loginUser!!.uid).get().addOnSuccessListener {
+                    it.forEach {
+                        db.collection("user").document(it.id).get().addOnSuccessListener {
+                            var user = it.toObject(User::class.java)
+                            userListAdapter?.add(user!!)
+                            user_list_user_recyclerView.adapter = userListAdapter
+                        }
                     }
                 }
-            }.addOnFailureListener {
-                Log.d("ユーザ取得失敗", it.message)
-            }
             //自分のプロフィール画面に飛ばしたい
             view.user_list_my_profile_constraintLayout.setOnClickListener {
                 val intent = Intent(context, UserMyProfileActivity::class.java)

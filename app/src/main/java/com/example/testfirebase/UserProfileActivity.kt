@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.testfirebase.UserListFragment.Companion.SELECT_USER
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_user_my_profile.*
@@ -36,5 +38,27 @@ class UserProfileActivity : AppCompatActivity() {
             intent.putExtra(SELECT_USER, get_user)
             startActivity(intent)
         }
+
+        //友達追加・仮登録
+        user_profile_friend_add_floatingActionButton.setOnClickListener {
+
+            val ref = FirebaseFirestore.getInstance()
+            val uid = FirebaseAuth.getInstance().uid.toString()
+
+            val firendData = hashMapOf(
+                "uid" to get_user.uid
+            )
+            val temporaryRegistrationData = hashMapOf(
+                "uid" to uid
+            )
+
+            ref.collection("user-friend").
+                document("get").collection(uid).document(get_user.uid)
+                .set(firendData).addOnSuccessListener {
+                    ref.collection("friend-temporary-registration").document("get").
+                    collection(get_user.uid).document(uid).set(temporaryRegistrationData)
+                }
+        }
+
     }
 }
