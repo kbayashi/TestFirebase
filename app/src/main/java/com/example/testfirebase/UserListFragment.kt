@@ -80,7 +80,7 @@ class UserListFragment: Fragment() {
         groupListAdapter.add()
 
     }
-    //ユーザ取り出す
+    //友達を取り出す
     private fun fetchUsers(view: View){
         val db = FirebaseFirestore.getInstance()
         var loginUser:User? = null

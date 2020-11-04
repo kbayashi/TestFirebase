@@ -3,6 +3,8 @@ package com.example.testfirebase
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import com.example.testfirebase.UserListFragment.Companion.SELECT_USER
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -11,6 +13,9 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_user_my_profile.*
 
 class UserProfileActivity : AppCompatActivity() {
+
+    val uid = FirebaseAuth.getInstance().uid.toString()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
@@ -38,6 +43,13 @@ class UserProfileActivity : AppCompatActivity() {
             intent.putExtra(SELECT_USER, get_user)
             startActivity(intent)
         }
+
+        FirebaseFirestore.getInstance().collection("user-friend")
+            .document("get").collection(uid).document(get_user.uid).get().addOnSuccessListener {
+                if(it.id == get_user.uid){
+                    user_profile_friend_add_floatingActionButton.visibility = View.GONE
+                }
+            }
 
         //友達追加・仮登録
         user_profile_friend_add_floatingActionButton.setOnClickListener {
