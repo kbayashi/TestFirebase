@@ -144,23 +144,56 @@ class CreateGroupActivity : AppCompatActivity() {
                     .show()
             }else{
 
-                // ユーザ選択判定
-                var str = ""
-                for (i in 0 .. user_select_array.size-1) {
-
-                    str += user_select_array[i]
-                    str += ":"
-                    str += user_id_array[i]
-                    str += "\n"
-
+                // ユーザが一人以上選択されているか判定
+                var flag = false
+                for (i in 0 .. user_select_array.size-1 ){
+                    if (user_select_array[i]) flag = true
                 }
 
-                // メンバー規定の分岐
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.app_name)
-                    .setMessage(str)
-                    .setPositiveButton("OK"){ dialog, which -> }
-                    .show()
+                // ユーザ選択数の分岐
+                if (flag == true){
+
+                    // Firebaseにグループの型を作成(一意なグループIDも同時に生成)
+                    val cGroup = db.collection("group").document()
+
+                    // グループ名
+                    val cInfo = hashMapOf(
+                        "name" to edit.text.toString(),
+                        "icon" to "none",
+                        "topic" to "グループの活用目的を決めよう"
+                    )
+                    cGroup.set(cInfo)
+
+                    // メンバー
+                    data class cUser(
+                        val uid: String? = null
+                    )
+                    // 自分を追加する
+                    cGroup.collection("member").add(cUser(me.uid))
+
+                    // 自分以外のユーザを追加する
+                    for (i in 0 .. user_select_array.size-1){
+                        if (user_select_array[i] == true){
+                            cGroup.collection("member").add(cUser(user_id_array[i]))
+                        }
+                    }
+
+                    // 通知
+                    AlertDialog.Builder(this)
+                        .setTitle(R.string.app_name)
+                        .setMessage("グループを作成しました！")
+                        .setPositiveButton("OK"){ dialog, which -> }
+                        .show()
+
+                }else{
+
+                    AlertDialog.Builder(this)
+                        .setTitle(R.string.app_name)
+                        .setMessage("最低1人以上ユーザを選択してください")
+                        .setPositiveButton("OK"){ dialog, which -> }
+                        .show()
+                }
+
             }
         }
     }
