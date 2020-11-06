@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
-import androidx.core.view.forEach
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -14,10 +13,10 @@ import de.hdodenhof.circleimageview.CircleImageView
 class createGroupAdapter(private val context: Context)
     :RecyclerView.Adapter<createGroupAdapter.ViewHolder>(){
 
-    var itemClickListener: ((User)->Unit)? = null
+    var itemClickListner : ((Int, Boolean)->Unit)? = null
 
-    fun setOnclickListener(listener:(User)->Unit) {
-        itemClickListener = listener
+    fun setOnclickListener(listener:(Int, Boolean)->Unit){
+        itemClickListner = listener
     }
 
     // ViewHolder
@@ -47,7 +46,7 @@ class createGroupAdapter(private val context: Context)
 
     override fun getItemCount(): Int = itemList.size
 
-    override fun onBindViewHolder(holder:ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.user_select.setChecked(false)
         Picasso.get().load(itemList[position].user.img).into(holder.user_icon)
         holder.user_name.text = itemList[position].user.name
@@ -56,8 +55,10 @@ class createGroupAdapter(private val context: Context)
         holder.itemView.setOnClickListener {
             if (holder.user_select.isChecked == false){
                 holder.user_select.setChecked(true)
+                itemClickListner?.invoke(position, true)
             }else{
                 holder.user_select.setChecked(false)
+                itemClickListner?.invoke(position, false)
             }
         }
     }

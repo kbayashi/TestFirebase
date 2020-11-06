@@ -53,12 +53,12 @@ class CreateGroupActivity : AppCompatActivity() {
         // アダプタ
         var createUserListAdapter = createGroupAdapter(this)
 
-        // アクションバー表記変更
-        supportActionBar?.title = "グループを作成"
-
         // ユーザ選択配列 and ユーザID配列
         val user_select_array: ArrayList<Boolean> = ArrayList()
         val user_id_array: ArrayList<String> = ArrayList()
+
+        // アクションバー表記変更
+        supportActionBar?.title = "グループを作成"
 
         // DBから取得してきたデータをアダプタに格納
         val loginUserRef = db.collection("user").document(me!!.uid)
@@ -93,6 +93,11 @@ class CreateGroupActivity : AppCompatActivity() {
 
         }.addOnFailureListener {
             Log.d("GET_FAILED", it.message)
+        }
+
+        // ユーザ選択処理
+        createUserListAdapter.setOnclickListener { position: Int, bool: Boolean ->
+            user_select_array[position] = bool
         }
 
         // グループアイコン変更の処理
@@ -139,10 +144,21 @@ class CreateGroupActivity : AppCompatActivity() {
                     .show()
             }else{
 
+                // ユーザ選択判定
+                var str = ""
+                for (i in 0 .. user_select_array.size-1) {
+
+                    str += user_select_array[i]
+                    str += ":"
+                    str += user_id_array[i]
+                    str += "\n"
+
+                }
+
                 // メンバー規定の分岐
                 AlertDialog.Builder(this)
                     .setTitle(R.string.app_name)
-                    .setMessage("")
+                    .setMessage(str)
                     .setPositiveButton("OK"){ dialog, which -> }
                     .show()
             }
@@ -152,9 +168,9 @@ class CreateGroupActivity : AppCompatActivity() {
     // ギャラリーから画像を選択するメソッド
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        //写真選択アプリが呼び出され、ちゃんと操作して、データが入っていたら
+        // 写真選択アプリが呼び出され、ちゃんと操作して、データが入っていたら
         if(requestCode == 0 && resultCode == Activity.RESULT_OK && data != null){
-            //写真をボタンの背景に設定
+            // 写真をボタンの背景に設定
             Log.e("GroupIcon","Photo select")
             Log.d("GroupIcon","${data.data}")
             selectedPhotoUri = data.data
