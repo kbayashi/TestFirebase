@@ -28,6 +28,8 @@ class CreateGroupActivity : AppCompatActivity() {
 
     // 画像選択
     private var selectedPhotoUri: Uri? = null
+    // グループアイコン保存パス
+    private var gIcon = "none"
 
     // 画面生成
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -159,7 +161,7 @@ class CreateGroupActivity : AppCompatActivity() {
                     // グループ名
                     val cInfo = hashMapOf(
                         "name" to edit.text.toString(),
-                        "icon" to "none",
+                        "icon" to gIcon,
                         "topic" to "グループの活用目的を決めよう"
                     )
                     cGroup.set(cInfo)
@@ -223,7 +225,7 @@ class CreateGroupActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Log.d(UserProfileEditActivity.USER_REGISTAR, "アップロード成功${it.metadata?.path}")
                 ref.downloadUrl.addOnSuccessListener {
-                    // my_user?.img = it.toString()
+                    gIcon = it.toString()
                     Log.d(UserProfileEditActivity.USER_REGISTAR, "File 場所$it")
                     // FirebaseFirestore.getInstance().collection("user").document(my_user!!.uid).set(my_user!!)
                 }
@@ -231,8 +233,7 @@ class CreateGroupActivity : AppCompatActivity() {
             .addOnFailureListener{
                 //do same logging here
                 Log.d(UserProfileEditActivity.USER_REGISTAR, "作成に失敗しました ${it.message}")
-                Toast.makeText(this, "作成に失敗しました ${it.message}", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, "作成に失敗しました ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
 }
