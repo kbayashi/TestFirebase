@@ -44,9 +44,11 @@ class UserProfileActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        //すでに追加しているなら友だち追加ボタンを消す
         FirebaseFirestore.getInstance().collection("user-friend")
             .document("get").collection(uid).document(get_user.uid).get().addOnSuccessListener {
                 if(it.id == get_user.uid){
+                    Log.d("友達のID", "${it.id}")
                     user_profile_friend_add_floatingActionButton.visibility = View.GONE
                 }
             }

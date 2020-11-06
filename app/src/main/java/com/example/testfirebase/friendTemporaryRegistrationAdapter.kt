@@ -1,7 +1,6 @@
 package com.example.testfirebase
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,12 +26,12 @@ class friendTemporaryRegistrationAdapter(private val context: Context)
         val user_image: ImageView = itemView.findViewById(R.id.user_list_row_user_imageView)
     }
 
-    class userListItem(val user: User){}
+    class friendTemporaryListItem(val user: User){}
 
-    private var itemList = mutableListOf<userListItem>()
+    private var itemList = mutableListOf<friendTemporaryListItem>()
 
     fun add(user: User){
-        itemList.add(userListItem(user))
+        itemList.add(friendTemporaryListItem(user))
     }
 
     //セルが必要になるたびに呼び出される。
@@ -50,8 +49,8 @@ class friendTemporaryRegistrationAdapter(private val context: Context)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.user_name.text = itemList[position].user.name
         holder.user_pr.text = itemList[position].user.pr
-        /*Picasso.get().load(itemList[position].user.img).
-        into(holder.user_image)*/
+        Picasso.get().load(itemList[position].user.img).
+        into(holder.user_image)
     }
 
 }

@@ -23,7 +23,7 @@ class UserListFragment: Fragment() {
 
     var userListAdapter:userListAdapter? = null
     var groupListAdapter:groupListAdapter? = null
-    var friendTemporaryRegistrationAdapter:groupListAdapter? = null
+    var friendTemporaryRegistrationAdapter:friendTemporaryRegistrationAdapter? = null
     var friendDisplayFlg = false
     var groupDisplayFlg = false
     var friendTemporaryRegistrationFlg = false
@@ -45,7 +45,6 @@ class UserListFragment: Fragment() {
 
         //ダミー
         dummydata(groupListAdapter!!)
-        dummydata(friendTemporaryRegistrationAdapter!!)
 
         //ユーザ取り出して表示
         fetchUsers(view)
@@ -76,7 +75,7 @@ class UserListFragment: Fragment() {
         super.onAttach(context)
         userListAdapter = userListAdapter(context)
         groupListAdapter = groupListAdapter(context)
-        friendTemporaryRegistrationAdapter = groupListAdapter(context)
+        friendTemporaryRegistrationAdapter = friendTemporaryRegistrationAdapter(context)
     }
 
     //ダミーデータ格納
@@ -122,24 +121,33 @@ class UserListFragment: Fragment() {
         }
 
         //仮登録された人を取り出す
-        /*FirebaseFirestore.getInstance().collection("friend-temporary-registration")
+        FirebaseFirestore.getInstance().collection("friend-temporary-registration")
             .document("get").collection(uid).get().addOnSuccessListener {
-                it.forEach {item ->
-                    /*var user = item.toObject(User::class.java)
-                    Log.d("仮登録ユーザ","${user.name}")
-                    friendTemporaryRegistrationAdapter?.add(user)
-                    view.user_list_temporary_registration_recyclerView.adapter =
-                        friendTemporaryRegistrationAdapter*/
-                }
-                if(friendTemporaryRegistrationAdapter!!.itemCount > 0) {
-                    view.user_list_temporary_registration_recyclerView.visibility = View.VISIBLE
-                    view.user_list_temporary_registration_constraintLayout.visibility = View.VISIBLE
+                it.forEach {id ->
+                    FirebaseFirestore.getInstance().collection("user").document(id.id)
+                        .get().addOnSuccessListener {item->
+                            var user = item.toObject(User::class.java)
+                            Log.d("仮登録ユーザ","${user?.name}")
+                            Log.d("karitouroku","${user?.name}")
+                            friendTemporaryRegistrationAdapter?.add(user!!)
 
-                }else{
-                    view.user_list_temporary_registration_recyclerView.visibility = View.GONE
-                    view.user_list_temporary_registration_constraintLayout.visibility = View.GONE
+                            if(friendTemporaryRegistrationAdapter!!.itemCount > 0) {
+                                view.user_list_temporary_registration_recyclerView.visibility = View.VISIBLE
+                                view.user_list_temporary_registration_constraintLayout.visibility = View.VISIBLE
+                                view.user_list_temporary_registration_recyclerView.adapter =
+                                    friendTemporaryRegistrationAdapter
+
+                            }else{
+                                view.user_list_temporary_registration_recyclerView.visibility = View.GONE
+                                view.user_list_temporary_registration_constraintLayout.visibility = View.GONE
+                            }
+
+                    }
+
                 }
-            }*/
+
+
+            }
     }
 
     //ビューの初期化
