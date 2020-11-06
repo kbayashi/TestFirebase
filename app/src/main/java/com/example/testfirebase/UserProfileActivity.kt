@@ -44,14 +44,25 @@ class UserProfileActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //すでに追加しているなら友だち追加ボタンを消す
+        //すでに追加・申請しているなら友だち追加ボタンを消す
         FirebaseFirestore.getInstance().collection("user-friend")
             .document("get").collection(uid).document(get_user.uid).get().addOnSuccessListener {
-                if(it.id == get_user.uid){
-                    Log.d("友達のID", "${it.id}")
+                if(it["uid"] == get_user.uid){
+                    Log.d("友達のID", "${it["uid"]}")
                     user_profile_friend_add_floatingActionButton.visibility = View.GONE
                 }
             }
+
+        Log.d("get_user", "${get_user.uid}")
+        FirebaseFirestore.getInstance().collection("friend-temporary-registration").
+            document("get").collection(uid).get().addOnSuccessListener {
+                it.forEach {
+                    if(it["uid"] == get_user.uid){
+                      Log.d("自分のID", "${it["uid"]}")
+                        user_profile_friend_add_floatingActionButton.visibility = View.GONE
+                    }
+                }
+        }
 
         //友達追加・仮登録
         user_profile_friend_add_floatingActionButton.setOnClickListener {
