@@ -23,8 +23,10 @@ class UserListFragment: Fragment() {
 
     var userListAdapter:userListAdapter? = null
     var groupListAdapter:groupListAdapter? = null
+    var friendTemporaryRegistrationAdapter:groupListAdapter? = null
     var friendDisplayFlg = false
     var groupDisplayFlg = false
+    var friendTemporaryRegistrationFlg = false
 
     val uid = FirebaseAuth.getInstance().uid
 
@@ -43,6 +45,7 @@ class UserListFragment: Fragment() {
 
         //ダミー
         dummydata(groupListAdapter!!)
+        dummydata(friendTemporaryRegistrationAdapter!!)
 
         //ユーザ取り出して表示
         fetchUsers(view)
@@ -54,6 +57,10 @@ class UserListFragment: Fragment() {
         //グループリストを表示・非表示
         view.user_list_group_constraintLayout.setOnClickListener {
             groupDisplaySwitching(view)
+        }
+        //友達申請表示・非表示
+        view.user_list_temporary_registration_constraintLayout.setOnClickListener {
+            temporaryRegistrationSwitching(view)
         }
 
         //ユーザプロフィール画面に飛ばしたい
@@ -69,6 +76,7 @@ class UserListFragment: Fragment() {
         super.onAttach(context)
         userListAdapter = userListAdapter(context)
         groupListAdapter = groupListAdapter(context)
+        friendTemporaryRegistrationAdapter = groupListAdapter(context)
     }
 
     //ダミーデータ格納
@@ -94,6 +102,7 @@ class UserListFragment: Fragment() {
             //初期設定
             setUp(view,loginUser!!)
 
+            //友達を取り出す
             val users = db.collection("user")
             db.collection("user-friend")
                 .document("get").collection(loginUser!!.uid).get().addOnSuccessListener {
@@ -101,7 +110,7 @@ class UserListFragment: Fragment() {
                         db.collection("user").document(it.id).get().addOnSuccessListener {
                             var user = it.toObject(User::class.java)
                             userListAdapter?.add(user!!)
-                            user_list_user_recyclerView.adapter = userListAdapter
+                            view.user_list_user_recyclerView.adapter = userListAdapter
                         }
                     }
                 }
@@ -111,6 +120,26 @@ class UserListFragment: Fragment() {
                 startActivity(intent)
             }
         }
+
+        //仮登録された人を取り出す
+        /*FirebaseFirestore.getInstance().collection("friend-temporary-registration")
+            .document("get").collection(uid).get().addOnSuccessListener {
+                it.forEach {item ->
+                    /*var user = item.toObject(User::class.java)
+                    Log.d("仮登録ユーザ","${user.name}")
+                    friendTemporaryRegistrationAdapter?.add(user)
+                    view.user_list_temporary_registration_recyclerView.adapter =
+                        friendTemporaryRegistrationAdapter*/
+                }
+                if(friendTemporaryRegistrationAdapter!!.itemCount > 0) {
+                    view.user_list_temporary_registration_recyclerView.visibility = View.VISIBLE
+                    view.user_list_temporary_registration_constraintLayout.visibility = View.VISIBLE
+
+                }else{
+                    view.user_list_temporary_registration_recyclerView.visibility = View.GONE
+                    view.user_list_temporary_registration_constraintLayout.visibility = View.GONE
+                }
+            }*/
     }
 
     //ビューの初期化
@@ -122,6 +151,8 @@ class UserListFragment: Fragment() {
         view.user_list_group_list_recyclerView.adapter = groupListAdapter
         view.user_list_group_list_recyclerView.visibility = View.GONE
 
+        view.user_list_temporary_registration_recyclerView.visibility = View.GONE
+        view.user_list_temporary_registration_recyclerView.adapter = friendTemporaryRegistrationAdapter
         //recyclerviewに下線を足す
         /*view.user_list_user_recyclerView.addItemDecoration(DividerItemDecoration(activity,
             DividerItemDecoration.VERTICAL))*/
@@ -170,6 +201,19 @@ class UserListFragment: Fragment() {
             groupDisplayFlg = true
             view.user_list_group_list_recyclerView.visibility = View.VISIBLE
             view.user_list_group_title_arrow_imageView.setImageResource(R.drawable.ic_expand_more_24dp)
+        }
+    }
+
+    //友達仮登録表示・非表示
+    private fun temporaryRegistrationSwitching(view: View){
+        if(friendTemporaryRegistrationFlg == true){
+            friendTemporaryRegistrationFlg = false
+            view.user_list_temporary_registration_recyclerView.visibility = View.GONE
+            view.user_list_temporary_registration_imageView.setImageResource(R.drawable.ic_expand_less_24dp)
+        }else{
+            friendTemporaryRegistrationFlg = true
+            view.user_list_temporary_registration_recyclerView.visibility = View.VISIBLE
+            view.user_list_temporary_registration_imageView.setImageResource(R.drawable.ic_expand_more_24dp)
         }
     }
 

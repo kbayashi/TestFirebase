@@ -29,171 +29,209 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/test"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/test"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:id="@+id/user_list_group_constraintLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/user_list_my_profile_constraintLayout"
+                app:layout_constraintStart_toStartOf="@+id/user_list_my_profile_constraintLayout"
+                app:layout_constraintTop_toBottomOf="@+id/user_list_my_profile_constraintLayout">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/user_list_group_constraintLayout"
-                    android:layout_width="0dp"
+                <ImageView
+                    android:id="@+id/user_list_group_title_arrow_imageView"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="@+id/user_list_my_profile_constraintLayout"
-                    app:layout_constraintStart_toStartOf="@+id/user_list_my_profile_constraintLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/user_list_my_profile_constraintLayout">
+                    app:layout_constraintBottom_toBottomOf="@+id/user_list_group_title_textView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/user_list_group_title_textView"
+                    app:srcCompat="@drawable/ic_expand_less_24dp" />
 
-                    <ImageView
-                        android:id="@+id/user_list_group_title_arrow_imageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="@+id/user_list_group_title_textView"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/user_list_group_title_textView"
-                        app:srcCompat="@drawable/ic_expand_less_24dp" />
-
-                    <TextView
-                        android:id="@+id/user_list_group_title_textView"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:text="グループ"
-                        android:textColor="@color/design_default_color_on_secondary"
-                        android:textSize="18sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/user_list_group_title_arrow_imageView"
-                        app:layout_constraintStart_toEndOf="@+id/user_list_group_title_imageView"
-                        app:layout_constraintTop_toTopOf="@+id/user_list_group_title_imageView" />
-
-                    <ImageView
-                        android:id="@+id/user_list_group_title_imageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_people_outline_black_24dp" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/user_list_user_recyclerView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="@+id/user_list_friend_constraintLayout"
-                    app:layout_constraintStart_toStartOf="@+id/user_list_friend_constraintLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/user_list_friend_constraintLayout">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/user_list_group_list_recyclerView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="@+id/user_list_group_constraintLayout"
-                    app:layout_constraintStart_toStartOf="@+id/user_list_group_constraintLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/user_list_group_constraintLayout" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/user_list_friend_constraintLayout"
+                <TextView
+                    android:id="@+id/user_list_group_title_textView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/user_list_group_list_recyclerView">
+                    android:layout_marginBottom="16dp"
+                    android:text="グループ"
+                    android:textColor="@color/design_default_color_on_secondary"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/user_list_group_title_arrow_imageView"
+                    app:layout_constraintStart_toEndOf="@+id/user_list_group_title_imageView"
+                    app:layout_constraintTop_toTopOf="@+id/user_list_group_title_imageView" />
 
-                    <ImageView
-                        android:id="@+id/user_list_friend_title_imageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_person_black_24dp" />
-
-                    <TextView
-                        android:id="@+id/user_list_friend_title_textView"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="友達"
-                        android:textColor="@color/design_default_color_on_secondary"
-                        android:textSize="18sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/user_list_friend_title_imageView"
-                        app:layout_constraintEnd_toStartOf="@+id/user_list_friend_title_arrow_imageView"
-                        app:layout_constraintStart_toEndOf="@+id/user_list_friend_title_imageView"
-                        app:layout_constraintTop_toTopOf="@+id/user_list_friend_title_imageView"
-                        app:layout_constraintVertical_bias="0.39" />
-
-                    <ImageView
-                        android:id="@+id/user_list_friend_title_arrow_imageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="@+id/user_list_friend_title_textView"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/user_list_friend_title_textView"
-                        app:srcCompat="@drawable/ic_expand_less_24dp" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/user_list_my_profile_constraintLayout"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/user_list_group_title_imageView"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/user_list_my_name_textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="24dp"
-                        android:textColor="@color/design_default_color_on_secondary"
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toEndOf="@+id/user_list_my_circleimageView"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="konnnnnn" />
-
-                    <TextView
-                        android:id="@+id/user_list_my_pr_textView"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="4dp"
-                        android:maxLines="1"
-                        app:layout_constraintStart_toEndOf="@+id/user_list_my_circleimageView"
-                        app:layout_constraintTop_toBottomOf="@+id/user_list_my_name_textView"
-                        tools:text="わかやましゅっしんくそぞこなかめ" />
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/user_list_my_circleimageView"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="24dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"></de.hdodenhof.circleimageview.CircleImageView>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_people_outline_black_24dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/user_list_user_recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="@+id/user_list_friend_constraintLayout"
+                app:layout_constraintStart_toStartOf="@+id/user_list_friend_constraintLayout"
+                app:layout_constraintTop_toBottomOf="@+id/user_list_friend_constraintLayout">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/user_list_group_list_recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="@+id/user_list_group_constraintLayout"
+                app:layout_constraintStart_toStartOf="@+id/user_list_group_constraintLayout"
+                app:layout_constraintTop_toBottomOf="@+id/user_list_group_constraintLayout" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/user_list_friend_constraintLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_list_group_list_recyclerView">
+
+                <ImageView
+                    android:id="@+id/user_list_friend_title_imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_person_black_24dp" />
+
+                <TextView
+                    android:id="@+id/user_list_friend_title_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="友達"
+                    android:textColor="@color/design_default_color_on_secondary"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/user_list_friend_title_imageView"
+                    app:layout_constraintEnd_toStartOf="@+id/user_list_friend_title_arrow_imageView"
+                    app:layout_constraintStart_toEndOf="@+id/user_list_friend_title_imageView"
+                    app:layout_constraintTop_toTopOf="@+id/user_list_friend_title_imageView"
+                    app:layout_constraintVertical_bias="0.39" />
+
+                <ImageView
+                    android:id="@+id/user_list_friend_title_arrow_imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/user_list_friend_title_textView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/user_list_friend_title_textView"
+                    app:srcCompat="@drawable/ic_expand_less_24dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/user_list_my_profile_constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/user_list_my_name_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    android:textColor="@color/design_default_color_on_secondary"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/user_list_my_circleimageView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="konnnnnn" />
+
+                <TextView
+                    android:id="@+id/user_list_my_pr_textView"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:maxLines="1"
+                    app:layout_constraintStart_toEndOf="@+id/user_list_my_circleimageView"
+                    app:layout_constraintTop_toBottomOf="@+id/user_list_my_name_textView"
+                    tools:text="わかやましゅっしんくそぞこなかめ" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/user_list_my_circleimageView"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></de.hdodenhof.circleimageview.CircleImageView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/user_list_temporary_registration_constraintLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_list_user_recyclerView">
+
+                <TextView
+                    android:id="@+id/user_list_temporary_registration_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="友達申請されています"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/user_list_temporary_registration_imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_expand_less_24dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/user_list_temporary_registration_recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="@+id/user_list_temporary_registration_constraintLayout"
+                app:layout_constraintStart_toStartOf="@+id/user_list_temporary_registration_constraintLayout"
+                app:layout_constraintTop_toBottomOf="@+id/user_list_temporary_registration_constraintLayout" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
