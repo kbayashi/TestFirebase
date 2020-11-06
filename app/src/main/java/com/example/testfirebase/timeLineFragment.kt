@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import kotlinx.android.synthetic.main.time_line_fragment.*
 import kotlinx.android.synthetic.main.time_line_fragment.view.*
 
 class timeLineFragment:Fragment(){
@@ -31,13 +34,26 @@ class timeLineFragment:Fragment(){
             DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
         )
 
+        //チャットボタンを押すと画面遷移
+        timeLineListAdapter?.setOnCommentClickListener {
+            val intent = Intent(context, TimeLineCommentActivity::class.java)
+            intent.putExtra("TimeLine", it)
+            startActivity(intent)
+        }
+
+        //タイムライン編集
+        timeLineListAdapter?.setOnTimeLineEditListner {
+            val intent = Intent(context, TimeLineAddActivity::class.java)
+            intent.putExtra("TIME_LINE_EDIT", it)
+            startActivity(intent)
+        }
+
         //追加画面
         view.time_line_floatingActionButton.setOnClickListener {
             val intent:Intent = Intent(context, TimeLineAddActivity::class.java)
             startActivity(intent)
         }
 
-        dummy(timeLineListAdapter!!)
     }
 
     override fun onAttach(context: Context) {
@@ -45,9 +61,33 @@ class timeLineFragment:Fragment(){
         timeLineListAdapter = timeLineListAdapter(context)
     }
 
-    fun dummy(timeLineListAdapter: timeLineListAdapter){
-        timeLineListAdapter.add()
-        timeLineListAdapter.add()
-        timeLineListAdapter.add()
+
+    override fun onStart() {
+        super.onStart()
+        getTimeLine()
     }
+
+    //タイムライン取得
+    fun getTimeLine(){
+        FirebaseFirestore.getInstance().collection("time-line").orderBy("time", Query.Direction.DESCENDING).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            timeLineListAdapter?.clear()
+            querySnapshot?.forEach {
+                timeLineListAdapter?.add(it.toObject(TimeLine::class.java))
+            }
+            view?.time_line_recyclerview?.adapter = timeLineListAdapter
+            if(timeLineListAdapter!!.itemCount > 0){
+                time_line_textView.visibility = View.INVISIBLE
+            }else{
+                time_line_textView.visibility = View.VISIBLE
+            }
+        }
+            /*.addOnSuccessListener {
+            timeLineListAdapter?.clear()
+            it.forEach {
+                timeLineListAdapter?.add(it.toObject(TimeLine::class.java))
+            }
+            view?.time_line_recyclerview?.adapter = timeLineListAdapter
+        }*/
+    }
+
 }

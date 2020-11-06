@@ -38,7 +38,7 @@ class selectDialogRadio(val title:String,val textView: TextView, val dbRefName: 
 
         var adapter = selectDialogRadioAdapter(context!!)
         AdapterSet(adapter)
-
+        dialog.select_dialog_recyclerView.adapter = adapter
         dialog.select_dialog_title_textView.text = title
 
         //選択ボタン
@@ -57,16 +57,27 @@ class selectDialogRadio(val title:String,val textView: TextView, val dbRefName: 
 
     //アダプターにデータをセット
     private fun AdapterSet(adapter: selectDialogRadioAdapter){
-        val ref = FirebaseFirestore.getInstance().collection(dbRefName)
-        ref.get().addOnSuccessListener {
-            Log.d(SELECT_DIALOG, "$it" )
-            it.forEach{
-                Log.d(SELECT_DIALOG,it["title"].toString())
-                adapter.add(it["title"].toString())
+        when(dbRefName){
+            "hoby" ->{
+                getResources().getStringArray(R.array.hobby).forEach {
+                    adapter.add(it)
+                }
             }
-            dialog?.select_dialog_recyclerView?.adapter = adapter
-        }.addOnFailureListener {
-            Log.d("取得失敗", it.message)
+            "sick" ->{
+                getResources().getStringArray(R.array.sick).forEach {
+                    adapter.add(it)
+                }
+            }
+            "age" -> {
+                getResources().getStringArray(R.array.age).forEach {
+                    adapter.add(it)
+                }
+            }
+            "live" ->{
+                getResources().getStringArray(R.array.live).forEach {
+                    adapter.add(it)
+                }
+            }
         }
     }
 
