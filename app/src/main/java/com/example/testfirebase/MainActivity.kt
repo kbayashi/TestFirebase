@@ -70,8 +70,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item?.itemId){
-            R.id.user_list_fragment_menu_friend_add -> {
+            R.id.user_list_fragment_menu_search -> {
                 val intent = Intent(this, FriendAddActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.user_list_fragment_menu_friend_add -> {
+                val intent = Intent(this, CreateGroupActivity::class.java)
                 startActivity(intent)
             }
         }
