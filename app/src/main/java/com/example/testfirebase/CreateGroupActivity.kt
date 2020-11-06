@@ -22,6 +22,7 @@ import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_create_group.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class CreateGroupActivity : AppCompatActivity() {
 
@@ -55,6 +56,10 @@ class CreateGroupActivity : AppCompatActivity() {
         // アクションバー表記変更
         supportActionBar?.title = "グループを作成"
 
+        // ユーザ選択配列 and ユーザID配列
+        val user_select_array: ArrayList<Boolean> = ArrayList()
+        val user_id_array: ArrayList<String> = ArrayList()
+
         // DBから取得してきたデータをアダプタに格納
         val loginUserRef = db.collection("user").document(me!!.uid)
         loginUserRef.get().addOnSuccessListener {
@@ -73,6 +78,8 @@ class CreateGroupActivity : AppCompatActivity() {
                     if(!(loginUser?.name == getUser!!.name)) {
                         createUserListAdapter?.add(getUser!!)
                         Log.d("ADD_USER", "${getUser}")
+                        user_select_array.add(false)
+                        user_id_array.add(getUser!!.uid)
                     }
                 }
                 // アダプタに関連付け
@@ -132,28 +139,10 @@ class CreateGroupActivity : AppCompatActivity() {
                     .show()
             }else{
 
-                // ユーザID配列
-                var uid_array: Array<String?> = arrayOfNulls(createUserListAdapter.itemCount)
-
-                // 配列用数分呼び出し
-                for (i in 0 .. 4){
-                    uid_array[i] = createUserListAdapter.selectUsers(recy, i)
-                }
-                /*
-                uid_array[0] = createUserListAdapter.selectUsers(recy, 0)
-                uid_array[1] = createUserListAdapter.selectUsers(recy, 1)
-                uid_array[2] = createUserListAdapter.selectUsers(recy, 2)
-                uid_array[3] = createUserListAdapter.selectUsers(recy, 3)
-                uid_array[4] = createUserListAdapter.selectUsers(recy, 4)
-                uid_array[5] = createUserListAdapter.selectUsers(recy, 5)
-                uid_array[6] = createUserListAdapter.selectUsers(recy, 6)
-                uid_array[7] = createUserListAdapter.selectUsers(recy, 7)
-                */
-
                 // メンバー規定の分岐
                 AlertDialog.Builder(this)
                     .setTitle(R.string.app_name)
-                    .setMessage(uid_array[0])
+                    .setMessage("")
                     .setPositiveButton("OK"){ dialog, which -> }
                     .show()
             }

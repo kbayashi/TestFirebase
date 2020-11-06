@@ -14,12 +14,17 @@ import de.hdodenhof.circleimageview.CircleImageView
 class createGroupAdapter(private val context: Context)
     :RecyclerView.Adapter<createGroupAdapter.ViewHolder>(){
 
-    // ビューホルダ
+    var itemClickListener: ((User)->Unit)? = null
+
+    fun setOnclickListener(listener:(User)->Unit) {
+        itemClickListener = listener
+    }
+
+    // ViewHolder
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val user_select: Switch = itemView.findViewById(R.id.create_group_list_user_select_switch)
         val user_icon: CircleImageView = itemView.findViewById(R.id.create_group_list_user_icon_imageView)
         val user_name: TextView = itemView.findViewById(R.id.create_group_list_user_name_textView)
-        var user_id: String = "none"
     }
 
     // ユーザオブジェクトデータを格納
@@ -31,15 +36,6 @@ class createGroupAdapter(private val context: Context)
     // 追加
     fun add(user: User){
         itemList.add(userListItem(user))
-    }
-
-    // ユーザ選択メソッド
-    // 返り値<String>: ユーザID or "none"
-    fun selectUsers(r: RecyclerView, i: Int): String {
-
-        // リサイクルビューに格納されているアイテム分ループ
-        val vh: ViewHolder = r.findViewHolderForAdapterPosition(i) as ViewHolder
-        return vh.user_id
     }
 
     // ビューを生成
@@ -55,10 +51,9 @@ class createGroupAdapter(private val context: Context)
         holder.user_select.setChecked(false)
         Picasso.get().load(itemList[position].user.img).into(holder.user_icon)
         holder.user_name.text = itemList[position].user.name
-        holder.user_id = itemList[position].user.uid
 
         // ユーザの選択
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             if (holder.user_select.isChecked == false){
                 holder.user_select.setChecked(true)
             }else{
@@ -66,4 +61,5 @@ class createGroupAdapter(private val context: Context)
             }
         }
     }
+
 }
