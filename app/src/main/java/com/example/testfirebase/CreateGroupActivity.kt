@@ -190,6 +190,7 @@ class CreateGroupActivity : AppCompatActivity() {
 
                             // グループチャット画面へ遷移
                             val intent = Intent(this, GroupChatActivity::class.java)
+                            intent.putExtra("GroupId", cGroup.id)
                             startActivity(intent)
                         }
                         .show()
