@@ -67,6 +67,13 @@ class UserListFragment: Fragment() {
             Log.d(SELECT_USER, "${user.name}")
             startActivity(intent)
         }
+        //チャット画面に飛ばす
+        userListAdapter?.setTalkTransitionListener {
+            val intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra(SELECT_USER, it)
+            //Log.d(SELECT_USER, "${user.name}")
+            startActivity(intent)
+        }
 
         //相手のプロフィール画面に飛ばす
         friendTemporaryRegistrationAdapter?.setOnClickListener {

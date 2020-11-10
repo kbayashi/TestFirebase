@@ -1,13 +1,17 @@
 package com.example.testfirebase
 
 import android.content.Context
+import android.content.DialogInterface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.user_list_fragment.view.*
 
@@ -18,6 +22,12 @@ class userListAdapter(private val context: Context)
 
     fun setOnclickListener(listener:(User)->Unit){
         itemClickListner = listener
+    }
+
+    var talkTransitionListner:((User)->Unit)? = null
+
+    fun setTalkTransitionListener(listener: (User) -> Unit){
+        talkTransitionListner = listener
     }
 
     //１行で使用する各部品（ビュー）を保持したもの
@@ -61,6 +71,28 @@ class userListAdapter(private val context: Context)
         holder.itemView.setOnClickListener {
             Log.d("ユーザ一覧","タッチ")
             itemClickListner?.invoke(itemList[position].user)
+        }
+
+        //長押ししたらダイアログを表示
+        holder.itemView.setOnLongClickListener {
+            val builder =  AlertDialog.Builder(context)
+            val items =
+                arrayOf("トーク", "削除")
+
+            builder.setItems(items, DialogInterface.OnClickListener { dialogInterface, i ->
+                when(i){
+                    //トーク
+                    0 ->{
+                        talkTransitionListner?.invoke(itemList[position].user)
+                    }
+                    //削除
+                    1->{
+
+                    }
+
+                }
+            }).show()
+            true
         }
     }
 
