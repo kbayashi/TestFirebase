@@ -8,11 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.user_list_fragment.*
 import kotlinx.android.synthetic.main.user_list_fragment.view.*
 
 class UserListFragment: Fragment() {
@@ -68,6 +66,11 @@ class UserListFragment: Fragment() {
             intent.putExtra(SELECT_USER, user)
             Log.d(SELECT_USER, "${user.name}")
             startActivity(intent)
+        }
+
+        //友達を承認するか削除するか
+        friendTemporaryRegistrationAdapter?.setOnLongClickListener {
+
         }
     }
 
