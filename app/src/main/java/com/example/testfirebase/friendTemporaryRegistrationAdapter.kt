@@ -109,6 +109,11 @@ class friendTemporaryRegistrationAdapter(private val context: Context)
             }).show()
             true
         }
+
+        //相手のプロフィール画面を表示
+        holder.itemView.setOnClickListener {
+            itemClickListner?.invoke(itemList[position].user)
+        }
     }
 
 }

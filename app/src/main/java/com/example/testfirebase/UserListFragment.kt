@@ -68,9 +68,11 @@ class UserListFragment: Fragment() {
             startActivity(intent)
         }
 
-        //友達を承認するか削除するか
+        //相手のプロフィール画面に飛ばす
         friendTemporaryRegistrationAdapter?.setOnClickListener {
-
+            val intent = Intent(context, UserProfileActivity::class.java)
+            intent.putExtra(SELECT_USER, it)
+            startActivity(intent)
         }
     }
 
