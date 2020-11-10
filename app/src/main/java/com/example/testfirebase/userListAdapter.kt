@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.user_list_fragment.view.*
@@ -49,6 +50,12 @@ class userListAdapter(private val context: Context)
         itemList.clear()
     }
 
+    fun remove(position: Int){
+        itemList.removeAt(position)
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, itemList.size)
+    }
+
     //セルが必要になるたびに呼び出される。
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -63,6 +70,9 @@ class userListAdapter(private val context: Context)
 
     //保持されているビューにデータなどを設定するここでリスナなどを設定する
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+        val uid = FirebaseAuth.getInstance().uid.toString()
+
         holder.user_name.text = itemList[position].user.name
         holder.user_pr.text = itemList[position].user.pr
         Picasso.get().load(itemList[position].user.img).
@@ -87,6 +97,14 @@ class userListAdapter(private val context: Context)
                     }
                     //削除
                     1->{
+                        FirebaseFirestore.getInstance().collection("user-friend")
+                            .document("get").collection(itemList[position].user.uid)
+                            .document(uid).delete().addOnSuccessListener {
+                                FirebaseFirestore.getInstance().collection("user-friend")
+                                    .document("get").collection(uid)
+                                    .document(itemList[position].user.uid).delete().addOnSuccessListener {
+                                    }
+                            }
 
                     }
 
