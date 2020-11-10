@@ -181,6 +181,8 @@ class CreateGroupActivity : AppCompatActivity() {
                     }
 
                     // 作成ダイアログ
+                    // 現状、このダイアログは確認のために表示しています。グループチャット画面完成時に
+                    // このダイアログは削除します
                     AlertDialog.Builder(this)
                         .setTitle(R.string.app_name)
                         .setMessage("グループを作成しました！")
@@ -189,6 +191,10 @@ class CreateGroupActivity : AppCompatActivity() {
                             finish()
                         })
                         .show()
+
+                    // グループチャット画面へ遷移
+                    val intent = Intent(this, GroupChatActivity::class.java)
+                    startActivity(intent)
 
                 }else{
 
