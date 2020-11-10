@@ -12,13 +12,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class GroupChatActivity : AppCompatActivity() {
 
-    // データクラス
-    data class Group(
-        val send_id: String? = null,
-        val message: String? = null,
-        val timestamp: Long? = null
-    )
-
     // Firebase
     private val auth = FirebaseAuth.getInstance()
     private val me = auth.currentUser
@@ -42,6 +35,27 @@ class GroupChatActivity : AppCompatActivity() {
         // アクションバーの表記を変更
         setTitle("グループチャット")
 
+        // メッセージ受信
+        val docRef = db.collection("group-message").document("get").collection(gid!!).orderBy("timestamp")
+        docRef.addSnapshotListener { snapshot, e ->
+
+            // アダプタに関連付け
+            val groupMessageListAdapter = groupMessageAdapter(this)
+
+            // データを取り出す
+            snapshot?.documentChanges?.forEach {
+
+                // GroupMessage型に変換
+                var groupMessagedata = it.document.toObject(GroupMessage::class.java)
+
+                // アダプターに追加
+                groupMessageListAdapter?.add(groupMessagedata)
+
+                // 一番下にスクロール
+                g_recy.scrollToPosition(groupMessageListAdapter.itemCount-1)
+            }
+        }
+
         // 送信ボタン
         g_send.setOnClickListener {
 
@@ -52,9 +66,8 @@ class GroupChatActivity : AppCompatActivity() {
 
                 // メッセージをDBに送信
                 send_group_message(me!!.uid, g_edit.text.toString())
-
-                // 送信完了通知(一時的)
-                Toast.makeText(applicationContext, g_edit.text, Toast.LENGTH_LONG).show()
+                // 削除
+                g_edit.text.clear()
             }
         }
     }
@@ -63,19 +76,10 @@ class GroupChatActivity : AppCompatActivity() {
     private fun send_group_message(id: String, msg: String){
 
         // メッセージ内容を格納
-        val g_msg = Group(id, msg, System.currentTimeMillis())
+        val g_msg = GroupMessage(id, msg, System.currentTimeMillis())
 
-        // Firebaseにグループの型を作成(一意なグループIDも同時に生成)
-        val group_message =
-            db.collection("group-message").document("get").
-            collection(gid!!).document().set(g_msg).addOnSuccessListener {
-                Log.d("Group", "登録できてます")
-            }
-                .addOnFailureListener {
-                    Log.d("Group", "失敗しました")
-                }
+        // Firebaseにメッセージを登録
+        db.collection("group-message").document("get").collection(gid!!).document().set(g_msg)
 
     }
-
-
 }
