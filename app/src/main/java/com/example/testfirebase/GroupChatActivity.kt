@@ -2,7 +2,6 @@ package com.example.testfirebase
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -29,6 +28,9 @@ class GroupChatActivity : AppCompatActivity() {
         val g_edit = findViewById<EditText>(R.id.group_chat_editText)
         val g_send = findViewById<Button>(R.id.group_chat_send_button)
 
+        // アダプタの設定
+        var groupMessageListAdapter = groupMessageAdapter(this)
+
         // グループID（前の画面からID情報を取得）
         gid = intent.getStringExtra("GroupId")
 
@@ -40,7 +42,7 @@ class GroupChatActivity : AppCompatActivity() {
         docRef.addSnapshotListener { snapshot, e ->
 
             // アダプタに関連付け
-            val groupMessageListAdapter = groupMessageAdapter(this)
+            g_recy.adapter = groupMessageListAdapter
 
             // データを取り出す
             snapshot?.documentChanges?.forEach {
@@ -48,7 +50,7 @@ class GroupChatActivity : AppCompatActivity() {
                 // GroupMessage型に変換
                 var groupMessagedata = it.document.toObject(GroupMessage::class.java)
 
-                // アダプターに追加
+                // リサイクルビューに追加
                 groupMessageListAdapter?.add(groupMessagedata)
 
                 // 一番下にスクロール
