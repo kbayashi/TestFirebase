@@ -18,13 +18,13 @@ import com.squareup.picasso.Picasso
 class friendTemporaryRegistrationAdapter(private val context: Context)
     : RecyclerView.Adapter<friendTemporaryRegistrationAdapter.ViewHolder>(){
 
-
-
     var itemClickListner : ((User)->Unit)? = null
 
-    fun setOnLongClickListener(listener:(User)->Unit){
+    fun setOnClickListener(listener:(User)->Unit){
         itemClickListner = listener
     }
+
+
 
     //１行で使用する各部品（ビュー）を保持したもの
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){

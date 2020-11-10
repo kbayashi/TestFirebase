@@ -69,7 +69,7 @@ class UserListFragment: Fragment() {
         }
 
         //友達を承認するか削除するか
-        friendTemporaryRegistrationAdapter?.setOnLongClickListener {
+        friendTemporaryRegistrationAdapter?.setOnClickListener {
 
         }
     }
@@ -107,8 +107,9 @@ class UserListFragment: Fragment() {
             //友達を取り出す
             val users = db.collection("user")
             db.collection("user-friend")
-                .document("get").collection(loginUser!!.uid).get().addOnSuccessListener {
-                    it.forEach {
+                .document("get").collection(loginUser!!.uid).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    userListAdapter?.clear()
+                    querySnapshot?.forEach {
                         db.collection("user").document(it.id).get().addOnSuccessListener {
                             var user = it.toObject(User::class.java)
                             userListAdapter?.add(user!!)
@@ -133,7 +134,6 @@ class UserListFragment: Fragment() {
                             Log.d("仮登録ユーザ","${user?.name}")
                             Log.d("karitouroku","${user?.name}")
                             friendTemporaryRegistrationAdapter?.add(user!!)
-
                             if(friendTemporaryRegistrationAdapter!!.itemCount > 0) {
                                 view.user_list_temporary_registration_recyclerView.visibility = View.VISIBLE
                                 view.user_list_temporary_registration_constraintLayout.visibility = View.VISIBLE
@@ -144,13 +144,11 @@ class UserListFragment: Fragment() {
                                 view.user_list_temporary_registration_recyclerView.visibility = View.GONE
                                 view.user_list_temporary_registration_constraintLayout.visibility = View.GONE
                             }
-
                     }
 
                 }
-
-
             }
+
     }
 
     //ビューの初期化

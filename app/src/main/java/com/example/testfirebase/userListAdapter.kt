@@ -35,6 +35,10 @@ class userListAdapter(private val context: Context)
         itemList.add(userListItem(user))
     }
 
+    fun clear(){
+        itemList.clear()
+    }
+
     //セルが必要になるたびに呼び出される。
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
