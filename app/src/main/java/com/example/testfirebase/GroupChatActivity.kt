@@ -35,7 +35,16 @@ class GroupChatActivity : AppCompatActivity() {
         gid = intent.getStringExtra("GroupId")
 
         // アクションバーの表記を変更
-        setTitle("グループチャット")
+        val title = db.collection("group").document(gid!!)
+        title.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    setTitle(document["name"].toString())
+                }
+            }
+            .addOnFailureListener { exception ->
+                setTitle("グループチャット")
+            }
 
         // メッセージ受信
         val docRef = db.collection("group-message").document("get").collection(gid!!).orderBy("timestamp")
