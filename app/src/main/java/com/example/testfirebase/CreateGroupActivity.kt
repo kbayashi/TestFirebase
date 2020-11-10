@@ -186,15 +186,13 @@ class CreateGroupActivity : AppCompatActivity() {
                     AlertDialog.Builder(this)
                         .setTitle(R.string.app_name)
                         .setMessage("グループを作成しました！")
-                        .setPositiveButton("OK", { dialog, which ->
-                            // グループチャット画面へ遷移するが、まだ作成していないのでとりあえず画面削除
-                            finish()
-                        })
-                        .show()
+                        .setPositiveButton("OK") { dialog, which ->
 
-                    // グループチャット画面へ遷移
-                    val intent = Intent(this, GroupChatActivity::class.java)
-                    startActivity(intent)
+                            // グループチャット画面へ遷移
+                            val intent = Intent(this, GroupChatActivity::class.java)
+                            startActivity(intent)
+                        }
+                        .show()
 
                 }else{
 
