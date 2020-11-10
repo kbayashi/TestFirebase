@@ -24,9 +24,9 @@ class GroupChatActivity : AppCompatActivity() {
         g_send.setOnClickListener {
             // テキストボックスに何も記入がないときはスルーする
             if (g_edit.text.isEmpty()){
-                Toast.makeText(applicationContext, "メッセージを入力してください", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "メッセージを入力してください", Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(applicationContext, "メッセージを入力してください", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, g_edit.text, Toast.LENGTH_LONG).show()
             }
         }
     }
