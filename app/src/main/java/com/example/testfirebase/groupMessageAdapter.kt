@@ -81,6 +81,7 @@ class groupMessageAdapter(private val context: Context): RecyclerView.Adapter<Re
                     if (document != null) {
                         Picasso.get().load(document.getString("img")).into(holder_me.me_img)
                     } else {
+                        // 自分のアイコンが取得できなかった時は、未設定時のアイコンを表示する
                         Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/firevasetest-1d5b9.appspot.com/o/user_icon%2Fnoimage.png?alt=media&token=b9ae62b8-8c42-4791-9507-c84c93f6871f")
                     }
                 }
@@ -94,6 +95,7 @@ class groupMessageAdapter(private val context: Context): RecyclerView.Adapter<Re
                     if (document != null) {
                         Picasso.get().load(document.getString("img")).into(holder_your.you_img)
                     } else {
+                        // 相手のアイコンが取得できなかった時は、未設定時のアイコンを表示する
                         Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/firevasetest-1d5b9.appspot.com/o/user_icon%2Fnoimage.png?alt=media&token=b9ae62b8-8c42-4791-9507-c84c93f6871f")
                     }
                 }
