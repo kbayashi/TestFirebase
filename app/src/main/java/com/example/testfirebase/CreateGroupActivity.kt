@@ -170,21 +170,24 @@ class CreateGroupActivity : AppCompatActivity() {
                     data class cUser(
                         val uid: String? = null
                     )
-                    // 自分を追加する
+                    // グループに自分を加入する
                     cGroup.collection("member").add(cUser(me.uid))
 
-                    // 自分以外のユーザを追加する
+                    // グループに自分以外のユーザを加入する
                     for (i in 0 .. user_select_array.size-1){
                         if (user_select_array[i] == true){
                             cGroup.collection("member").add(cUser(user_id_array[i]))
                         }
                     }
 
-                    // 通知
+                    // 作成ダイアログ
                     AlertDialog.Builder(this)
                         .setTitle(R.string.app_name)
                         .setMessage("グループを作成しました！")
-                        .setPositiveButton("OK"){ dialog, which -> }
+                        .setPositiveButton("OK", { dialog, which ->
+                            // グループチャット画面へ遷移するが、まだ作成していないのでとりあえず画面削除
+                            finish()
+                        })
                         .show()
 
                 }else{

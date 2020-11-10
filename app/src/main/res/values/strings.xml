@@ -3,7 +3,7 @@
     <string name="user_registar_name_title_textView">名前<font color="Red">(必須)</font></string>
     <string name="user_registar_mail_title_textView">メールアドレス<font color="Red">(必須)</font></string>
     <string name="user_registar_pass_title_textView">パスワード<font color="Red">(必須)</font></string>
-    <string name="user_registar_pass_title_check_textView">パスワード<font color="Red">(必須)</font></string>
+    <string name="user_registar_pass_title_check_textView">再度パスワードを入力<font color="Red">(必須)</font></string>
     <string name="user_registar_gender_textView">性別<font color="Red">(必須)</font></string>
     <string name="user_registar_sick_title_textView">病名(任意)</string>
     <string name="user_registar_life_expancy_title_textView">余命(任意)</string>
