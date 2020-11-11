@@ -58,10 +58,8 @@ class GroupChatActivity : AppCompatActivity() {
 
                 // GroupMessage型に変換
                 var groupMessagedata = it.document.toObject(GroupMessage::class.java)
-
                 // リサイクルビューに追加
                 groupMessageListAdapter?.add(groupMessagedata)
-
                 // 一番下にスクロール
                 g_recy.scrollToPosition(groupMessageListAdapter.itemCount-1)
             }
@@ -74,7 +72,6 @@ class GroupChatActivity : AppCompatActivity() {
             if (g_edit.text.isEmpty()){
                 Toast.makeText(applicationContext, "メッセージを入力してください", Toast.LENGTH_SHORT).show()
             }else{
-
                 // メッセージをDBに送信
                 send_group_message(me!!.uid, g_edit.text.toString())
                 // 削除
@@ -84,13 +81,25 @@ class GroupChatActivity : AppCompatActivity() {
     }
 
     // メッセージを送信する関数
-    private fun send_group_message(id: String, msg: String){
+    private fun send_group_message(uid: String, msg: String){
+
+        // 送信時間を確定
+        val time = System.currentTimeMillis()
 
         // メッセージ内容を格納
-        val g_msg = GroupMessage(id, msg, System.currentTimeMillis())
+        val g_msg = GroupMessage(uid, msg, time)
 
-        // Firebaseにメッセージを登録
+        // 最新トークデータに格納する型
+        val les = hashMapOf(
+            "message" to msg,
+            "receive_user" to me!!.uid,
+            "send_user" to gid,
+            "time" to time
+        )
+
+        // グループメッセージテーブルに保存
         db.collection("group-message").document("get").collection(gid!!).document().set(g_msg)
-
+        // 最新メッセージテーブルにも保存
+        db.collection("user-latest").document("les").collection(uid).document(gid!!).set(les)
     }
 }
