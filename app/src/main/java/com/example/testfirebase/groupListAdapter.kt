@@ -12,6 +12,12 @@ import com.squareup.picasso.Picasso
 class groupListAdapter(private val context: Context)
     : RecyclerView.Adapter<groupListAdapter.ViewHolder>() {
 
+    var itemClickListener: ((String)->Unit)? = null
+
+    fun setOnclickListener(listener: (String)->Unit) {
+        itemClickListener = listener
+    }
+
     //１行で使用する各部品（ビュー）を保持したもの
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val group_name: TextView = itemView.findViewById(R.id.group_list_row_textView)
@@ -43,5 +49,9 @@ class groupListAdapter(private val context: Context)
         holder.group_name.text = itemList[position].group.name
         holder.group_topic.text = itemList[position].group.topic
         Picasso.get().load(itemList[position].group.icon).into(holder.group_image)
+
+        holder.itemView.setOnClickListener {
+            itemClickListener?.invoke(itemList[position].group.gid)
+        }
     }
 }

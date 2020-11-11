@@ -64,6 +64,13 @@ class UserListFragment: Fragment() {
             Log.d(SELECT_USER, "${user.name}")
             startActivity(intent)
         }
+
+        //グループチャット画面に遷移する
+        groupListAdapter?.setOnclickListener {
+            val intent = Intent(context, GroupChatActivity::class.java)
+            intent.putExtra("GroupId", it)
+            startActivity(intent)
+        }
     }
 
     override fun onAttach(context: Context) {
