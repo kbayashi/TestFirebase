@@ -73,7 +73,7 @@ class ChatActivity : AppCompatActivity() {
         //送信時間を確定する
         val millis = System.currentTimeMillis()
         //送信内容をクラスに送る
-        val message = Message(msg,me!!.uid,you.uid,millis)
+        val message = Message(msg,me!!.uid,you.uid,millis,false)
 
         //データベースにメッセージを登録(自分Ver)
         val ref1 = db.collection("user-message").document(me!!.uid).collection(you.uid).add(message)

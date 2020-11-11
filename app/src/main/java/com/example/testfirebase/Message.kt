@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.sql.Timestamp
 
-class Message(val message: String,val send_user:String,val receive_user: String,val time: Long) {
-    constructor():this("", "", "", -1L)
+class Message(val message: String,val send_user:String,val receive_user: String,val time: Long, val isGroup: Boolean) {
+    constructor():this("", "", "", -1L, false)
   
     //メッセージを送ったタイムスタンプを時間表示にする関数
     fun sendTimestampToString(long: Long): String{
