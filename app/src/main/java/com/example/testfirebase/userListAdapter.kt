@@ -97,12 +97,16 @@ class userListAdapter(private val context: Context)
                     }
                     //削除
                     1->{
-                        FirebaseFirestore.getInstance().collection("user-friend")
+                        FirebaseFirestore.getInstance().collection("friend-temporary-registration")
                             .document("get").collection(itemList[position].user.uid)
                             .document(uid).delete().addOnSuccessListener {
                                 FirebaseFirestore.getInstance().collection("user-friend")
-                                    .document("get").collection(uid)
-                                    .document(itemList[position].user.uid).delete().addOnSuccessListener {
+                                    .document("get").collection(itemList[position].user.uid)
+                                    .document(uid).delete().addOnSuccessListener {
+                                        FirebaseFirestore.getInstance().collection("user-friend")
+                                            .document("get").collection(uid)
+                                            .document(itemList[position].user.uid).delete().addOnSuccessListener {
+                                            }
                                     }
                             }
 

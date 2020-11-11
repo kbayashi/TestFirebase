@@ -125,7 +125,9 @@ class UserListFragment: Fragment() {
                             view.user_list_user_recyclerView.adapter = userListAdapter
                         }
                     }
+                    view.user_list_user_recyclerView.adapter = userListAdapter
                 }
+
             //自分のプロフィール画面に飛ばしたい
             view.user_list_my_profile_constraintLayout.setOnClickListener {
                 val intent = Intent(context, UserMyProfileActivity::class.java)
