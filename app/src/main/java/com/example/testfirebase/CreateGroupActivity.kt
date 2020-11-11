@@ -160,6 +160,7 @@ class CreateGroupActivity : AppCompatActivity() {
 
                     // グループ名
                     val cInfo = hashMapOf(
+                        "gid" to cGroup.id,
                         "name" to edit.text.toString(),
                         "icon" to gIcon,
                         "topic" to "グループの活用目的を決めよう"
