@@ -27,6 +27,7 @@ class UserListFragment: Fragment() {
     var groupDisplayFlg = false
 
     val uid = FirebaseAuth.getInstance().uid
+    val db = FirebaseFirestore.getInstance()
 
     //フラグメントにレイアウトを設定
     override fun onCreateView(
@@ -73,16 +74,23 @@ class UserListFragment: Fragment() {
 
     //ダミーデータ格納
     fun dummydata(groupListAdapter: groupListAdapter){
-        groupListAdapter.add()
-        groupListAdapter.add()
-        groupListAdapter.add()
-        groupListAdapter.add()
-        groupListAdapter.add()
 
+        // 一旦DBにあるグループすべて表示
+        val group = db.collection("group")
+        group.get()
+            .addOnSuccessListener {
+                it.forEach {
+                    var groupData = it.toObject(Group::class.java)
+                    groupListAdapter.add(groupData)
+                }
+            }
+            .addOnFailureListener {
+                // グループの取得に失敗してます
+            }
     }
     //ユーザ取り出す
     private fun fetchUsers(view: View){
-        val db = FirebaseFirestore.getInstance()
+
         var loginUser:User? = null
         val loginUserRef = db.collection("user").document(uid!!)
 
