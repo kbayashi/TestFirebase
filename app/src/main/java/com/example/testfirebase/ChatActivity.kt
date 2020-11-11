@@ -31,29 +31,40 @@ class ChatActivity : AppCompatActivity() {
         var messageListAdapter = messageAdapter(this)
 
         //メッセージの監視
+
         val docRef = db.collection("user-message").document(me!!.uid).collection(get_you.uid).orderBy("time")
-        docRef.addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                //空ではない = 何らか文字が入力されているとき
-                Log.w("TAG", "Listen failed.", e)
-                return@addSnapshotListener
+        //ブロックされているならメッセージを表示しない
+        val BlockRef = db.collection("block-user").document("get")
+            .collection(me.uid).document(get_you.uid).get().addOnSuccessListener {
+                if(it["uid"] != get_you.uid){
+                    docRef.addSnapshotListener { snapshot, e ->
+                        if (e != null) {
+                            //空ではない = 何らか文字が入力されているとき
+                            Log.w("TAG", "Listen failed.", e)
+                            return@addSnapshotListener
+                        }
+
+                        //アダプターに関連付け
+                        chat_recyclerView.adapter = messageListAdapter
+
+                        //DBに格納されているデータを取り出す
+                        snapshot?.documentChanges?.forEach {
+                            var messagedata = it.document.toObject(Message::class.java)
+                            Log.d("documentChange", messagedata.message)
+
+                            //サイクルビューに自分のメッセージ内容を追加する
+                            messageListAdapter?.add(messagedata)
+
+                            //Firebaseに更新があった時は一番下にスクロールする
+                            chat_recyclerView.scrollToPosition(messageListAdapter.itemCount -1)
+                        }
+                    }
+                }else{
+                    message_editText.setText("ブロック中")
+                    message_editText.isEnabled = false
+                    send_button.isEnabled = false
+                }
             }
-
-            //アダプターに関連付け
-            chat_recyclerView.adapter = messageListAdapter
-
-            //DBに格納されているデータを取り出す
-            snapshot?.documentChanges?.forEach {
-                var messagedata = it.document.toObject(Message::class.java)
-                Log.d("documentChange", messagedata.message)
-
-                //サイクルビューに自分のメッセージ内容を追加する
-                messageListAdapter?.add(messagedata)
-
-                //Firebaseに更新があった時は一番下にスクロールする
-                chat_recyclerView.scrollToPosition(messageListAdapter.itemCount -1)
-            }
-        }
 
         //メッセージ送信(MessageDBに登録)
         send_button.setOnClickListener {

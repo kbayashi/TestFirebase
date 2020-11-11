@@ -18,13 +18,13 @@ import com.squareup.picasso.Picasso
 class friendTemporaryRegistrationAdapter(private val context: Context)
     : RecyclerView.Adapter<friendTemporaryRegistrationAdapter.ViewHolder>(){
 
-
-
     var itemClickListner : ((User)->Unit)? = null
 
-    fun setOnLongClickListener(listener:(User)->Unit){
+    fun setOnClickListener(listener:(User)->Unit){
         itemClickListner = listener
     }
+
+
 
     //１行で使用する各部品（ビュー）を保持したもの
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -91,13 +91,28 @@ class friendTemporaryRegistrationAdapter(private val context: Context)
                                     }
                             }
                     }
+                    //削除
                     1->{
+                        FirebaseFirestore.getInstance().collection("friend-temporary-registration")
+                            .document("get").collection(uid).document(itemList[position].user.uid).delete()
+                            .addOnSuccessListener {
 
+                                FirebaseFirestore.getInstance().collection("user-friend").document("get")
+                                    .collection(itemList[position].user.uid).document(uid).delete().addOnSuccessListener {
+                                        Log.d("友達承認削除", "aaa")
+                                        clear(position)
+                                    }
+                            }
                     }
 
                 }
             }).show()
             true
+        }
+
+        //相手のプロフィール画面を表示
+        holder.itemView.setOnClickListener {
+            itemClickListner?.invoke(itemList[position].user)
         }
     }
 
