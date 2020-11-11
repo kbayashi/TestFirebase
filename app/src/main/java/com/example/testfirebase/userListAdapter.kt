@@ -37,10 +37,12 @@ class userListAdapter(private val context: Context)
 
     //セルが必要になるたびに呼び出される。
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
         val layoutInflater = LayoutInflater.from(context)
         //ビューを生成
         val layout = layoutInflater.inflate(R.layout.user_list_row, parent, false)
         return userListAdapter.ViewHolder(layout)
+
     }
 
     override fun getItemCount(): Int = itemList.size
@@ -56,8 +58,6 @@ class userListAdapter(private val context: Context)
             Log.d("ユーザ一覧","タッチ")
             itemClickListner?.invoke(itemList[position].user)
         }
-
-
     }
 
 
