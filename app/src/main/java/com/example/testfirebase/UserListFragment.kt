@@ -104,6 +104,8 @@ class UserListFragment: Fragment() {
         val db = FirebaseFirestore.getInstance()
         var loginUser:User? = null
         val loginUserRef = db.collection("user").document(uid!!)
+        val friendRef = db.collection("user-friend").document("get")
+        val FTPRef = db.collection("friend-temporary-registration").document("get")
 
         loginUserRef.get().addOnSuccessListener {
             Log.d("ユーザ取得", "${it.data}")
@@ -115,14 +117,21 @@ class UserListFragment: Fragment() {
 
             //友達を取り出す
             val users = db.collection("user")
-            db.collection("user-friend")
-                .document("get").collection(loginUser!!.uid).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            friendRef.collection(loginUser!!.uid).
+                addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                     userListAdapter?.clear()
                     querySnapshot?.forEach {
                         db.collection("user").document(it.id).get().addOnSuccessListener {
                             var user = it.toObject(User::class.java)
-                            userListAdapter?.add(user!!)
-                            view.user_list_user_recyclerView.adapter = userListAdapter
+                            db.collection("block-user").document("get")
+                                .collection(uid).document(user!!.uid).get().addOnSuccessListener {
+                                    //ブロックリストに追加されているならアダプターに追加しない
+                                    if(it["uid"] != user.uid){
+                                        userListAdapter?.add(user!!)
+                                    }
+                                    view.user_list_user_recyclerView.adapter = userListAdapter
+                                }
+
                         }
                     }
                     view.user_list_user_recyclerView.adapter = userListAdapter
@@ -136,8 +145,7 @@ class UserListFragment: Fragment() {
         }
 
         //仮登録された人を取り出す
-        FirebaseFirestore.getInstance().collection("friend-temporary-registration")
-            .document("get").collection(uid).get().addOnSuccessListener {
+            FTPRef.collection(uid).get().addOnSuccessListener {
                 it.forEach {id ->
                     FirebaseFirestore.getInstance().collection("user").document(id.id)
                         .get().addOnSuccessListener {item->
@@ -193,7 +201,6 @@ class UserListFragment: Fragment() {
                     Picasso.get().load("https://cv.tipsfound.com/windows10/02014/8.png").into(view.user_list_my_circleimageView)
                 }
             }
-
     }
 
     //友達表示・非表示

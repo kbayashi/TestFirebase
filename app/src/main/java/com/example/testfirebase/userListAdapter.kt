@@ -71,7 +71,20 @@ class userListAdapter(private val context: Context)
     //保持されているビューにデータなどを設定するここでリスナなどを設定する
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+        val dbRef = FirebaseFirestore.getInstance()
         val uid = FirebaseAuth.getInstance().uid.toString()
+        val friendRef = dbRef.collection("user-friend").document("get")
+        val FTRRef = dbRef.collection("friend-temporary-registration").document("get")
+        val blockRef = dbRef.collection("block-user").document("get")
+
+        //ブロックされているユーザの場合表示しない
+        /*blockRef.collection(uid).document(itemList[position].user.uid).
+            get().addOnSuccessListener {
+            if(it["uid"] == itemList[position].user.uid){
+                holder.itemView.visibility = View.GONE
+            }
+        }*/
+
 
         holder.user_name.text = itemList[position].user.name
         holder.user_pr.text = itemList[position].user.pr
@@ -87,7 +100,7 @@ class userListAdapter(private val context: Context)
         holder.itemView.setOnLongClickListener {
             val builder =  AlertDialog.Builder(context)
             val items =
-                arrayOf("トーク", "削除")
+                arrayOf("トーク", "削除", "ブロック")
 
             builder.setItems(items, DialogInterface.OnClickListener { dialogInterface, i ->
                 when(i){
@@ -97,19 +110,28 @@ class userListAdapter(private val context: Context)
                     }
                     //削除
                     1->{
-                        FirebaseFirestore.getInstance().collection("friend-temporary-registration")
-                            .document("get").collection(itemList[position].user.uid)
+                        FTRRef.collection(itemList[position].user.uid)
                             .document(uid).delete().addOnSuccessListener {
-                                FirebaseFirestore.getInstance().collection("user-friend")
-                                    .document("get").collection(itemList[position].user.uid)
+                                friendRef.collection(itemList[position].user.uid)
                                     .document(uid).delete().addOnSuccessListener {
-                                        FirebaseFirestore.getInstance().collection("user-friend")
-                                            .document("get").collection(uid)
+                                        friendRef.collection(uid)
                                             .document(itemList[position].user.uid).delete().addOnSuccessListener {
                                             }
                                     }
                             }
+                    }
+                    //ブロック
+                    2->{
 
+                        val blockData = hashMapOf(
+                            "uid" to itemList[position].user.uid
+                        )
+
+                       blockRef.collection(uid).document(itemList[position].user.uid)
+                            .set(blockData).addOnSuccessListener {
+                                holder.itemView.visibility = View.GONE
+                                Toast.makeText(context,"ブロックリストに追加しました。",Toast.LENGTH_LONG)
+                            }
                     }
 
                 }
