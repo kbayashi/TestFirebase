@@ -75,16 +75,8 @@ class ChatActivity : AppCompatActivity() {
         //送信内容をクラスに送る
         val message = Message(msg,me!!.uid,you.uid,millis,false)
 
-        //データベースにメッセージを登録(自分Ver)
-        val ref1 = db.collection("user-message").document(me!!.uid).collection(you.uid).add(message)
-            .addOnSuccessListener{
-                Log.d("DB", "データベースにメッセージを登録しました")
-            }
-            .addOnFailureListener{
-                Log.d("DB", "データベースにメッセージの登録が失敗しました ${it.message}")
-            }
-        //データベースにメッセージを登録(相手Ver)
-        val ref2 = db.collection("user-message").document(you.uid).collection(me!!.uid).add(message)
+        //DBにメッセージを登録(自分Ver)
+        db.collection("user-message").document(me!!.uid).collection(you.uid).add(message)
             .addOnSuccessListener{
                 Log.d("DB", "データベースにメッセージを登録しました")
             }
@@ -92,15 +84,25 @@ class ChatActivity : AppCompatActivity() {
                 Log.d("DB", "データベースにメッセージの登録が失敗しました ${it.message}")
             }
 
-        //最新トーク一覧のデータ
-        val ref3 = db.collection("user-latest").document("les").collection(me!!.uid).document(you.uid).set(message)
+        //DBにメッセージを登録(相手Ver)
+        db.collection("user-message").document(you.uid).collection(me!!.uid).add(message)
             .addOnSuccessListener{
                 Log.d("DB", "データベースにメッセージを登録しました")
             }
             .addOnFailureListener{
                 Log.d("DB", "データベースにメッセージの登録が失敗しました ${it.message}")
             }
-        val ref4 = db.collection("user-latest").document("les").collection(you.uid).document(me!!.uid).set(message)
+
+        //最新トーク一覧のデータ更新
+        db.collection("user-latest").document("les").collection(me!!.uid).document(you.uid).set(message)
+            .addOnSuccessListener{
+                Log.d("DB", "データベースにメッセージを登録しました")
+            }
+            .addOnFailureListener{
+                Log.d("DB", "データベースにメッセージの登録が失敗しました ${it.message}")
+            }
+
+        db.collection("user-latest").document("les").collection(you.uid).document(me!!.uid).set(message)
             .addOnSuccessListener{
                 Log.d("DB", "データベースにメッセージを登録しました")
             }
