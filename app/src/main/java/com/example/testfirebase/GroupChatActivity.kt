@@ -1,5 +1,6 @@
 package com.example.testfirebase
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -91,7 +92,10 @@ class GroupChatActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.setting -> {
-                Toast.makeText(applicationContext, "押されたよ！", Toast.LENGTH_LONG).show()
+                // グループ設定画面へ移動
+                val intent = Intent(this, SettingGroupActivity::class.java)
+                intent.putExtra("GroupId", gid)
+                startActivity(intent)
             }
         }
         return true
