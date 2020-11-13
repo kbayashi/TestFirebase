@@ -2,6 +2,8 @@ package com.example.testfirebase
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -78,6 +80,21 @@ class GroupChatActivity : AppCompatActivity() {
                 g_edit.text.clear()
             }
         }
+    }
+
+    // 配置
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        getMenuInflater().inflate(R.menu.group_chat_menu, menu);
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.setting -> {
+                Toast.makeText(applicationContext, "押されたよ！", Toast.LENGTH_LONG).show()
+            }
+        }
+        return true
     }
 
     // メッセージを送信する関数
