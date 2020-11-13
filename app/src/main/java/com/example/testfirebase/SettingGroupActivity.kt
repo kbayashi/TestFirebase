@@ -1,6 +1,7 @@
 package com.example.testfirebase
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -149,6 +150,23 @@ class SettingGroupActivity : AppCompatActivity() {
             intent.type = "image/*"
             startActivityForResult(intent, 0)
         }
+        
+        // 保存ボタン
+        subb.setOnClickListener {
+
+            // チェック処理
+            if (edit.text.isEmpty()){
+                AlertDialog.Builder(this) // FragmentではActivityを取得して生成
+                    .setTitle(R.string.app_name)
+                    .setMessage("グループ名が入力されていません")
+                    .setPositiveButton("OK", { dialog, which ->
+                        // TODO:Yesが押された時の挙動
+                    })
+                    .show()
+            }
+
+        }
+
     }
 
     // ギャラリーから画像を選択するメソッド
