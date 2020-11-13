@@ -2,9 +2,12 @@ package com.example.testfirebase
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -35,7 +38,7 @@ class SettingGroupActivity : AppCompatActivity() {
         val edit = findViewById<EditText>(R.id.group_name_editText)
         val cont = findViewById<TextView>(R.id.group_name_count_textView)
         val topi = findViewById<EditText>(R.id.group_topic_editText)
-        val tcon = findViewById<TextView>(R.id.group_topic_textView)
+        val tcon = findViewById<TextView>(R.id.group_topic_count_textView)
         val recy = findViewById<RecyclerView>(R.id.user_list_recyclerView)
         val subb = findViewById<Button>(R.id.submit_button)
 
@@ -50,7 +53,45 @@ class SettingGroupActivity : AppCompatActivity() {
         // アダプタ(グループ作成アダプタと同じ)
         var user_adapter = createGroupAdapter(this)
 
-        // グループ名を取得
+        // グループ名の文字数処理
+        edit!!.addTextChangedListener(object : TextWatcher {
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                // 文字数をカウント
+                if (edit.length() > 20) {
+                    // リミットになった時は赤色
+                    cont.setTextColor(Color.MAGENTA)
+                } else {
+                    // それ以外は黒色
+                    cont.setTextColor(Color.GRAY)
+                }
+                cont.text = edit.length().toString() + "/20"
+            }
+            override fun afterTextChanged(p0: Editable?) {}
+
+        })
+
+        // トピックの文字数処理
+        topi!!.addTextChangedListener(object : TextWatcher {
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                // 文字数をカウント
+                if (topi.length() > 300) {
+                    // リミットになった時は赤色
+                    tcon.setTextColor(Color.MAGENTA)
+                } else {
+                    // それ以外は黒色
+                    tcon.setTextColor(Color.GRAY)
+                }
+                tcon.text = topi.length().toString() + "/300"
+            }
+            override fun afterTextChanged(p0: Editable?) {}
+
+        })
+
+        // グループ情報の取得
         db.collection("group").document(gid)
             .get().addOnSuccessListener { document ->
                 if (document != null) {
