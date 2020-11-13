@@ -152,15 +152,19 @@ class CreateGroupActivity : AppCompatActivity() {
                     if (user_select_array[i]) flag = true
                 }
 
+                // グループIDを保持(GroupテーブルとGroup_Joinテーブルを作成する際に使用するため)
+                var gid: String? = null
+
                 // ユーザ選択数の分岐
                 if (flag == true){
 
                     // Firebaseにグループの型を作成(一意なグループIDも同時に生成)
                     val cGroup = db.collection("group").document()
+                    gid = cGroup.id
 
-                    // グループ名
+                    // グループ情報
                     val cInfo = hashMapOf(
-                        "gid" to cGroup.id,
+                        "gid" to gid,
                         "name" to edit.text.toString(),
                         "icon" to gIcon,
                         "topic" to "グループの活用目的を決めよう"
@@ -178,6 +182,25 @@ class CreateGroupActivity : AppCompatActivity() {
                     for (i in 0 .. user_select_array.size-1){
                         if (user_select_array[i] == true){
                             cGroup.collection("member").add(cUser(user_id_array[i]))
+                        }
+                    }
+
+                    // Group_joinテーブルの作成（誰がグループに参加しているのか？を保持するために使用）
+                    val jGroup = db.collection("group-join").document("set").collection(gid)
+
+                    // データ構造
+                    data class jUser(
+                        val uid: String? = null,
+                        val status: Boolean = false
+                    )
+
+                    // 自分は参加済み判定とする（参加済みの場合、「Status」は「true」にする）
+                    jGroup.add(jUser(me.uid, true))
+
+                    // 自分以外のユーザはまだ参加未承認なので「Status」は「false」にする
+                    for (i in 0 .. user_select_array.size-1) {
+                        if (user_select_array[i] == true){
+                            jGroup.add(jUser(user_id_array[i], false))
                         }
                     }
 
