@@ -47,12 +47,6 @@ class SettingGroupActivity : AppCompatActivity() {
         val me = auth.currentUser
         val db = FirebaseFirestore.getInstance()
 
-        // グループIDを取得
-        val gid = intent.getStringExtra("GroupId")
-
-        // アダプタ(グループ作成アダプタと同じ)
-        var user_adapter = createGroupAdapter(this)
-
         // グループ名の文字数処理
         edit!!.addTextChangedListener(object : TextWatcher {
 
@@ -91,6 +85,9 @@ class SettingGroupActivity : AppCompatActivity() {
 
         })
 
+        // グループIDを取得
+        val gid = intent.getStringExtra("GroupId")
+
         // グループ情報の取得
         db.collection("group").document(gid)
             .get().addOnSuccessListener { document ->
@@ -109,6 +106,9 @@ class SettingGroupActivity : AppCompatActivity() {
         // ユーザオブジェクト
         var loginUser: User?
         var getUser: User?
+
+        // アダプタ(グループ作成アダプタと同じ)
+        var user_adapter = createGroupAdapter(this)
 
         // DBから取得してきたデータをアダプタに格納
         val loginUserRef = db.collection("user").document(me!!.uid)
