@@ -90,7 +90,7 @@ class GroupChatActivity : AppCompatActivity() {
         val g_msg = GroupMessage(uid, msg, time)
 
         // 最新トークデータに格納する型
-        val les = Message(msg, me!!.uid, gid!!, time, true)
+        val les = Message(msg, gid!!, me!!.uid, time, true)
 
         // グループメッセージテーブルに保存
         db.collection("group-message").document("get").collection(gid!!).document().set(g_msg)

@@ -100,14 +100,14 @@ class latestChatListAdapter(private val context: Context)
                     }else{
 
                         // グループ
-                        db.collection("group").document(itemList[position].message.receive_user)
+                        db.collection("group").document(itemList[position].message.send_user)
                             .get().addOnSuccessListener {
                                 val getGroup = it.toObject(Group::class.java)
                                 holder.latestChatTitle.text = getGroup?.name
                                 Picasso.get().load(getGroup?.icon).into(holder.latestChatTImage)
 
                                 holder.itemView.setOnClickListener {
-                                    itemGroupClickListener?.invoke(itemList[position].message.receive_user)
+                                    itemGroupClickListener?.invoke(itemList[position].message.send_user)
                                 }
 
                             }.addOnFailureListener {
