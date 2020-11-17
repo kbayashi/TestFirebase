@@ -27,7 +27,7 @@ class UserProfileEditRadioButtonActivity : AppCompatActivity() {
         // タイトル
         setTitle("性別を変更")
 
-        activity_user_profile_edit_radio_button_save_button.setOnClickListener{
+        activity_user_profile_edit_radio_button_savebutton.setOnClickListener{
             if(man.isChecked == true){
                 //更新可能
                 val ref = db.collection("user").document(me!!.uid).update("gender", man.text.toString())

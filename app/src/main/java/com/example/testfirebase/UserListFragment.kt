@@ -27,7 +27,6 @@ class UserListFragment: Fragment() {
     var friendTemporaryRegistrationFlg = false
 
     val uid = FirebaseAuth.getInstance().uid
-
     //フラグメントにレイアウトを設定
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +35,6 @@ class UserListFragment: Fragment() {
     ): View? {
         return inflater.inflate(R.layout.user_list_fragment, container, false)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

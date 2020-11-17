@@ -35,7 +35,7 @@ class UserMyProfileActivity : AppCompatActivity() {
             user_my_profile_user_gender_textView.text = my_user?.gender
             user_my_profile_user_old_textView.text = my_user?.birthday
             user_my_profile_user_prefectures_textView.text = my_user?.live
-            user_my_profile_user_hobby_textView.text = my_user?.hoby
+            user_my_profile_user_hobby_textView.text = my_user?.hobby
             user_my_profile_user_sick_textView.text = my_user?.sick
             user_my_profile_user_lifeexpectancy_textView.text = my_user?.life_expectancy
             Picasso.get().load(my_user?.img).into(user_my_profile_user_imageview)

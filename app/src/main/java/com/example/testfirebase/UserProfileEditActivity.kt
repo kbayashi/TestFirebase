@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_user_profile_edit.*
+import kotlinx.android.synthetic.main.activity_user_registar.*
 import java.util.*
 
 class UserProfileEditActivity : AppCompatActivity() {
@@ -46,7 +47,7 @@ class UserProfileEditActivity : AppCompatActivity() {
             user_profile_edit_user_gender_textView.text = my_user?.gender
             user_profile_edit_user_old_textView.text = my_user?.birthday
             user_profile_edit_user_prefectures_textView.text = my_user?.live
-            user_profile_edit_user_hobby_textView.text = my_user?.hoby
+            user_profile_edit_user_hobby_textView.text = my_user?.hobby
             user_profile_edit_user_sick_textView.text = my_user?.sick
             user_profile_edit_user_lifeexpectancy_textView.text = my_user?.life_expectancy
             Picasso.get().load(my_user?.img).into(user_profile_edit_imageview)
@@ -54,58 +55,47 @@ class UserProfileEditActivity : AppCompatActivity() {
         
         // 名前
         name_relativelayout.setOnClickListener{
-            val intent = Intent(this,UserProfileEditPlainTextActivity::class.java)
-            intent.putExtra("table", "name")
-                .putExtra("edit",user_profile_edit_user_name_textView.text)
-            startActivity(intent)
+            val dialog = UserProfileEditPlainTextDialog("名前を変更",user_profile_edit_user_name_textView, "name", user_profile_edit_user_name_textView.text.toString())
+            dialog.show(supportFragmentManager, "名前")
         }
 
         // 自己紹介
         pr_relativelayout.setOnClickListener{
-            val intent = Intent(this,UserProfileEditPlainTextActivity::class.java)
-            intent.putExtra("table","pr")
-                .putExtra("edit",user_profile_edit_user_pr_textView.text)
-            startActivity(intent)
+            val dialog = UserProfileEditPlainTextDialog("自己紹介を変更",user_profile_edit_user_pr_textView, "pr", user_profile_edit_user_pr_textView.text.toString())
+            dialog.show(supportFragmentManager, "名前")
         }
 
         // 性別
         gender_relativelayout.setOnClickListener{
-            val intent = Intent(this,UserProfileEditRadioButtonActivity::class.java)
-            intent.putExtra("table","gender")
-                .putExtra("edit",user_profile_edit_gender_textView.text)
-            startActivity(intent)
+            val dialog = UserProfileEditRadioButtonDialog("性別を変更",user_profile_edit_user_gender_textView, "gender", user_profile_edit_user_gender_textView.text.toString())
+            dialog.show(supportFragmentManager, "性別")
         }
 
         // 生年月日
         old_relativelayout.setOnClickListener{
-            val intent = Intent(this,UserProfileEditSpinnerActivity::class.java)
-            intent.putExtra("table","birthday")
-                .putExtra("edit",user_profile_edit_old_textView.text)
-            startActivity(intent)
+            val dialog = UserProfileEditSpinnerDialog("生年月日を変更",user_profile_edit_user_old_textView, "birthday", user_profile_edit_user_old_textView.text.toString())
+            dialog.show(supportFragmentManager, "生年月日")
         }
 
         // 住所
         prefecture_relativelayout.setOnClickListener{
-            val intent = Intent(this,UserProfileEditSpinnerActivity::class.java)
-            intent.putExtra("table","live")
-                .putExtra("edit",user_profile_edit_prefectures_textView.text)
-            startActivity(intent)
+            val dialog = UserProfileEditSpinnerDialog("都道府県を変更",user_profile_edit_user_prefectures_textView, "live", user_profile_edit_user_prefectures_textView.text.toString())
+            dialog.show(supportFragmentManager, "都道府県")
         }
+        //趣味
+        hobby_relativelayout.setOnClickListener{
 
+        }
         // 病名
         sick_relativelayout.setOnClickListener {
-            val intent = Intent(this,UserProfileEditSpinnerActivity::class.java)
-            intent.putExtra("table","sick")
-                .putExtra("edit",user_profile_edit_sick_textView.text)
-            startActivity(intent)
+            val dialog = UserProfileEditCheckDialog("病名を変更",user_profile_edit_user_sick_textView, "live", user_profile_edit_user_sick_textView.text.toString())
+            dialog.show(supportFragmentManager, "病名")
         }
 
         // 余命
         lifeexpectancy_relativelayout.setOnClickListener {
-            val intent = Intent(this,UserProfileEditSpinnerActivity::class.java)
-            intent.putExtra("table","lifeExpectancy")
-                .putExtra("edit",user_profile_edit_lifeexpectancy_textView.text)
-            startActivity(intent)
+            val dialog = UserProfileEditSpinnerDialog("余命を変更",user_profile_edit_user_old_textView, "life_expectancy", user_profile_edit_user_old_textView.text.toString())
+            dialog.show(supportFragmentManager, "余命")
         }
         //アイコン
         imageView3.setOnClickListener {
