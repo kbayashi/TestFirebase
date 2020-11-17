@@ -103,6 +103,7 @@ class UserProfileActivity : AppCompatActivity() {
                     Toast.makeText(this,"ブロック解除しました",Toast.LENGTH_LONG)
                         .show()
                     user_profile_block_button.visibility = View.GONE
+                    user_profile_talk_floatingActionButton.visibility = View.VISIBLE
                 }
         }
 
