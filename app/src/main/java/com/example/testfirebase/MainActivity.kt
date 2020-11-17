@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -59,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.bottom_nav_time_line ->{
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_fragment_FrameLayout, timeLineFragment())
+                        .replace(R.id.main_fragment_FrameLayout, timeLineFragment(), "TimeLine")
                         .commit()
                     title = "タイムライン"
                     return@setOnNavigationItemSelectedListener true
@@ -87,8 +88,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item?.itemId){
-            R.id.user_list_fragment_menu_friend_add -> {
+            R.id.user_list_fragment_menu_search -> {
                 val intent = Intent(this, FriendAddActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.user_list_fragment_menu_friend_add -> {
+                val intent = Intent(this, CreateGroupActivity::class.java)
                 startActivity(intent)
             }
         }

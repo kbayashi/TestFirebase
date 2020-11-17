@@ -2,12 +2,20 @@ package com.example.testfirebase
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
+import java.util.*
+import kotlin.collections.ArrayList
 
 class imageListAdapter(private val context: Context)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -15,32 +23,121 @@ class imageListAdapter(private val context: Context)
     //１行で使用する各部品（ビュー）を保持したもの
     class OneViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val ImageView: ImageView = itemView.findViewById(R.id.image_list_row_imageView)
+        val FloatingActionButton:FloatingActionButton = itemView.findViewById(R.id.image_list_row_floatingActionButton)
     }
 
     class MultiViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val MultiImageView:ImageView = itemView.findViewById(R.id.image_list_multi_row_imageView)
+        val MultiFloatingActionButton:FloatingActionButton = itemView.findViewById(R.id.image_list_multi_row_floatingActionButton)
     }
 
 
-    //現状userデータがないのでダミーデータを格納するだけの処理になっている
-    class imageListItem(val bitmap: Bitmap, val count: Int){}
+    class imageListItem(val bitmap: Bitmap, val count: Int,val uri:Uri?){}
 
     private var itemList = mutableListOf<imageListItem>()
 
-    fun add(bitmap: Bitmap, count: Int){
-        itemList.add(imageListItem(bitmap,count))
+    fun add(bitmap: Bitmap, count: Int, uri: Uri?){
+        itemList.add(imageListItem(bitmap,count, uri))
+
     }
 
-    fun get(): MutableList<Bitmap>?{
-        var imgList:MutableList<Bitmap>? = null
+
+    //参照先を返す
+    fun get(): String?{
+        val refName = UUID.randomUUID().toString()
+        var fileNum = 0
+        Log.d("Adapterの数", itemList.size.toString())
         itemList.forEach {
-            imgList?.add(it.bitmap)
+            var filename = UUID.randomUUID().toString()
+            var ref = FirebaseStorage.getInstance().getReference("/time_line/$filename")
+            //uriがある場合
+            if(it.uri !=null && TimeLineAddActivity.editFlg == false) {
+                ref.putFile(it.uri).addOnSuccessListener {
+                    Log.d("アップロード成功", "成功")
+                    val dbRef =
+                        FirebaseFirestore.getInstance().collection("time-line-img").document("get")
+                            .collection(refName).document(fileNum.toString())
+                    fileNum++
+                    ref.downloadUrl.addOnSuccessListener {
+                        var hashMap = hashMapOf(
+                            "test" to it.toString()
+                        )
+                        dbRef.set(hashMap)
+                    }
+                }.addOnFailureListener {
+                    Log.d("アップロード失敗", it.message)
+                }
+                //uriがない場合
+            }else if(it.uri == null && TimeLineAddActivity.editFlg == false){
+                val baos = ByteArrayOutputStream()
+                it.bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val data = baos.toByteArray()
+
+                ref.putBytes(data).addOnSuccessListener {
+                    Log.d("アップロード成功", "成功")
+                    val dbRef =
+                        FirebaseFirestore.getInstance().collection("time-line-img").document("get")
+                            .collection(refName).document(fileNum.toString())
+                    fileNum++
+                    ref.downloadUrl.addOnSuccessListener {
+                        var hashMap = hashMapOf(
+                            "test" to it.toString()
+                        )
+                        dbRef.set(hashMap)
+                    }
+
+                }.addOnFailureListener{
+                    Log.d("アップロード失敗", it.message)
+                }
+                //編集モード
+            }else if(TimeLineAddActivity.editFlg == true){
+                FirebaseFirestore.getInstance().collection("time-line-img").document("get")
+                    .collection(TimeLineAddActivity.REFID!!).get().addOnSuccessListener {items->
+                        items.forEach {item->
+                            FirebaseFirestore.getInstance().collection("time-line-img").document("get")
+                                .collection(TimeLineAddActivity.REFID!!).document(item.id).delete()
+                        }
+                    }
+
+                var filename = UUID.randomUUID().toString()
+                var ref = FirebaseStorage.getInstance().getReference("/time_line/$filename")
+                val baos = ByteArrayOutputStream()
+                it.bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val data = baos.toByteArray()
+                Log.d("RFID", "${TimeLineAddActivity.REFID}")
+                ref.putBytes(data).addOnSuccessListener {
+                    //Log.d("RFID2", "${TimeLineAddActivity.REFID}")
+                    // Log.d("アップロード成功", "成功")
+                    //Log.d("FileNum", fileNum.toString())
+                    val dbRef =
+                        FirebaseFirestore.getInstance().collection("time-line-img").document("get")
+                            .collection(TimeLineAddActivity.REFID!!).document(fileNum.toString())
+                    fileNum++
+                    ref.downloadUrl.addOnSuccessListener {
+                        var hashMap = hashMapOf(
+                            "test" to it.toString()
+                        )
+                        dbRef.set(hashMap)
+
+                    }
+
+                }
+
+            }
+
         }
-        return imgList
+
+        return refName
     }
 
     fun clear(){
         itemList.clear()
+    }
+
+    fun remove(position: Int){
+        itemList.removeAt(position)
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, itemList.size);
     }
 
 
@@ -60,7 +157,7 @@ class imageListAdapter(private val context: Context)
 
     //複数画像がある場合レイアウトを切り替える
     override fun getItemViewType(position: Int): Int {
-        Log.d("adapter", "${itemList[position].count}")
+        //Log.d("adapter", "${itemList[position].count}")
         if(itemList[position].count > 1){
             return 0
         }else{
@@ -76,10 +173,16 @@ class imageListAdapter(private val context: Context)
             0->{
                 val holder = holder as MultiViewHolder
                 holder.MultiImageView.setImageBitmap(itemList[position].bitmap)
+                holder.MultiFloatingActionButton.setOnClickListener {
+                    remove(position)
+                }
             }
             1->{
                 val holder = holder as OneViewHolder
                 holder.ImageView.setImageBitmap(itemList[position].bitmap)
+                holder.FloatingActionButton.setOnClickListener {
+                    remove(position)
+                }
             }
         }
 
