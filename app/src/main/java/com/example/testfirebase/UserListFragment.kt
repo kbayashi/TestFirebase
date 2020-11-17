@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.user_list_fragment.view.*
 
@@ -25,6 +26,9 @@ class UserListFragment: Fragment() {
     var friendDisplayFlg = false
     var groupDisplayFlg = false
     var friendTemporaryRegistrationFlg = false
+    val db = FirebaseFirestore.getInstance()
+    val friendRef = db.collection("user-friend").document("get")
+    val FTPRef = db.collection("friend-temporary-registration").document("get")
 
     val uid = FirebaseAuth.getInstance().uid
 
@@ -90,6 +94,8 @@ class UserListFragment: Fragment() {
         friendTemporaryRegistrationAdapter = friendTemporaryRegistrationAdapter(context)
     }
 
+
+
     //ダミーデータ格納
     fun dummydata(groupListAdapter: groupListAdapter){
         groupListAdapter.add()
@@ -99,13 +105,16 @@ class UserListFragment: Fragment() {
         groupListAdapter.add()
 
     }
+
+
+
+
     //友達を取り出す
     private fun fetchUsers(view: View){
-        val db = FirebaseFirestore.getInstance()
+
         var loginUser:User? = null
         val loginUserRef = db.collection("user").document(uid!!)
-        val friendRef = db.collection("user-friend").document("get")
-        val FTPRef = db.collection("friend-temporary-registration").document("get")
+
 
         loginUserRef.get().addOnSuccessListener {
             Log.d("ユーザ取得", "${it.data}")
@@ -124,18 +133,20 @@ class UserListFragment: Fragment() {
                         db.collection("user").document(it.id).get().addOnSuccessListener {
                             var user = it.toObject(User::class.java)
                             db.collection("block-user").document("get")
-                                .collection(uid).document(user!!.uid).get().addOnSuccessListener {
-                                    //ブロックリストに追加されているならアダプターに追加しない
-                                    if(it["uid"] != user.uid){
+                                .collection(uid).document(user!!.uid).addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+                                    if(documentSnapshot!!["uid"] != user.uid){
                                         userListAdapter?.add(user!!)
                                     }
                                     view.user_list_user_recyclerView.adapter = userListAdapter
                                 }
-
                         }
                     }
                     view.user_list_user_recyclerView.adapter = userListAdapter
                 }
+
+
+
+
 
             //自分のプロフィール画面に飛ばしたい
             view.user_list_my_profile_constraintLayout.setOnClickListener {
@@ -243,5 +254,6 @@ class UserListFragment: Fragment() {
             view.user_list_temporary_registration_imageView.setImageResource(R.drawable.ic_expand_more_24dp)
         }
     }
+
 
 }

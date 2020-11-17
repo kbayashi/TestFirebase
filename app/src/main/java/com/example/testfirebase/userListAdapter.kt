@@ -129,7 +129,10 @@ class userListAdapter(private val context: Context)
 
                        blockRef.collection(uid).document(itemList[position].user.uid)
                             .set(blockData).addOnSuccessListener {
-                                holder.itemView.visibility = View.GONE
+                                itemList.removeAt(position)
+                                notifyItemRemoved(position);
+                                notifyItemRangeChanged(position, itemList.size)
+                                //holder.itemView.visibility = View.GONE
                                 Toast.makeText(context,"ブロックリストに追加しました。",Toast.LENGTH_LONG)
                             }
                     }
