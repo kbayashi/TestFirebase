@@ -27,16 +27,30 @@ class UserProfileEditSpinnerActivity : AppCompatActivity() {
         val table = intent.getStringExtra("table")
         var edit = intent.getStringExtra("edit")
 
-        if(table == "birthday"){
+        if (table == "birthday") {
             // タイトル
             setTitle("年代を選択してください")
-            val adapter = ArrayAdapter.createFromResource(this,R.array.age,android.R.layout.simple_spinner_item)
+            val adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.age,
+                android.R.layout.simple_spinner_item
+            )
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
-        }else if(table == "live") {
+        } else if (table == "live") {
             // タイトル
             setTitle("所在地を選択してください")
-            val adapter = ArrayAdapter.createFromResource(this, R.array.live, android.R.layout.simple_spinner_item)
+            val adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.live,
+                android.R.layout.simple_spinner_item
+            )
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }else if(table == "hobby"){
+            // タイトル
+            setTitle("趣味を選択してください")
+            val adapter = ArrayAdapter.createFromResource(this,R.array.hobby,android.R.layout.simple_spinner_item)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
         }else if(table == "sick"){
@@ -71,7 +85,7 @@ class UserProfileEditSpinnerActivity : AppCompatActivity() {
         }
 
         //保存ボタン
-        activity_user_profile_edit_spinner_save_button.setOnClickListener {
+        activity_user_profile_edit_spinner_savebutton.setOnClickListener {
 
             if(table == "old"){
                 //更新可能
@@ -86,6 +100,18 @@ class UserProfileEditSpinnerActivity : AppCompatActivity() {
                         Log.d("DB", "更新できません ${it.message}")
                     }
             }else if(table == "live"){
+                //更新可能
+                val ref = db.collection("user").document(me!!.uid).update(
+                    table,
+                    activity_user_profile_edit_spinner_spinner.selectedItem.toString()
+                )
+                    .addOnSuccessListener {
+                        Log.d("DB", "更新できました")
+                    }
+                    .addOnFailureListener {
+                        Log.d("DB", "更新できません ${it.message}")
+                    }
+            }else if(table == "hobby") {
                 //更新可能
                 val ref = db.collection("user").document(me!!.uid).update(
                     table,
