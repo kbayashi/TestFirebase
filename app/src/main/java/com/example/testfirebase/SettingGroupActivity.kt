@@ -161,39 +161,23 @@ class SettingGroupActivity : AppCompatActivity() {
         // 保存ボタン
         subb.setOnClickListener {
 
-            for (item in join_select) {
-                if (item == true) {
-                    add_flag = true
+            // グループ名の更新処理
+            db.collection("group").document(gid)
+                .update("name", edit.text.toString()).addOnSuccessListener {
+                    Log.d("Icon Update Success", "DocumentSnapshot successfully updated!")
                 }
-            }
-
-            for (item in delete_select) {
-                if (item == true) {
-                    remove_flag = true
+                .addOnFailureListener {
+                        e -> Log.w("Icon Update Error", "Error updating document", e)
                 }
-            }
 
-            // 追加するとき
-            if (add_flag == true) {
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.app_name)
-                    .setMessage("選択したユーザをグループメンバーに追加しますか？")
-                    .setPositiveButton("OK") { dialog, which ->
-                        // None
-                    }
-                    .show()
-            }
-
-            // 除外するとき
-            if (remove_flag == true) {
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.app_name)
-                    .setMessage("選択したユーザを除外しますか？")
-                    .setPositiveButton("OK") { dialog, which ->
-                        // None
-                    }
-                    .show()
-            }
+            // トピックの更新処理
+            db.collection("group").document(gid)
+                .update("topic", topi.text.toString()).addOnSuccessListener {
+                    Log.d("Icon Update Success", "DocumentSnapshot successfully updated!")
+                }
+                .addOnFailureListener {
+                        e -> Log.w("Icon Update Error", "Error updating document", e)
+                }
         }
 
         // グループアイコン変更の処理
