@@ -44,6 +44,17 @@ class selectDialogMultipleAdapter(private val context: Context)
         selectList.put(key, item)
     }
 
+    fun setDB():String{
+        var text = ""
+        itemList.forEach {
+            if(it.check) {
+                text += it.text + " "
+                Log.d("チェックされた項目", it.text)
+            }
+        }
+        return  text
+    }
+
     //セルが必要になるたびに呼び出される。
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
