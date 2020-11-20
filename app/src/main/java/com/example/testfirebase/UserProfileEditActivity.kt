@@ -47,7 +47,7 @@ class UserProfileEditActivity : AppCompatActivity() {
             user_profile_edit_user_gender_textView.text = my_user?.gender
             user_profile_edit_user_old_textView.text = my_user?.birthday
             user_profile_edit_user_prefectures_textView.text = my_user?.live
-            user_profile_edit_user_hobby_textView.text = my_user?.hobby
+            user_profile_edit_user_hobby_textView.text = my_user?.hoby
             user_profile_edit_user_sick_textView.text = my_user?.sick
             user_profile_edit_user_lifeexpectancy_textView.text = my_user?.life_expectancy
             Picasso.get().load(my_user?.img).into(user_profile_edit_imageview)
@@ -151,5 +151,4 @@ class UserProfileEditActivity : AppCompatActivity() {
                     .show()
             }
     }
-
 }
