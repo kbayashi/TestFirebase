@@ -74,10 +74,12 @@ class SettingGroupActivity : AppCompatActivity() {
             }
 
         // アダプタ(グループ作成アダプタと同じ)
-        var user_remove_adapter = add_remove_userAdapter(this)
         var user_add_adapter = add_remove_userAdapter(this)
+        var user_remove_adapter = add_remove_userAdapter(this)
 
         // リスト
+        val delete_members: ArrayList<String> = ArrayList()
+        val delete_select: ArrayList<Boolean> = ArrayList()
         val join_members: ArrayList<String> = ArrayList()
         val join_select: ArrayList<Boolean> = ArrayList()
 
@@ -97,8 +99,8 @@ class SettingGroupActivity : AppCompatActivity() {
                             getUser = it.toObject(User::class.java)
                             user_remove_adapter?.add(getUser!!)
                             // リストに格納
-                            join_members.add(getUser!!.uid)
-                            join_select.add(false)
+                            delete_members.add(getUser!!.uid)
+                            delete_select.add(false)
                         }
                 }
 
@@ -115,7 +117,7 @@ class SettingGroupActivity : AppCompatActivity() {
                         // フラグ変数
                         var flag: Boolean = false
 
-                        for (item in join_members) {
+                        for (item in delete_members) {
                             if (item == getUser!!.uid) {
                                 flag = true
                                 break
@@ -125,7 +127,8 @@ class SettingGroupActivity : AppCompatActivity() {
                         if (flag == false){
                             // 追加
                             user_add_adapter?.add(getUser!!)
-                            Log.d("ADD_USER", "${getUser}")
+                            join_members.add(getUser!!.uid)
+                            join_select.add(false)
                         }
                     }
                     // アダプタに関連付け
@@ -140,17 +143,40 @@ class SettingGroupActivity : AppCompatActivity() {
             finish()
         }
 
-        /*
-        -----------------------------------------------------------------------------------------------------------------------------------------------------------
-         */
+        // 選択処理
+        user_add_adapter.setOnclickListener { position: Int, bool: Boolean ->
+            join_select[position] = bool
+        }
+
+        user_remove_adapter.setOnclickListener { position: Int, bool: Boolean ->
+            delete_select[position] = bool
+        }
+
+
 
         // 保存ボタン
         subb.setOnClickListener {
 
+            var str: String = ""
+            for (i in 0 .. join_members.size-1){
+                str += join_select[i]
+                str += " : "
+                str += join_members[i]
+                str += "\n"
+            }
+
+            var str2: String = ""
+            for (i in 0 .. delete_members.size-1) {
+                str2 += delete_select[i]
+                str2 += " : "
+                str2 += delete_members[i]
+                str2 += "\n"
+            }
+
             // 仮置き
             AlertDialog.Builder(this) // FragmentではActivityを取得して生成
                 .setTitle(R.string.app_name)
-                .setMessage("None.")
+                .setMessage(str + "\n" + str2)
                 .setPositiveButton("OK") { dialog, which ->
                     // None
                 }
