@@ -15,11 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".SettingGroupActivity" />
-        <activity android:name=".GroupChatActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
+        <activity android:name=".GroupChatActivity" />
         <activity android:name=".PasswordForgetActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

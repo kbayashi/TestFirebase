@@ -19,9 +19,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_create_group.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class SettingGroupActivity : AppCompatActivity() {
 
@@ -40,13 +42,126 @@ class SettingGroupActivity : AppCompatActivity() {
         val cont = findViewById<TextView>(R.id.group_name_count_textView)
         val topi = findViewById<EditText>(R.id.group_topic_editText)
         val tcon = findViewById<TextView>(R.id.group_topic_count_textView)
-        val recy = findViewById<RecyclerView>(R.id.user_list_recyclerView)
+        val add_recy = findViewById<RecyclerView>(R.id.user_add_list_recyclerView)
+        val rem_recy = findViewById<RecyclerView>(R.id.user_remove_list_recyclerView)
         val subb = findViewById<Button>(R.id.submit_button)
 
         // Firebase
         val auth = FirebaseAuth.getInstance()
         val me = auth.currentUser
         val db = FirebaseFirestore.getInstance()
+
+        // ユーザオブジェクト
+        var loginUser: User?
+        var getUser: User?
+
+        // グループIDを取得
+        val gid = intent.getStringExtra("GroupId")
+
+        // グループの取得
+        db.collection("group").document(gid)
+            .get().addOnSuccessListener { document ->
+                if (document != null) {
+                    setTitle(document["name"].toString() + "の編集")
+                    edit.setText(document["name"].toString())
+                    topi.setText(document["topic"].toString())
+                    Picasso.get().load(document["icon"].toString()).into(icon)
+                } else {
+                    Log.d("TAG", "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("TAG", "get failed with ", exception)
+            }
+
+        // アダプタ(グループ作成アダプタと同じ)
+        var user_add_adapter = add_remove_userAdapter(this)
+        var user_remove_adapter = add_remove_userAdapter(this)
+
+        // まだ追加できるユーザを取得と表示(友だち-グループメンバーの差分ユーザ)
+        val add_User = db.collection("user").document(me!!.uid)
+        add_User.get().addOnSuccessListener {
+            loginUser = it.toObject(User::class.java)
+            Log.d("LOGIN_USER", "${it.data}")
+            Log.d("LOGIN_USER", "${loginUser?.name}")
+
+            val users = db.collection("user")
+            users.get().addOnSuccessListener {
+                it.forEach {
+                    // 自分のユーザオブジェクトを取得
+                    getUser = it.toObject(User::class.java)
+                    Log.d("GET_USER","${it.toObject(User::class.java)}")
+                    Log.d("GET_USER","${getUser!!.name}")
+
+                    if(!(loginUser?.name == getUser!!.name)) {
+                        user_add_adapter?.add(getUser!!)
+                        Log.d("ADD_USER", "${getUser}")
+                    }
+                }
+                // アダプタに関連付け
+                add_recy.adapter = user_add_adapter
+
+            }.addOnFailureListener {
+                finish()
+            }
+
+        }.addOnFailureListener {
+            finish()
+        }
+
+        // DBからグループメンバーを取得と表示(グループメンバーのみ)
+        val g_members = db.collection("group").document(gid).collection("member")
+        g_members.get().addOnSuccessListener { result ->
+
+            // 在籍メンバー分ループ
+            for (document in result) {
+                // 在籍グループをデバッグ出力
+                Log.d("Join_Member", "${document.id} => ${document.data}")
+                Log.d("Join_Member_Substring_ID", document.data.toString().substring(5, 33))
+                // ユーザオブジェクトと関連付ける
+                db.collection("user").document(document.data.toString().substring(5, 33))
+                    .get().addOnSuccessListener {
+                        // 自分のユーザオブジェクトを取得
+                        getUser = it.toObject(User::class.java)
+                        // 自分は除く
+                        if(!(me.uid == getUser!!.uid)) {
+                            user_remove_adapter?.add(getUser!!)
+                            Log.d("ADD_USER", "${getUser}")
+                        }
+                    }
+            }
+
+            // アダプタに関連付け
+            rem_recy.adapter = user_remove_adapter
+            subb.setEnabled(true)
+
+        }.addOnFailureListener {
+            finish()
+        }
+
+        /*
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------
+         */
+
+        // 保存ボタン
+        subb.setOnClickListener {
+
+            // 仮置き
+            AlertDialog.Builder(this) // FragmentではActivityを取得して生成
+                .setTitle(R.string.app_name)
+                .setMessage("Fill")
+                .setPositiveButton("OK") { dialog, which ->
+                    // None
+                }
+                .show()
+        }
+
+        // グループアイコン変更の処理
+        icon.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, 0)
+        }
 
         // グループ名の文字数処理
         edit!!.addTextChangedListener(object : TextWatcher {
@@ -85,87 +200,6 @@ class SettingGroupActivity : AppCompatActivity() {
             override fun afterTextChanged(p0: Editable?) {}
 
         })
-
-        // グループIDを取得
-        val gid = intent.getStringExtra("GroupId")
-
-        // グループ情報の取得
-        db.collection("group").document(gid)
-            .get().addOnSuccessListener { document ->
-                if (document != null) {
-                    setTitle(document["name"].toString())
-                    edit.setText(document["name"].toString())
-                    topi.setText(document["topic"].toString())
-                } else {
-                    Log.d("TAG", "No such document")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d("TAG", "get failed with ", exception)
-            }
-
-        // ユーザオブジェクト
-        var loginUser: User?
-        var getUser: User?
-
-        // アダプタ(グループ作成アダプタと同じ)
-        var user_adapter = createGroupAdapter(this)
-
-        // DBから取得してきたデータをアダプタに格納
-        val loginUserRef = db.collection("user").document(me!!.uid)
-        loginUserRef.get().addOnSuccessListener {
-            loginUser = it.toObject(User::class.java)
-            Log.d("LOGIN_USER", "${it.data}")
-            Log.d("LOGIN_USER", "${loginUser?.name}")
-
-            val users = db.collection("user")
-            users.get().addOnSuccessListener {
-                it.forEach {
-                    // 自分のユーザオブジェクトを取得
-                    getUser = it.toObject(User::class.java)
-                    Log.d("GET_USER","${it.toObject(User::class.java)}")
-                    Log.d("GET_USER","${getUser!!.name}")
-
-                    if(!(loginUser?.name == getUser!!.name)) {
-                        user_adapter?.add(getUser!!)
-                        Log.d("ADD_USER", "${getUser}")
-                    }
-                }
-                // アダプタに関連付け
-                recy.adapter = user_adapter
-                // ボタンを有効化
-                subb.setEnabled(true)
-
-            }.addOnFailureListener {
-                Log.d("GET_FAILED", it.message)
-            }
-
-        }.addOnFailureListener {
-            Log.d("GET_FAILED", it.message)
-        }
-
-        // グループアイコン変更の処理
-        icon.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, 0)
-        }
-        
-        // 保存ボタン
-        subb.setOnClickListener {
-
-            // チェック処理
-            if (edit.text.isEmpty()){
-                AlertDialog.Builder(this) // FragmentではActivityを取得して生成
-                    .setTitle(R.string.app_name)
-                    .setMessage("グループ名が入力されていません")
-                    .setPositiveButton("OK", { dialog, which ->
-                        // TODO:Yesが押された時の挙動
-                    })
-                    .show()
-            }
-
-        }
 
     }
 
