@@ -52,7 +52,6 @@ class UserProfileEditActivity : AppCompatActivity() {
             user_profile_edit_user_lifeexpectancy_textView.text = my_user?.life_expectancy
             Picasso.get().load(my_user?.img).into(user_profile_edit_imageview)
         }
-        
         // 名前
         name_relativelayout.setOnClickListener{
             val dialog = UserProfileEditPlainTextDialog("名前を変更",user_profile_edit_user_name_textView, "name", user_profile_edit_user_name_textView.text.toString())
@@ -84,11 +83,12 @@ class UserProfileEditActivity : AppCompatActivity() {
         }
         //趣味
         hobby_relativelayout.setOnClickListener{
-
+            val dialog = UserProfileEditCheckDialog("趣味を変更",user_profile_edit_user_hobby_textView, "hoby",user_profile_edit_user_hobby_textView.text.toString())
+            dialog.show(supportFragmentManager, "趣味")
         }
         // 病名
         sick_relativelayout.setOnClickListener {
-            val dialog = UserProfileEditCheckDialog("病名を変更",user_profile_edit_user_sick_textView, "live", user_profile_edit_user_sick_textView.text.toString())
+            val dialog = UserProfileEditCheckDialog("病名を変更",user_profile_edit_user_sick_textView, "sick",user_profile_edit_user_sick_textView.text.toString())
             dialog.show(supportFragmentManager, "病名")
         }
 
@@ -130,6 +130,7 @@ class UserProfileEditActivity : AppCompatActivity() {
             uploadImageFirebaseStorage()
         }
     }
+
     private fun uploadImageFirebaseStorage(){
 
         if(selectedPhotoUri == null) return

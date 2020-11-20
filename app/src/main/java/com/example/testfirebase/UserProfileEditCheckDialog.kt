@@ -12,7 +12,6 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_user_profile_edit_plain_text.*
 import kotlinx.android.synthetic.main.select_dialog.*
 
 class UserProfileEditCheckDialog(val title:String,val textView: TextView, val dbRefName: String,val dbEditName: String): DialogFragment() {
@@ -46,9 +45,14 @@ class UserProfileEditCheckDialog(val title:String,val textView: TextView, val db
         var Cadapter = selectDialogMultipleAdapter(context!!)
         if(dbRefName == "sick"){
             RAdapterSet(Radapter)
+            dialog.select_dialog_recyclerView.adapter = Radapter
             dialog.select_dialog_title_textView.text = title
-        }else if(dbRefName == "hobby"){
+        }else if(dbRefName == "hoby"){
             CAdapterSet(Cadapter)
+            dialog.select_dialog_recyclerView.adapter = Cadapter
+            getResources().getStringArray(R.array.hobby).forEach {
+                Cadapter.add(it)
+            }
             dialog.select_dialog_title_textView.text = title
         }
         //選択ボタン
@@ -66,11 +70,11 @@ class UserProfileEditCheckDialog(val title:String,val textView: TextView, val db
                         Log.d("DB", "更新できません ${it.message}")
                     }
                 textView.text = Radapter.checkedText
-            }/*else if(dbRefName == "hobby"){
+            }else if(dbRefName == "hoby"){
                 //更新可能
                 val ref = db.collection("user").document(me!!.uid).update(
                     dbRefName,
-                    Cadapter.
+                    Cadapter.setDB()
                 )
                     .addOnSuccessListener {
                         Log.d("DB", "更新できました")
@@ -78,8 +82,8 @@ class UserProfileEditCheckDialog(val title:String,val textView: TextView, val db
                     .addOnFailureListener {
                         Log.d("DB", "更新できません ${it.message}")
                     }
-                textView.text =
-            }*/
+                textView.text = Cadapter.setDB()
+            }
             dialog.cancel()
         }
         //キャンセルにデータをセット
