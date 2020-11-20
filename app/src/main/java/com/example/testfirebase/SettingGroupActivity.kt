@@ -52,7 +52,6 @@ class SettingGroupActivity : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
 
         // ユーザオブジェクト
-        var loginUser: User?
         var getUser: User?
 
         // グループIDを取得
@@ -75,65 +74,67 @@ class SettingGroupActivity : AppCompatActivity() {
             }
 
         // アダプタ(グループ作成アダプタと同じ)
-        var user_add_adapter = add_remove_userAdapter(this)
         var user_remove_adapter = add_remove_userAdapter(this)
+        var user_add_adapter = add_remove_userAdapter(this)
 
-        // まだ追加できるユーザを取得と表示(友だち-グループメンバーの差分ユーザ)
-        val add_User = db.collection("user").document(me!!.uid)
-        add_User.get().addOnSuccessListener {
-            loginUser = it.toObject(User::class.java)
-            Log.d("LOGIN_USER", "${it.data}")
-            Log.d("LOGIN_USER", "${loginUser?.name}")
+        // リスト
+        val join_members: ArrayList<String> = ArrayList()
+        val join_select: ArrayList<Boolean> = ArrayList()
 
-            val users = db.collection("user")
-            users.get().addOnSuccessListener {
-                it.forEach {
-                    // 自分のユーザオブジェクトを取得
-                    getUser = it.toObject(User::class.java)
-                    Log.d("GET_USER","${it.toObject(User::class.java)}")
-                    Log.d("GET_USER","${getUser!!.name}")
+        // DBからグループメンバーの取得と表示(グループメンバーのみ)
+        db.collection("group").document(gid).collection("member")
+            .get().addOnSuccessListener { result ->
 
-                    if(!(loginUser?.name == getUser!!.name)) {
-                        user_add_adapter?.add(getUser!!)
-                        Log.d("ADD_USER", "${getUser}")
-                    }
-                }
-                // アダプタに関連付け
-                add_recy.adapter = user_add_adapter
-
-            }.addOnFailureListener {
-                finish()
-            }
-
-        }.addOnFailureListener {
-            finish()
-        }
-
-        // DBからグループメンバーを取得と表示(グループメンバーのみ)
-        val g_members = db.collection("group").document(gid).collection("member")
-        g_members.get().addOnSuccessListener { result ->
-
-            // 在籍メンバー分ループ
-            for (document in result) {
-                // 在籍グループをデバッグ出力
-                Log.d("Join_Member", "${document.id} => ${document.data}")
-                Log.d("Join_Member_Substring_ID", document.data.toString().substring(5, 33))
-                // ユーザオブジェクトと関連付ける
-                db.collection("user").document(document.data.toString().substring(5, 33))
-                    .get().addOnSuccessListener {
-                        // 自分のユーザオブジェクトを取得
-                        getUser = it.toObject(User::class.java)
-                        // 自分は除く
-                        if(!(me.uid == getUser!!.uid)) {
+                // 在籍メンバー分ループ
+                for (document in result) {
+                    // 在籍グループをデバッグ出力
+                    Log.d("Join_Member", "${document.id} => ${document.data}")
+                    Log.d("Join_Member_Substring_ID", document.data.toString().substring(5, 33))
+                    // グループメンバーのユーザIDを元にユーザテーブルから情報を取得
+                    db.collection("user").document(document.data.toString().substring(5, 33))
+                        .get().addOnSuccessListener {
+                            // ユーザオブジェクトを取得
+                            getUser = it.toObject(User::class.java)
                             user_remove_adapter?.add(getUser!!)
+                            // リストに格納
+                            join_members.add(getUser!!.uid)
+                            join_select.add(false)
+                        }
+                }
+
+                // アダプタに関連付け
+                rem_recy.adapter = user_remove_adapter
+
+                // まだ追加できるユーザを取得と表示(現存の友だち - グループメンバー = 差分ユーザ)
+                db.collection("user").get().addOnSuccessListener { result ->
+
+                    // ユーザ数分ループ
+                    for (document in result){
+                        // ユーザオブジェクトを取得
+                        getUser = document.toObject(User::class.java)
+                        // フラグ変数
+                        var flag: Boolean = false
+
+                        for (item in join_members) {
+                            if (item == getUser!!.uid) {
+                                flag = true
+                                break
+                            }
+                        }
+
+                        if (flag == false){
+                            // 追加
+                            user_add_adapter?.add(getUser!!)
                             Log.d("ADD_USER", "${getUser}")
                         }
                     }
-            }
+                    // アダプタに関連付け
+                    add_recy.adapter = user_add_adapter
+                    subb.setEnabled(true)
 
-            // アダプタに関連付け
-            rem_recy.adapter = user_remove_adapter
-            subb.setEnabled(true)
+                }.addOnFailureListener {
+                    finish()
+                }
 
         }.addOnFailureListener {
             finish()
@@ -149,7 +150,7 @@ class SettingGroupActivity : AppCompatActivity() {
             // 仮置き
             AlertDialog.Builder(this) // FragmentではActivityを取得して生成
                 .setTitle(R.string.app_name)
-                .setMessage("Fill")
+                .setMessage("None.")
                 .setPositiveButton("OK") { dialog, which ->
                     // None
                 }
