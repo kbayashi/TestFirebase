@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.example.testfirebase.UserListFragment.Companion.SELECT_USER
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -44,6 +45,15 @@ class UserProfileActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        //このユーザーをブロックしているならブロック解除ボタンを表示。sssチャットボタンを消す
+        FirebaseFirestore.getInstance().collection("block-user").document("get")
+            .collection(uid).document(get_user.uid).get().addOnSuccessListener {
+                if(it["uid"] == get_user.uid){
+                    user_profile_block_button.visibility = View.VISIBLE
+                    user_profile_talk_floatingActionButton.visibility = View.GONE
+                }
+            }
+
         //すでに追加・申請しているなら友だち追加ボタンを消す
         FirebaseFirestore.getInstance().collection("user-friend")
             .document("get").collection(uid).document(get_user.uid).get().addOnSuccessListener {
@@ -82,6 +92,18 @@ class UserProfileActivity : AppCompatActivity() {
                 .set(firendData).addOnSuccessListener {
                     ref.collection("friend-temporary-registration").document("get").
                     collection(get_user.uid).document(uid).set(temporaryRegistrationData)
+                }
+        }
+
+        //ブロック解除
+        user_profile_block_button.setOnClickListener {
+            FirebaseFirestore.getInstance().collection("block-user").
+                document("get").collection(uid).document(get_user.uid).delete()
+                .addOnSuccessListener {
+                    Toast.makeText(this,"ブロック解除しました",Toast.LENGTH_LONG)
+                        .show()
+                    user_profile_block_button.visibility = View.GONE
+                    user_profile_talk_floatingActionButton.visibility = View.VISIBLE
                 }
         }
 
