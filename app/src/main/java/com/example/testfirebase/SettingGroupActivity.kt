@@ -32,6 +32,18 @@ class SettingGroupActivity : AppCompatActivity() {
     // グループアイコン保存パス
     private var gIcon = "none"
 
+    // 更新フラグ
+    private var add_flag = false
+    private var remove_flag = false
+
+    // Firebase
+    private val auth = FirebaseAuth.getInstance()
+    private val me = auth.currentUser
+    private val db = FirebaseFirestore.getInstance()
+
+    // グループID
+    private lateinit var gid: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting_group)
@@ -46,16 +58,11 @@ class SettingGroupActivity : AppCompatActivity() {
         val rem_recy = findViewById<RecyclerView>(R.id.user_remove_list_recyclerView)
         val subb = findViewById<Button>(R.id.submit_button)
 
-        // Firebase
-        val auth = FirebaseAuth.getInstance()
-        val me = auth.currentUser
-        val db = FirebaseFirestore.getInstance()
-
         // ユーザオブジェクト
         var getUser: User?
 
         // グループIDを取得
-        val gid = intent.getStringExtra("GroupId")
+        gid = intent.getStringExtra("GroupId")
 
         // グループの取得
         db.collection("group").document(gid)
@@ -147,26 +154,19 @@ class SettingGroupActivity : AppCompatActivity() {
         user_add_adapter.setOnclickListener { position: Int, bool: Boolean ->
             join_select[position] = bool
         }
-
         user_remove_adapter.setOnclickListener { position: Int, bool: Boolean ->
             delete_select[position] = bool
         }
 
-
-
         // 保存ボタン
         subb.setOnClickListener {
 
-            // 追加ユーザの確認
-            var add_flag: Boolean = false
             for (item in join_select) {
                 if (item == true) {
                     add_flag = true
                 }
             }
 
-            // 除外ユーザの確認
-            var remove_flag: Boolean = false
             for (item in delete_select) {
                 if (item == true) {
                     remove_flag = true
@@ -185,7 +185,7 @@ class SettingGroupActivity : AppCompatActivity() {
             }
 
             // 除外するとき
-            if (add_flag == true) {
+            if (remove_flag == true) {
                 AlertDialog.Builder(this)
                     .setTitle(R.string.app_name)
                     .setMessage("選択したユーザを除外しますか？")
@@ -272,6 +272,15 @@ class SettingGroupActivity : AppCompatActivity() {
                     Log.d(UserProfileEditActivity.USER_REGISTAR, "File 場所$it")
                     // FirebaseFirestore.getInstance().collection("user").document(my_user!!.uid).set(my_user!!)
                 }
+
+                // グループテーブル上のアイコンデータも更新
+                db.collection("group").document(gid)
+                    .update("icon", gIcon).addOnSuccessListener {
+                        Log.d("Icon Update Success", "DocumentSnapshot successfully updated!")
+                    }
+                    .addOnFailureListener {
+                        e -> Log.w("Icon Update Error", "Error updating document", e)
+                    }
             }
             .addOnFailureListener{
                 //do same logging here
