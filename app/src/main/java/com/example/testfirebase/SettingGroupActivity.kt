@@ -157,30 +157,43 @@ class SettingGroupActivity : AppCompatActivity() {
         // 保存ボタン
         subb.setOnClickListener {
 
-            var str: String = ""
-            for (i in 0 .. join_members.size-1){
-                str += join_select[i]
-                str += " : "
-                str += join_members[i]
-                str += "\n"
-            }
-
-            var str2: String = ""
-            for (i in 0 .. delete_members.size-1) {
-                str2 += delete_select[i]
-                str2 += " : "
-                str2 += delete_members[i]
-                str2 += "\n"
-            }
-
-            // 仮置き
-            AlertDialog.Builder(this) // FragmentではActivityを取得して生成
-                .setTitle(R.string.app_name)
-                .setMessage(str + "\n" + str2)
-                .setPositiveButton("OK") { dialog, which ->
-                    // None
+            // 追加ユーザの確認
+            var add_flag: Boolean = false
+            for (item in join_select) {
+                if (item == true) {
+                    add_flag = true
                 }
-                .show()
+            }
+
+            // 除外ユーザの確認
+            var remove_flag: Boolean = false
+            for (item in delete_select) {
+                if (item == true) {
+                    remove_flag = true
+                }
+            }
+
+            // 追加するとき
+            if (add_flag == true) {
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.app_name)
+                    .setMessage("選択したユーザをグループメンバーに追加しますか？")
+                    .setPositiveButton("OK") { dialog, which ->
+                        // None
+                    }
+                    .show()
+            }
+
+            // 除外するとき
+            if (add_flag == true) {
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.app_name)
+                    .setMessage("選択したユーザを除外しますか？")
+                    .setPositiveButton("OK") { dialog, which ->
+                        // None
+                    }
+                    .show()
+            }
         }
 
         // グループアイコン変更の処理
@@ -267,3 +280,32 @@ class SettingGroupActivity : AppCompatActivity() {
             }
     }
 }
+
+/*
+
+var str: String = ""
+            for (i in 0 .. join_members.size-1){
+                str += join_select[i]
+                str += " : "
+                str += join_members[i]
+                str += "\n"
+            }
+
+            var str2: String = ""
+            for (i in 0 .. delete_members.size-1) {
+                str2 += delete_select[i]
+                str2 += " : "
+                str2 += delete_members[i]
+                str2 += "\n"
+            }
+
+            // 仮置き
+            AlertDialog.Builder(this) // FragmentではActivityを取得して生成
+                .setTitle(R.string.app_name)
+                .setMessage(str + "\n" + str2)
+                .setPositiveButton("OK") { dialog, which ->
+                    // None
+                }
+                .show()
+
+ */
