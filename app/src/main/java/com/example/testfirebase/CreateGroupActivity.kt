@@ -28,8 +28,9 @@ class CreateGroupActivity : AppCompatActivity() {
 
     // 画像選択
     private var selectedPhotoUri: Uri? = null
-    // グループアイコン保存パス
-    private var gIcon = "none"
+    // グループアイコン保存パス（デフォルトはNoImage画像パスが格納される）
+    private var gIcon =
+        "https://firebasestorage.googleapis.com/v0/b/firevasetest-1d5b9.appspot.com/o/user_icon%2Fnoimage.png?alt=media&token=b9ae62b8-8c42-4791-9507-c84c93f6871f"
 
     // 画面生成
     override fun onCreate(savedInstanceState: Bundle?) {
