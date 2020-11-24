@@ -213,22 +213,42 @@ class SettingGroupActivity : AppCompatActivity() {
                     .setTitle(R.string.app_name)
                     .setMessage(str)
                     .setPositiveButton("変更") { dialog, which ->
-                        // メンバー
-                        data class cUser(
-                            val uid: String? = null
-                        )
+
                         //　メンバーを追加
                         if (add_flag == true) {
                             join_members.forEach {
-                                db.collection("group").document(gid).collection("member").add(cUser(it))
+                                // メンバー
+                                data class cUser(
+                                    val uid: String? = null
+                                )
+                                // group
+                                val add_other = db.collection("group").document(gid).collection("member").document(it)
+                                add_other.set(cUser(it))
+
+                                // データ構造
+                                data class jUser(
+                                    val uid: String? = null,
+                                    val status: Boolean = false
+                                )
+                                // group-join
+                                db.collection("group-join").document("set").collection(gid).add(jUser(it, false))
                             }
                         }
                         // メンバーを除外
                         if (remove_flag == true) {
                             delete_members.forEach {
+                                // group
+                                db.collection("group").document(gid).collection("member").document(it)
+                                    .delete()
+                                    .addOnSuccessListener { Log.d("Remove_user", "DocumentSnapshot successfully deleted!") }
+                                    .addOnFailureListener { e -> Log.w("Remove_user", "Error deleting document", e) }
 
+                                // group-join
+                                db.collection("group-join").document("set").collection(gid).document(it).delete()
                             }
                         }
+                        // 前の画面へ戻る
+                        finish()
                     }
                     .setNegativeButton("取消", { dialog, which ->
                         // TODO:Noが押された時の挙動
