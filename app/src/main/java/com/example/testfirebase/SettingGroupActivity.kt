@@ -99,8 +99,11 @@ class SettingGroupActivity : AppCompatActivity() {
                         .get().addOnSuccessListener {
                             // ユーザオブジェクトを取得
                             getUser = it.toObject(User::class.java)
-                            user_remove_adapter?.add(getUser!!)
-                            group_membres.add(getUser!!.uid)
+                            // 自分の場合は除く
+                            if (getUser!!.uid != me!!.uid) {
+                                user_remove_adapter?.add(getUser!!)
+                                group_membres.add(getUser!!.uid)
+                            }
                         }
                 }
 
@@ -117,8 +120,15 @@ class SettingGroupActivity : AppCompatActivity() {
                         // フラグ変数
                         var flag: Boolean = false
 
+                        // メンバー追加候補者を表示する処理
                         for (item in group_membres) {
-                            if (item == getUser!!.uid) {
+                            // 既にメンバーは除外
+                            if (getUser!!.uid == item) {
+                                flag = true
+                                break
+                            }
+                            // 自分の場合は除外
+                            if (getUser!!.uid == me!!.uid) {
                                 flag = true
                                 break
                             }
@@ -188,10 +198,19 @@ class SettingGroupActivity : AppCompatActivity() {
             if (join_members.size != 0){
                 str += "追加するメンバー\n"
             }
-            // メンバー追加処理
+
+            // メンバー追加処理(追加するメンバー分、繰り返す。必要に応じてFirebaseに問い合わせる)
             join_members.forEach {
-                str += it
+                db.collection("user").document(it).get()
+                    .addOnSuccessListener { document ->
+                        str += document.toObject(User::class.java)!!.name
+                        Log.d("Add_User", document.toObject(User::class.java)!!.name)
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.d("TAG", "get failed with ", exception)
+                    }
                 str += "\n"
+                // これで実装したかったが、なんか思った挙動とは違っていた。 ...なぜ？
             }
 
             // 除外判定
@@ -256,7 +275,7 @@ class SettingGroupActivity : AppCompatActivity() {
                 // 表示
                 AlertDialog.Builder(this)
                     .setTitle(R.string.app_name)
-                    .setMessage("あんたにコンティニューなんてないのさ！")
+                    .setMessage("あなたが、コンティニュー出来ないのさ！")
                     .setPositiveButton("OK") { dialog, which ->
                         // 今の画面を木端微塵に破壊する。そんな面倒なことはさせない。
                         // finish()
