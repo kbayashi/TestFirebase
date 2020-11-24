@@ -30,19 +30,15 @@ class SettingGroupActivity : AppCompatActivity() {
     // 画像選択
     private var selectedPhotoUri: Uri? = null
     // グループアイコン保存パス
-    private var gIcon = "none"
-
-    // 更新フラグ
-    private var add_flag = false
-    private var remove_flag = false
+    private var gIcon =
+        "https://firebasestorage.googleapis.com/v0/b/firevasetest-1d5b9.appspot.com/o/user_icon%2Fnoimage.png?alt=media&token=b9ae62b8-8c42-4791-9507-c84c93f6871f"
+    // グループID
+    private lateinit var gid: String
 
     // Firebase
     private val auth = FirebaseAuth.getInstance()
     private val me = auth.currentUser
     private val db = FirebaseFirestore.getInstance()
-
-    // グループID
-    private lateinit var gid: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -173,11 +169,82 @@ class SettingGroupActivity : AppCompatActivity() {
             // トピックの更新処理
             db.collection("group").document(gid)
                 .update("topic", topi.text.toString()).addOnSuccessListener {
-                    Log.d("Icon Update Success", "DocumentSnapshot successfully updated!")
+                    Log.d("Topic Update Success", "DocumentSnapshot successfully updated!")
                 }
                 .addOnFailureListener {
-                        e -> Log.w("Icon Update Error", "Error updating document", e)
+                        e -> Log.w("Topic Update Error", "Error updating document", e)
                 }
+
+            // 追加除外フラグ
+            var add_flag = false
+            var remove_flag = false
+            // メッセージ表示用変数
+            var str = ""
+            // メンバー追加処理
+            for (i in 0 .. join_members.size-1) {
+                // 参加者
+                if (join_select[i] == true) {
+                    if (add_flag == false) {
+                        str += "追加するメンバー\n"
+                        add_flag = true
+                    }
+                    str += join_members[i]
+                    str += "\n"
+                }
+            }
+
+            // メンバー除外処理
+            for (i in 0 .. delete_members.size-1){
+                // 除外
+                if (delete_select[i] == true) {
+                    if (remove_flag == false) {
+                        str += "除外するメンバー\n"
+                        remove_flag = true
+                    }
+                    str += delete_members[i]
+                    str += "\n"
+                }
+            }
+
+            // 追加除外判定
+            if (add_flag == true || remove_flag == true) {
+                // 表示
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.app_name)
+                    .setMessage(str)
+                    .setPositiveButton("変更") { dialog, which ->
+                        // メンバー
+                        data class cUser(
+                            val uid: String? = null
+                        )
+                        //　メンバーを追加
+                        if (add_flag == true) {
+                            join_members.forEach {
+                                db.collection("group").document(gid).collection("member").add(cUser(it))
+                            }
+                        }
+                        // メンバーを除外
+                        if (remove_flag == true) {
+                            delete_members.forEach {
+
+                            }
+                        }
+                    }
+                    .setNegativeButton("取消", { dialog, which ->
+                        // TODO:Noが押された時の挙動
+                    })
+                    .show()
+            } else {
+                // 表示
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.app_name)
+                    .setMessage("あんたにコンティニューなんてないのさ！")
+                    .setPositiveButton("OK") { dialog, which ->
+                        // 今の画面を木端微塵に破壊する
+                        finish()
+                    }
+                    .show()
+            }
         }
 
         // グループアイコン変更の処理
@@ -254,17 +321,16 @@ class SettingGroupActivity : AppCompatActivity() {
                 ref.downloadUrl.addOnSuccessListener {
                     gIcon = it.toString()
                     Log.d(UserProfileEditActivity.USER_REGISTAR, "File 場所$it")
-                    // FirebaseFirestore.getInstance().collection("user").document(my_user!!.uid).set(my_user!!)
-                }
 
-                // グループテーブル上のアイコンデータも更新
-                db.collection("group").document(gid)
-                    .update("icon", gIcon).addOnSuccessListener {
-                        Log.d("Icon Update Success", "DocumentSnapshot successfully updated!")
-                    }
-                    .addOnFailureListener {
-                        e -> Log.w("Icon Update Error", "Error updating document", e)
-                    }
+                    // グループテーブル上のアイコンデータも更新
+                    db.collection("group").document(gid)
+                        .update("icon", gIcon).addOnSuccessListener {
+                            Log.d("Icon Update Success", "DocumentSnapshot successfully updated!")
+                        }
+                        .addOnFailureListener {
+                                e -> Log.w("Icon Update Error", "Error updating document", e)
+                        }
+                }
             }
             .addOnFailureListener{
                 //do same logging here
@@ -273,32 +339,3 @@ class SettingGroupActivity : AppCompatActivity() {
             }
     }
 }
-
-/*
-
-var str: String = ""
-            for (i in 0 .. join_members.size-1){
-                str += join_select[i]
-                str += " : "
-                str += join_members[i]
-                str += "\n"
-            }
-
-            var str2: String = ""
-            for (i in 0 .. delete_members.size-1) {
-                str2 += delete_select[i]
-                str2 += " : "
-                str2 += delete_members[i]
-                str2 += "\n"
-            }
-
-            // 仮置き
-            AlertDialog.Builder(this) // FragmentではActivityを取得して生成
-                .setTitle(R.string.app_name)
-                .setMessage(str + "\n" + str2)
-                .setPositiveButton("OK") { dialog, which ->
-                    // None
-                }
-                .show()
-
- */
