@@ -54,11 +54,11 @@ class SettingGroupActivity : AppCompatActivity() {
         val rem_recy = findViewById<RecyclerView>(R.id.user_remove_list_recyclerView)
         val subb = findViewById<Button>(R.id.submit_button)
 
-        // ユーザオブジェクト
-        var getUser: User?
-
         // グループIDを取得
         gid = intent.getStringExtra("GroupId")
+
+        // ユーザオブジェクト
+        var getUser: User?
 
         // グループの取得
         db.collection("group").document(gid)
@@ -81,10 +81,9 @@ class SettingGroupActivity : AppCompatActivity() {
         var user_remove_adapter = add_remove_userAdapter(this)
 
         // リスト
-        val delete_members: ArrayList<String> = ArrayList()
-        val delete_select: ArrayList<Boolean> = ArrayList()
+        val remove_members: ArrayList<String> = ArrayList()
         val join_members: ArrayList<String> = ArrayList()
-        val join_select: ArrayList<Boolean> = ArrayList()
+        val group_membres: ArrayList<String> = ArrayList()
 
         // DBからグループメンバーの取得と表示(グループメンバーのみ)
         db.collection("group").document(gid).collection("member")
@@ -101,9 +100,7 @@ class SettingGroupActivity : AppCompatActivity() {
                             // ユーザオブジェクトを取得
                             getUser = it.toObject(User::class.java)
                             user_remove_adapter?.add(getUser!!)
-                            // リストに格納
-                            delete_members.add(getUser!!.uid)
-                            delete_select.add(false)
+                            group_membres.add(getUser!!.uid)
                         }
                 }
 
@@ -120,7 +117,7 @@ class SettingGroupActivity : AppCompatActivity() {
                         // フラグ変数
                         var flag: Boolean = false
 
-                        for (item in delete_members) {
+                        for (item in group_membres) {
                             if (item == getUser!!.uid) {
                                 flag = true
                                 break
@@ -130,8 +127,6 @@ class SettingGroupActivity : AppCompatActivity() {
                         if (flag == false){
                             // 追加
                             user_add_adapter?.add(getUser!!)
-                            join_members.add(getUser!!.uid)
-                            join_select.add(false)
                         }
                     }
                     // アダプタに関連付け
@@ -147,11 +142,22 @@ class SettingGroupActivity : AppCompatActivity() {
         }
 
         // 選択処理
-        user_add_adapter.setOnclickListener { position: Int, bool: Boolean ->
-            join_select[position] = bool
+        user_add_adapter.setOnclickListener { uid: String, bool: Boolean ->
+            // 追加 or 除外
+            if (bool == true) {
+                join_members.add(uid)
+            } else {
+                join_members.remove(uid)
+            }
+
         }
-        user_remove_adapter.setOnclickListener { position: Int, bool: Boolean ->
-            delete_select[position] = bool
+        user_remove_adapter.setOnclickListener { uid: String, bool: Boolean ->
+            // 追加 or 除外
+            if (bool == true) {
+                remove_members.add(uid)
+            } else {
+                remove_members.remove(uid)
+            }
         }
 
         // 保存ボタン
@@ -175,39 +181,31 @@ class SettingGroupActivity : AppCompatActivity() {
                         e -> Log.w("Topic Update Error", "Error updating document", e)
                 }
 
-            // 追加除外フラグ
-            var add_flag = false
-            var remove_flag = false
             // メッセージ表示用変数
             var str = ""
+
+            // 追加判定
+            if (join_members.size != 0){
+                str += "追加するメンバー\n"
+            }
             // メンバー追加処理
-            for (i in 0 .. join_members.size-1) {
-                // 参加者
-                if (join_select[i] == true) {
-                    if (add_flag == false) {
-                        str += "追加するメンバー\n"
-                        add_flag = true
-                    }
-                    str += join_members[i]
-                    str += "\n"
-                }
+            join_members.forEach {
+                str += it
+                str += "\n"
             }
 
+            // 除外判定
+            if (remove_members.size != 0) {
+                str += "除外するメンバー\n"
+            }
             // メンバー除外処理
-            for (i in 0 .. delete_members.size-1){
-                // 除外
-                if (delete_select[i] == true) {
-                    if (remove_flag == false) {
-                        str += "除外するメンバー\n"
-                        remove_flag = true
-                    }
-                    str += delete_members[i]
-                    str += "\n"
-                }
+            remove_members.forEach {
+                str += it
+                str += "\n"
             }
 
-            // 追加除外判定
-            if (add_flag == true || remove_flag == true) {
+            // 確認表示
+            if (join_members.size != 0 || remove_members.size != 0) {
                 // 表示
                 AlertDialog.Builder(this)
                     .setTitle(R.string.app_name)
@@ -215,7 +213,7 @@ class SettingGroupActivity : AppCompatActivity() {
                     .setPositiveButton("変更") { dialog, which ->
 
                         //　メンバーを追加
-                        if (add_flag == true) {
+                        if (join_members.size != 0) {
                             join_members.forEach {
                                 // メンバー
                                 data class cUser(
@@ -235,8 +233,8 @@ class SettingGroupActivity : AppCompatActivity() {
                             }
                         }
                         // メンバーを除外
-                        if (remove_flag == true) {
-                            delete_members.forEach {
+                        if (remove_members.size != 0) {
+                            remove_members.forEach {
                                 // group
                                 db.collection("group").document(gid).collection("member").document(it)
                                     .delete()
@@ -250,9 +248,9 @@ class SettingGroupActivity : AppCompatActivity() {
                         // 前の画面へ戻る
                         finish()
                     }
-                    .setNegativeButton("取消", { dialog, which ->
-                        // TODO:Noが押された時の挙動
-                    })
+                    .setNegativeButton("取消") { dialog, which ->
+                        // 何もしない
+                    }
                     .show()
             } else {
                 // 表示
@@ -260,8 +258,8 @@ class SettingGroupActivity : AppCompatActivity() {
                     .setTitle(R.string.app_name)
                     .setMessage("あんたにコンティニューなんてないのさ！")
                     .setPositiveButton("OK") { dialog, which ->
-                        // 今の画面を木端微塵に破壊する
-                        finish()
+                        // 今の画面を木端微塵に破壊する。そんな面倒なことはさせない。
+                        // finish()
                     }
                     .show()
             }

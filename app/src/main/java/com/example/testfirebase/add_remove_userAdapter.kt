@@ -13,11 +13,13 @@ import de.hdodenhof.circleimageview.CircleImageView
 class add_remove_userAdapter(private val context: Context)
     :RecyclerView.Adapter<add_remove_userAdapter.ViewHolder>(){
 
-    var itemClickListner : ((Int, Boolean)->Unit)? = null
-
-    fun setOnclickListener(listener:(Int, Boolean)->Unit){
+    // 追加
+    var itemClickListner : ((String, Boolean)->Unit)? = null
+    fun setOnclickListener(listener:(String, Boolean)->Unit){
         itemClickListner = listener
     }
+
+    // 除外
 
     // ViewHolder
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
@@ -55,10 +57,10 @@ class add_remove_userAdapter(private val context: Context)
         holder.itemView.setOnClickListener {
             if (holder.user_select.isChecked == false){
                 holder.user_select.setChecked(true)
-                itemClickListner?.invoke(position, true)
+                itemClickListner?.invoke(itemList[position].user.uid, true)
             }else{
                 holder.user_select.setChecked(false)
-                itemClickListner?.invoke(position, false)
+                itemClickListner?.invoke(itemList[position].user.uid, false)
             }
         }
     }
