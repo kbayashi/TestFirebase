@@ -176,12 +176,14 @@ class CreateGroupActivity : AppCompatActivity() {
                         val uid: String? = null
                     )
                     // グループに自分を加入する
-                    cGroup.collection("member").add(cUser(me.uid))
+                    val add_me = cGroup.collection("member").document(me.uid)
+                    add_me.set(cUser(me.uid))
 
                     // グループに自分以外のユーザを加入する
                     for (i in 0 .. user_select_array.size-1){
                         if (user_select_array[i] == true){
-                            cGroup.collection("member").add(cUser(user_id_array[i]))
+                            val add_other = cGroup.collection("member").document(user_id_array[i])
+                            add_other.set(cUser(user_id_array[i]))
                         }
                     }
 
