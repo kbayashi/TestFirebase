@@ -257,7 +257,7 @@ class SettingGroupActivity : AppCompatActivity() {
                                     .addOnFailureListener { e -> Log.w("Remove_user", "Error deleting document", e) }
 
                                 // group-join
-                                db.collection("group-join").document("set").collection(gid).document(it).delete()
+                                db.collection("group-join").document(it).collection(gid).document("join-status").delete()
                             }
                         }
                         // 前の画面へ戻る
