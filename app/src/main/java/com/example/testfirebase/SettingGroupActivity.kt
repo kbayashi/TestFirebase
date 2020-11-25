@@ -268,15 +268,8 @@ class SettingGroupActivity : AppCompatActivity() {
                     }
                     .show()
             } else {
-                // 表示
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.app_name)
-                    .setMessage("あなたが、コンティニュー出来ないのさ！")
-                    .setPositiveButton("OK") { dialog, which ->
-                        // 今の画面を木端微塵に破壊する。そんな面倒なことはさせない。
-                        // finish()
-                    }
-                    .show()
+                // 今の画面を木端微塵に破壊する。そんな面倒なことはさせない。
+                finish()
             }
         }
 

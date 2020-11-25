@@ -153,17 +153,15 @@ class CreateGroupActivity : AppCompatActivity() {
                     if (user_select_array[i]) flag = true
                 }
 
-                // グループIDを保持(GroupテーブルとGroup_Joinテーブルを作成する際に使用するため)
-                var gid: String? = null
-
                 // ユーザ選択数の分岐
                 if (flag == true){
 
                     // Firebaseにグループの型を作成(一意なグループIDも同時に生成)
                     val cGroup = db.collection("group").document()
-                    gid = cGroup.id
+                    // グループIDを保持(GroupテーブルとGroup_Joinテーブルを作成する際に使用するため)
+                    val gid = cGroup.id
 
-                    // グループ情報
+                    // グループ情報（メンバー以外）を格納
                     val cInfo = hashMapOf(
                         "gid" to gid,
                         "name" to edit.text.toString(),
@@ -176,20 +174,6 @@ class CreateGroupActivity : AppCompatActivity() {
                     data class cUser(
                         val uid: String? = null
                     )
-                    // グループに自分を加入する
-                    val add_me = cGroup.collection("member").document(me.uid)
-                    add_me.set(cUser(me.uid))
-
-                    // グループに自分以外のユーザを加入する
-                    for (i in 0 .. user_select_array.size-1){
-                        if (user_select_array[i] == true){
-                            val add_other = cGroup.collection("member").document(user_id_array[i])
-                            add_other.set(cUser(user_id_array[i]))
-                        }
-                    }
-
-                    // Group_joinテーブルの作成（誰がグループに参加しているのか？を保持するために使用）
-                    val jGroup = db.collection("group-join").document("set").collection(gid)
 
                     // データ構造
                     data class jUser(
@@ -197,13 +181,20 @@ class CreateGroupActivity : AppCompatActivity() {
                         val status: Boolean = false
                     )
 
-                    // 自分は参加済み判定とする（参加済みの場合、「Status」は「true」にする）
-                    jGroup.add(jUser(me.uid, true))
+                    // グループに自分を加入する
+                    cGroup.collection("member").document(me.uid).set(cUser(me.uid))     // group
+                    db.collection("group-join").document(gid).collection("member").document(me.uid).set(jUser(me.uid, true))    // group-join
 
-                    // 自分以外のユーザはまだ参加未承認なので「Status」は「false」にする
-                    for (i in 0 .. user_select_array.size-1) {
+                    // グループに自分以外のユーザを加入する
+                    for (i in 0 .. user_select_array.size-1){
                         if (user_select_array[i] == true){
-                            jGroup.add(jUser(user_id_array[i], false))
+                            // group
+                            val add_other = cGroup.collection("member").document(user_id_array[i])
+                            add_other.set(cUser(user_id_array[i]))
+
+                            // group-join
+                            val jGroup = db.collection("group-join").document(gid).collection("member").document(user_id_array[i])
+                            jGroup.set(jUser(user_id_array[i], false))
                         }
                     }
 
