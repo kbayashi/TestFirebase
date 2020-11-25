@@ -183,7 +183,7 @@ class CreateGroupActivity : AppCompatActivity() {
 
                     // グループに自分を加入する
                     cGroup.collection("member").document(me.uid).set(cUser(me.uid))     // group
-                    db.collection("group-join").document(gid).collection("member").document(me.uid).set(jUser(me.uid, true))    // group-join
+                    db.collection("group-join").document(me.uid).collection(gid).document("join-status").set(jUser(me.uid, true))    // group-join
 
                     // グループに自分以外のユーザを加入する
                     for (i in 0 .. user_select_array.size-1){
@@ -193,7 +193,7 @@ class CreateGroupActivity : AppCompatActivity() {
                             add_other.set(cUser(user_id_array[i]))
 
                             // group-join
-                            val jGroup = db.collection("group-join").document(gid).collection("member").document(user_id_array[i])
+                            val jGroup = db.collection("group-join").document(user_id_array[i]).collection(gid).document("join-status")
                             jGroup.set(jUser(user_id_array[i], false))
                         }
                     }
