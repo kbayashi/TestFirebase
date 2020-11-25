@@ -81,9 +81,11 @@ class SettingGroupActivity : AppCompatActivity() {
         var user_remove_adapter = add_remove_userAdapter(this)
 
         // リスト
-        val remove_members: ArrayList<String> = ArrayList()
-        val join_members: ArrayList<String> = ArrayList()
-        val group_membres: ArrayList<String> = ArrayList()
+        val join_members: ArrayList<String> = ArrayList()           // 追加するユーザのIDを格納
+        val remove_members: ArrayList<String> = ArrayList()         // 除外するユーザのIDを格納
+        val join_member_name: ArrayList<String> = ArrayList()       // 追加するユーザの名前を格納
+        val remove_member_name: ArrayList<String> = ArrayList()     // 除外するユーザの名前を格納
+        val group_membres: ArrayList<String> = ArrayList()          // 在籍するユーザのIDを格納
 
         // DBからグループメンバーの取得と表示(グループメンバーのみ)
         db.collection("group").document(gid).collection("member")
@@ -152,21 +154,24 @@ class SettingGroupActivity : AppCompatActivity() {
         }
 
         // 選択処理
-        user_add_adapter.setOnclickListener { uid: String, bool: Boolean ->
+        user_add_adapter.setOnclickListener { uid: String, name: String, bool: Boolean ->
             // 追加 or 除外
             if (bool == true) {
                 join_members.add(uid)
+                join_member_name.add(name)
             } else {
                 join_members.remove(uid)
+                join_member_name.remove(name)
             }
-
         }
-        user_remove_adapter.setOnclickListener { uid: String, bool: Boolean ->
+        user_remove_adapter.setOnclickListener { uid: String, name: String, bool: Boolean ->
             // 追加 or 除外
             if (bool == true) {
                 remove_members.add(uid)
+                remove_member_name.add(name)
             } else {
                 remove_members.remove(uid)
+                remove_member_name.remove(name)
             }
         }
 
@@ -196,31 +201,22 @@ class SettingGroupActivity : AppCompatActivity() {
 
             // 追加判定
             if (join_members.size != 0){
-                str += "追加するメンバー\n"
-            }
-
-            // メンバー追加処理(追加するメンバー分、繰り返す。必要に応じてFirebaseに問い合わせる)
-            join_members.forEach {
-                db.collection("user").document(it).get()
-                    .addOnSuccessListener { document ->
-                        str += document.toObject(User::class.java)!!.name
-                        Log.d("Add_User", document.toObject(User::class.java)!!.name)
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.d("TAG", "get failed with ", exception)
-                    }
-                str += "\n"
-                // これで実装したかったが、なんか思った挙動とは違っていた。 ...なぜ？
+                str += "\n追加するメンバー\n"
+                // 名前表示
+                for (item in join_member_name) {
+                    str += item
+                    str += "\n"
+                }
             }
 
             // 除外判定
             if (remove_members.size != 0) {
-                str += "除外するメンバー\n"
-            }
-            // メンバー除外処理
-            remove_members.forEach {
-                str += it
-                str += "\n"
+                str += "\n除外するメンバー\n"
+                // 名前表示
+                for (item in remove_member_name) {
+                    str += item
+                    str += "\n"
+                }
             }
 
             // 確認表示
@@ -228,8 +224,8 @@ class SettingGroupActivity : AppCompatActivity() {
                 // 表示
                 AlertDialog.Builder(this)
                     .setTitle(R.string.app_name)
-                    .setMessage(str)
-                    .setPositiveButton("変更") { dialog, which ->
+                    .setMessage("以下の変更を加えますがよろしいですか？\n" + str)
+                    .setPositiveButton("はい") { dialog, which ->
 
                         //　メンバーを追加
                         if (join_members.size != 0) {
@@ -267,7 +263,7 @@ class SettingGroupActivity : AppCompatActivity() {
                         // 前の画面へ戻る
                         finish()
                     }
-                    .setNegativeButton("取消") { dialog, which ->
+                    .setNegativeButton("いいえ") { dialog, which ->
                         // 何もしない
                     }
                     .show()

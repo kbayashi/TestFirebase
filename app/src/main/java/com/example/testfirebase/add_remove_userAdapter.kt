@@ -14,8 +14,8 @@ class add_remove_userAdapter(private val context: Context)
     :RecyclerView.Adapter<add_remove_userAdapter.ViewHolder>(){
 
     // 追加
-    var itemClickListner : ((String, Boolean)->Unit)? = null
-    fun setOnclickListener(listener:(String, Boolean)->Unit){
+    var itemClickListner : ((String, String, Boolean)->Unit)? = null
+    fun setOnclickListener(listener:(String, String, Boolean)->Unit){
         itemClickListner = listener
     }
 
@@ -57,10 +57,10 @@ class add_remove_userAdapter(private val context: Context)
         holder.itemView.setOnClickListener {
             if (holder.user_select.isChecked == false){
                 holder.user_select.setChecked(true)
-                itemClickListner?.invoke(itemList[position].user.uid, true)
+                itemClickListner?.invoke(itemList[position].user.uid, itemList[position].user.name, true)
             }else{
                 holder.user_select.setChecked(false)
-                itemClickListner?.invoke(itemList[position].user.uid, false)
+                itemClickListner?.invoke(itemList[position].user.uid, itemList[position].user.name, false)
             }
         }
     }
