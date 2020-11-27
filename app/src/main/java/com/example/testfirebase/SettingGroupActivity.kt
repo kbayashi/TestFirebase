@@ -242,11 +242,11 @@ class SettingGroupActivity : AppCompatActivity() {
 
                                 // データ構造
                                 data class jUser(
-                                    val uid: String? = null,
-                                    val status: Boolean = false
+                                    val gid: String? = null,
+                                    val uid: String? = null
                                 )
-                                // group-join
-                                db.collection("group-join").document(it).collection(gid).document("join-status").set(jUser(it, false))
+                                // group-status
+                                db.collection("group-status").document(it).collection("no-join").document(gid).set(jUser(gid, it))
                             }
                         }
                         // メンバーを除外
@@ -254,8 +254,8 @@ class SettingGroupActivity : AppCompatActivity() {
                             remove_members.forEach {
                                 // group
                                 db.collection("group").document(gid).collection("member").document(it).delete()
-                                // group-join
-                                db.collection("group-join").document(it).collection(gid).document("join-status").delete()
+                                // group-status
+                                db.collection("group-status").document(it).collection("join").document(gid).delete()
                             }
                         }
                         // 前の画面へ戻る
@@ -378,8 +378,8 @@ class SettingGroupActivity : AppCompatActivity() {
                     .setPositiveButton("はい") { _, _ ->
                         // group
                         db.collection("group").document(gid).collection("member").document(me!!.uid).delete()
-                        // group-join
-                        db.collection("group-join").document(me!!.uid).collection(gid).document("join-status").delete()
+                        // group-status
+                        db.collection("group-status").document(me!!.uid).collection("join").document(gid).delete()
                         // 元の画面へ戻る
                         val intent = Intent(this, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP

@@ -19,12 +19,17 @@ class UserListFragment: Fragment() {
         val SELECT_USER = "SELECT_USER"
     }
 
+    // アダプタ
     var userListAdapter:userListAdapter? = null
     var groupListAdapter:groupListAdapter? = null
     var friendTemporaryRegistrationAdapter:friendTemporaryRegistrationAdapter? = null
+    var groupInviteListAdapter:groupListAdapter? = null
+
+    // 表示,非表示フラグ
     var friendDisplayFlg = false
     var groupDisplayFlg = false
     var friendTemporaryRegistrationFlg = false
+    var groupInviteFlg = false
 
     val uid = FirebaseAuth.getInstance().uid
     val db = FirebaseFirestore.getInstance()
@@ -62,6 +67,10 @@ class UserListFragment: Fragment() {
         view.user_list_temporary_registration_constraintLayout.setOnClickListener {
             temporaryRegistrationSwitching(view)
         }
+        // グループ招待表示・非表示
+        view.group_invite_constraintLayout.setOnClickListener {
+            groupInviteSwitching(view)
+        }
 
         // ユーザプロフィール画面に飛ばしたい
         userListAdapter?.setOnclickListener {user->
@@ -86,7 +95,7 @@ class UserListFragment: Fragment() {
             startActivity(intent)
         }
 
-        // 相手のプロフィール画面に飛ばす
+        // 友だち申請した相手のプロフィール画面に飛ばす
         friendTemporaryRegistrationAdapter?.setOnClickListener {
             val intent = Intent(context, UserProfileActivity::class.java)
             intent.putExtra(SELECT_USER, it)
@@ -99,10 +108,11 @@ class UserListFragment: Fragment() {
         userListAdapter = userListAdapter(context)
         groupListAdapter = groupListAdapter(context)
         friendTemporaryRegistrationAdapter = friendTemporaryRegistrationAdapter(context)
+        groupInviteListAdapter = groupListAdapter(context)
     }
 
     // グループリストを表示
-    fun grouplist(groupListAdapter: groupListAdapter){
+    private fun grouplist(groupListAdapter: groupListAdapter){
 
         // 所属するグループ全てを表示
         db.collection("group-status").document(uid!!).collection("join").get()
@@ -126,18 +136,34 @@ class UserListFragment: Fragment() {
                 Log.w("join", "Error getting documents: ", exception)
             }
 
-        // 一旦DBにあるグループすべて表示
-        /* val group = db.collection("group-join").document(uid!!).collection("join")
-        group.get()
+        // 所属はしているが、参加を未承認にしているユーザを表示
+        db.collection("group-status").document(uid!!).collection("no-join").get()
             .addOnSuccessListener {
-                it.forEach {
-                    var groupData = it.toObject(Group::class.java)
-                    groupListAdapter.add(groupData)
+                for (item in it) {
+                    // デバッグ
+                    Log.d("no-join", "${item.id} => ${item.data}")
+
+                    // 取得したIDからさらに問い合わせ
+                    db.collection("group").document(item.id).get()
+                        .addOnSuccessListener {
+                            val groupData = it.toObject(Group::class.java)
+                            groupInviteListAdapter!!.add(groupData!!)
+
+                            // 招待数が0のときは非表示にする
+                            if (groupInviteListAdapter!!.itemCount > 0) {
+                                view!!.group_invite_constraintLayout.visibility = View.VISIBLE
+                                view!!.group_invite_recyclerView.visibility = View.VISIBLE
+                                view!!.group_invite_recyclerView.adapter = groupInviteListAdapter
+                            } else {
+                                view!!.group_invite_constraintLayout.visibility = View.GONE
+                                view!!.group_invite_recyclerView.visibility = View.GONE
+                            }
+                        }
                 }
             }
             .addOnFailureListener {
-                // グループの取得に失敗してます
-            }*/
+                //　失敗
+            }
     }
 
     // 友達を取り出す
@@ -145,7 +171,6 @@ class UserListFragment: Fragment() {
 
         var loginUser:User? = null
         val loginUserRef = db.collection("user").document(uid!!)
-
 
         loginUserRef.get().addOnSuccessListener {
             Log.d("ユーザ取得", "${it.data}")
@@ -209,6 +234,9 @@ class UserListFragment: Fragment() {
     // ビューの初期化
     private fun setUp(view: View, user: User){
 
+        view.user_list_my_name_textView.text = user.name
+        view.user_list_my_pr_textView.text = user.pr
+
         view.user_list_user_recyclerView.adapter = userListAdapter
         view.user_list_user_recyclerView.visibility = View.GONE
 
@@ -217,13 +245,14 @@ class UserListFragment: Fragment() {
 
         view.user_list_temporary_registration_recyclerView.visibility = View.GONE
         view.user_list_temporary_registration_recyclerView.adapter = friendTemporaryRegistrationAdapter
+
+        view.group_invite_recyclerView.visibility = View.GONE
+        view.group_invite_recyclerView.adapter = groupInviteListAdapter
+
         // recyclerviewに下線を足す
         /*
             view.user_list_user_recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
         */
-
-        view.user_list_my_name_textView.text = user.name
-        view.user_list_my_pr_textView.text = user.pr
 
         // 自分のアイコン表示
         val db = FirebaseFirestore.getInstance()
@@ -278,6 +307,19 @@ class UserListFragment: Fragment() {
             friendTemporaryRegistrationFlg = true
             view.user_list_temporary_registration_recyclerView.visibility = View.VISIBLE
             view.user_list_temporary_registration_imageView.setImageResource(R.drawable.ic_expand_more_24dp)
+        }
+    }
+
+    // グループ招待表示・非表示
+    private fun groupInviteSwitching(view: View){
+        if(groupInviteFlg == true){
+            groupInviteFlg = false
+            view.group_invite_recyclerView.visibility = View.GONE
+            view.group_invite_imageView.setImageResource(R.drawable.ic_expand_less_24dp)
+        }else{
+            groupInviteFlg = true
+            view.group_invite_recyclerView.visibility = View.VISIBLE
+            view.group_invite_imageView.setImageResource(R.drawable.ic_expand_more_24dp)
         }
     }
 }
