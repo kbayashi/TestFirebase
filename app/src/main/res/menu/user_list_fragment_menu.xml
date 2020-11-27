@@ -9,7 +9,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/user_list_fragment_menu_friend_add"
-        android:icon="@drawable/ic_baseline_person_add_24"
+        android:icon="@drawable/ic_baseline_group_add_24"
         android:title="Item"
         app:showAsAction="always" />
     <item
