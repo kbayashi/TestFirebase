@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.android.synthetic.main.activity_user_login.*
 
 
@@ -32,7 +34,6 @@ class UserLoginActivity : AppCompatActivity() {
                 .addOnCompleteListener {
                     if(!it.isSuccessful){
                         Log.d("ログインできません", "aaaa")
-                        user_login_user_alarm_textView.text = "メールアドレスまたはパスワードが無効です"
                         return@addOnCompleteListener
                     }
                     Log.d("ログイン" ,"ログイン成功")
@@ -41,8 +42,14 @@ class UserLoginActivity : AppCompatActivity() {
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
                 }.addOnFailureListener {
-                    Log.d("ログインエラー？", it.message)
-                    user_login_user_alarm_textView.text = "ネットワークに接続できません"
+                    Log.d("例外", "$it")
+                    try{
+                        throw  it.fillInStackTrace()
+                    }catch (e:FirebaseNetworkException){
+                        user_login_user_alarm_textView.text = "ネットワークに接続できません"
+                    }catch (e:FirebaseAuthInvalidUserException){
+                        user_login_user_alarm_textView.text = "メールアドレスまたはパスワードが無効です"
+                    }
                 }
 
         }

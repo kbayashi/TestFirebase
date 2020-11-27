@@ -3,12 +3,20 @@ package com.example.testfirebase
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.Toast
 import com.example.testfirebase.UserListFragment.Companion.SELECT_USER
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_user_my_profile.*
 
 class UserProfileActivity : AppCompatActivity() {
+
+    val uid = FirebaseAuth.getInstance().uid.toString()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
@@ -36,5 +44,68 @@ class UserProfileActivity : AppCompatActivity() {
             intent.putExtra(SELECT_USER, get_user)
             startActivity(intent)
         }
+
+        //このユーザーをブロックしているならブロック解除ボタンを表示。sssチャットボタンを消す
+        FirebaseFirestore.getInstance().collection("block-user").document("get")
+            .collection(uid).document(get_user.uid).get().addOnSuccessListener {
+                if(it["uid"] == get_user.uid){
+                    user_profile_block_button.visibility = View.VISIBLE
+                    user_profile_talk_floatingActionButton.visibility = View.GONE
+                }
+            }
+
+        //すでに追加・申請しているなら友だち追加ボタンを消す
+        FirebaseFirestore.getInstance().collection("user-friend")
+            .document("get").collection(uid).document(get_user.uid).get().addOnSuccessListener {
+                if(it["uid"] == get_user.uid){
+                    Log.d("友達のID", "${it["uid"]}")
+                    user_profile_friend_add_floatingActionButton.visibility = View.GONE
+                }
+            }
+
+        Log.d("get_user", "${get_user.uid}")
+        FirebaseFirestore.getInstance().collection("friend-temporary-registration").
+            document("get").collection(uid).get().addOnSuccessListener {
+                it.forEach {
+                    if(it["uid"] == get_user.uid){
+                      Log.d("自分のID", "${it["uid"]}")
+                        user_profile_friend_add_floatingActionButton.visibility = View.GONE
+                    }
+                }
+        }
+
+        //友達追加・仮登録
+        user_profile_friend_add_floatingActionButton.setOnClickListener {
+
+            val ref = FirebaseFirestore.getInstance()
+            val uid = FirebaseAuth.getInstance().uid.toString()
+
+            val firendData = hashMapOf(
+                "uid" to get_user.uid
+            )
+            val temporaryRegistrationData = hashMapOf(
+                "uid" to uid
+            )
+
+            ref.collection("user-friend").
+                document("get").collection(uid).document(get_user.uid)
+                .set(firendData).addOnSuccessListener {
+                    ref.collection("friend-temporary-registration").document("get").
+                    collection(get_user.uid).document(uid).set(temporaryRegistrationData)
+                }
+        }
+
+        //ブロック解除
+        user_profile_block_button.setOnClickListener {
+            FirebaseFirestore.getInstance().collection("block-user").
+                document("get").collection(uid).document(get_user.uid).delete()
+                .addOnSuccessListener {
+                    Toast.makeText(this,"ブロック解除しました",Toast.LENGTH_LONG)
+                        .show()
+                    user_profile_block_button.visibility = View.GONE
+                    user_profile_talk_floatingActionButton.visibility = View.VISIBLE
+                }
+        }
+
     }
 }
