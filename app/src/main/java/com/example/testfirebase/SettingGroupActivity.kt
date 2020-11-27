@@ -10,6 +10,8 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -244,18 +246,14 @@ class SettingGroupActivity : AppCompatActivity() {
                                     val status: Boolean = false
                                 )
                                 // group-join
-                                db.collection("group-join").document("set").collection(gid).add(jUser(it, false))
+                                db.collection("group-join").document(it).collection(gid).document("join-status").set(jUser(it, false))
                             }
                         }
                         // メンバーを除外
                         if (remove_members.size != 0) {
                             remove_members.forEach {
                                 // group
-                                db.collection("group").document(gid).collection("member").document(it)
-                                    .delete()
-                                    .addOnSuccessListener { Log.d("Remove_user", "DocumentSnapshot successfully deleted!") }
-                                    .addOnFailureListener { e -> Log.w("Remove_user", "Error deleting document", e) }
-
+                                db.collection("group").document(gid).collection("member").document(it).delete()
                                 // group-join
                                 db.collection("group-join").document(it).collection(gid).document("join-status").delete()
                             }
@@ -363,5 +361,34 @@ class SettingGroupActivity : AppCompatActivity() {
                 Log.d(UserProfileEditActivity.USER_REGISTAR, "作成に失敗しました ${it.message}")
                 Toast.makeText(this, "作成に失敗しました ${it.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.remove_me, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.remove_me -> {
+                // 表示
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.app_name)
+                    .setMessage("退会しますか？")
+                    .setPositiveButton("はい") { _, _ ->
+                        // group
+                        db.collection("group").document(gid).collection("member").document(me!!.uid).delete()
+                        // group-join
+                        db.collection("group-join").document(me!!.uid).collection(gid).document("join-status").delete()
+                        // 元の画面へ戻る
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        startActivity(intent)
+                    }
+                    .setNegativeButton("いいえ") { _, _ -> }
+                    .show()
+            }
+        }
+        return true
     }
 }

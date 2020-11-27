@@ -85,7 +85,7 @@ class GroupChatActivity : AppCompatActivity() {
 
     // 配置
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        getMenuInflater().inflate(R.menu.group_chat_menu, menu);
+        menuInflater.inflate(R.menu.group_chat_menu, menu)
         return true
     }
 
