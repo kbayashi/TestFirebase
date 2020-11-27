@@ -26,16 +26,12 @@ class UserListFragment: Fragment() {
     var friendDisplayFlg = false
     var groupDisplayFlg = false
     var friendTemporaryRegistrationFlg = false
-    val db = FirebaseFirestore.getInstance()
-    val friendRef = db.collection("user-friend").document("get")
-    val FTPRef = db.collection("friend-temporary-registration").document("get")
 
     val uid = FirebaseAuth.getInstance().uid
-    val 
-  
-  
-  
-  = FirebaseFirestore.getInstance()
+    val db = FirebaseFirestore.getInstance()
+
+    val friendRef = db.collection("user-friend").document("get")
+    val FTPRef = db.collection("friend-temporary-registration").document("get")
 
     //フラグメントにレイアウトを設定
     override fun onCreateView(
@@ -81,6 +77,7 @@ class UserListFragment: Fragment() {
             val intent = Intent(context, GroupChatActivity::class.java)
             intent.putExtra("GroupId", it)
             startActivity(intent)
+        }
           
         //チャット画面に飛ばす
         userListAdapter?.setTalkTransitionListener {
@@ -165,27 +162,27 @@ class UserListFragment: Fragment() {
         }
 
         //仮登録された人を取り出す
-            FTPRef.collection(uid).get().addOnSuccessListener {
-                it.forEach {id ->
-                    FirebaseFirestore.getInstance().collection("user").document(id.id)
-                        .get().addOnSuccessListener {item->
-                            var user = item.toObject(User::class.java)
-                            Log.d("仮登録ユーザ","${user?.name}")
-                            Log.d("karitouroku","${user?.name}")
-                            friendTemporaryRegistrationAdapter?.add(user!!)
-                            if(friendTemporaryRegistrationAdapter!!.itemCount > 0) {
-                                view.user_list_temporary_registration_recyclerView.visibility = View.VISIBLE
-                                view.user_list_temporary_registration_constraintLayout.visibility = View.VISIBLE
-                                view.user_list_temporary_registration_recyclerView.adapter =
-                                    friendTemporaryRegistrationAdapter
+        FTPRef.collection(uid).get().addOnSuccessListener {
+            it.forEach {id ->
+                FirebaseFirestore.getInstance().collection("user").document(id.id)
+                    .get().addOnSuccessListener {item->
+                        var user = item.toObject(User::class.java)
+                        Log.d("仮登録ユーザ","${user?.name}")
+                        Log.d("karitouroku","${user?.name}")
+                        friendTemporaryRegistrationAdapter?.add(user!!)
+                        if(friendTemporaryRegistrationAdapter!!.itemCount > 0) {
+                            view.user_list_temporary_registration_recyclerView.visibility = View.VISIBLE
+                            view.user_list_temporary_registration_constraintLayout.visibility = View.VISIBLE
+                            view.user_list_temporary_registration_recyclerView.adapter =
+                                friendTemporaryRegistrationAdapter
 
-                            }else{
-                                view.user_list_temporary_registration_recyclerView.visibility = View.GONE
-                                view.user_list_temporary_registration_constraintLayout.visibility = View.GONE
-                            }
-                    }
+                        }else{
+                            view.user_list_temporary_registration_recyclerView.visibility = View.GONE
+                            view.user_list_temporary_registration_constraintLayout.visibility = View.GONE
+                        }
                 }
             }
+        }
     }
 
     //ビューの初期化
@@ -261,6 +258,4 @@ class UserListFragment: Fragment() {
             view.user_list_temporary_registration_imageView.setImageResource(R.drawable.ic_expand_more_24dp)
         }
     }
-
-
 }
