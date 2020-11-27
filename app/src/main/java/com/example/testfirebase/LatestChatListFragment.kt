@@ -14,7 +14,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.chat_list_fragment.view.*
-import kotlin.math.log
 
 class LatestChatListFragment: Fragment() {
 
@@ -36,11 +35,18 @@ class LatestChatListFragment: Fragment() {
             addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
         )
 
-        //チャット画面に移動
+        // チャット画面に移動
         adapter?.setOnclickListener {
             val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra(SELECT_USER, it)
             Log.d(SELECT_USER, "$it")
+            startActivity(intent)
+        }
+
+        // グループ画面に移動
+        adapter?.setOnGroupClickListener {
+            val intent = Intent(context, GroupChatActivity::class.java)
+            intent.putExtra("GroupId", it)
             startActivity(intent)
         }
     }
@@ -49,7 +55,6 @@ class LatestChatListFragment: Fragment() {
         super.onAttach(context)
         adapter = latestChatListAdapter(context)
     }
-
 
     //最新のメッセージを格納
     private fun fechLatestMessage(adapter: latestChatListAdapter){

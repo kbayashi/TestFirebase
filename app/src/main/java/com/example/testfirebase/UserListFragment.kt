@@ -31,6 +31,12 @@ class UserListFragment: Fragment() {
     val FTPRef = db.collection("friend-temporary-registration").document("get")
 
     val uid = FirebaseAuth.getInstance().uid
+    val 
+  
+  
+  
+  = FirebaseFirestore.getInstance()
+
     //フラグメントにレイアウトを設定
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,6 +75,13 @@ class UserListFragment: Fragment() {
             Log.d(SELECT_USER, "${user.name}")
             startActivity(intent)
         }
+
+        //グループチャット画面に遷移する
+        groupListAdapter?.setOnclickListener {
+            val intent = Intent(context, GroupChatActivity::class.java)
+            intent.putExtra("GroupId", it)
+            startActivity(intent)
+          
         //チャット画面に飛ばす
         userListAdapter?.setTalkTransitionListener {
             val intent = Intent(context, ChatActivity::class.java)
@@ -92,20 +105,22 @@ class UserListFragment: Fragment() {
         friendTemporaryRegistrationAdapter = friendTemporaryRegistrationAdapter(context)
     }
 
-
-
     //ダミーデータ格納
     fun dummydata(groupListAdapter: groupListAdapter){
-        groupListAdapter.add()
-        groupListAdapter.add()
-        groupListAdapter.add()
-        groupListAdapter.add()
-        groupListAdapter.add()
 
+        // 一旦DBにあるグループすべて表示
+        val group = db.collection("group")
+        group.get()
+            .addOnSuccessListener {
+                it.forEach {
+                    var groupData = it.toObject(Group::class.java)
+                    groupListAdapter.add(groupData)
+                }
+            }
+            .addOnFailureListener {
+                // グループの取得に失敗してます
+            }
     }
-
-
-
 
     //友達を取り出す
     private fun fetchUsers(view: View){
@@ -142,10 +157,6 @@ class UserListFragment: Fragment() {
                     view.user_list_user_recyclerView.adapter = userListAdapter
                 }
 
-
-
-
-
             //自分のプロフィール画面に飛ばしたい
             view.user_list_my_profile_constraintLayout.setOnClickListener {
                 val intent = Intent(context, UserMyProfileActivity::class.java)
@@ -173,10 +184,8 @@ class UserListFragment: Fragment() {
                                 view.user_list_temporary_registration_constraintLayout.visibility = View.GONE
                             }
                     }
-
                 }
             }
-
     }
 
     //ビューの初期化

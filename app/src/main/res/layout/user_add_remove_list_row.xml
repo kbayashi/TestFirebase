@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp">
+
+    <Switch
+        android:id="@+id/user_add_remove_select_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="5dp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_add_remove_icon_imageView"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/haikei" />
+
+    <TextView
+        android:id="@+id/user_add_remove_name_textView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="fill"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:text="user_name" />
+
+</LinearLayout>

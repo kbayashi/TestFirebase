@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SettingActivity"></activity>
+        <activity android:name=".SettingGroupActivity" />
+        <activity android:name=".GroupChatActivity" />
+        <activity android:name=".SettingActivity" />
         <activity android:name=".PasswordForgetActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -27,8 +29,8 @@
         <activity android:name=".UserLoginActivity" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.Launcher"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
