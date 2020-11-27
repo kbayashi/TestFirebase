@@ -2,26 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/user_list_fragment_advertisement_imageView"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/advertisement"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:src="@drawable/ecc_karaoke"
-        tools:srcCompat="@drawable/advertisement" />
-
     <ScrollView
-        android:id="@+id/scrollView5"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/user_list_fragment_advertisement_imageView"
@@ -164,7 +149,7 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/user_list_my_circleimageView"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="konnnnnn" />
+                    tools:text="name" />
 
                 <TextView
                     android:id="@+id/user_list_my_pr_textView"
@@ -175,7 +160,7 @@
                     android:maxLines="1"
                     app:layout_constraintStart_toEndOf="@+id/user_list_my_circleimageView"
                     app:layout_constraintTop_toBottomOf="@+id/user_list_my_name_textView"
-                    tools:text="わかやましゅっしんくそぞこなかめ" />
+                    tools:text="pr" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/user_list_my_circleimageView"
@@ -233,5 +218,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/user_list_temporary_registration_constraintLayout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <ImageView
+        android:id="@+id/user_list_fragment_advertisement_imageView"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/advertisement"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:src="@drawable/ecc_karaoke"
+        tools:srcCompat="@drawable/advertisement" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
