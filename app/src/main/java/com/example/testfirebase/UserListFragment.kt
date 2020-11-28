@@ -84,6 +84,7 @@ class UserListFragment: Fragment() {
         groupListAdapter?.setOnclickListener {
             val intent = Intent(context, GroupChatActivity::class.java)
             intent.putExtra("GroupId", it)
+            intent.putExtra("isJoin", true)
             startActivity(intent)
         }
           
@@ -106,6 +107,7 @@ class UserListFragment: Fragment() {
         groupInviteListAdapter?.setOnclickListener {
             val intent = Intent(context, GroupChatActivity::class.java)
             intent.putExtra("GroupId", it)
+            intent.putExtra("isJoin", false)
             startActivity(intent)
         }
     }

@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.activity_group_chat.*
 
 class GroupChatActivity : AppCompatActivity() {
 
@@ -19,8 +22,11 @@ class GroupChatActivity : AppCompatActivity() {
     private val me = auth.currentUser
     private val db = FirebaseFirestore.getInstance()
 
-    // 変数
+    // グループID
     private var gid: String? = null
+
+    // 参加承認変数(false: 未参加 / true: 参加済み)
+    private var isJoin: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +42,7 @@ class GroupChatActivity : AppCompatActivity() {
 
         // グループID（前の画面からID情報を取得）
         gid = intent.getStringExtra("GroupId")
+        isJoin = intent.getBooleanExtra("isJoin", false)
 
         // アクションバーの表記を変更
         val title = db.collection("group").document(gid!!)
@@ -48,6 +55,17 @@ class GroupChatActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 setTitle("グループチャット")
             }
+
+        // 参加済みユーザか判定
+        if (isJoin) {
+            group_chat_editText.setEnabled(true)
+            group_chat_send_button.setEnabled(true)
+        } else {
+            // 隠れていた参加ボタンを表示
+            group_join_layout.visibility = View.VISIBLE
+            // メッセージ入力欄を非表示
+            chat_layout.visibility = View.GONE
+        }
 
         // メッセージ受信
         val docRef = db.collection("group-message").document("get").collection(gid!!).orderBy("timestamp")
@@ -85,8 +103,16 @@ class GroupChatActivity : AppCompatActivity() {
 
     // 配置
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.group_chat_menu, menu)
-        return true
+
+        // 正式に参加しているユーザか判定
+        if (isJoin == true) {
+            menuInflater.inflate(R.menu.group_chat_menu, menu)
+            return true
+        } else {
+            // 右上の設定アイコンを表示しない
+            return false
+        }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

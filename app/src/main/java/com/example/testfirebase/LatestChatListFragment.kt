@@ -47,6 +47,7 @@ class LatestChatListFragment: Fragment() {
         adapter?.setOnGroupClickListener {
             val intent = Intent(context, GroupChatActivity::class.java)
             intent.putExtra("GroupId", it)
+            intent.putExtra("isJoin", true)
             startActivity(intent)
         }
     }
