@@ -211,7 +211,8 @@ class CreateGroupActivity : AppCompatActivity() {
                         .setTitle(R.string.app_name)
                         .setMessage("グループを作成しました！")
                         .setPositiveButton("OK") { dialog, which ->
-
+                            // この画面が再度呼び出されないように、スタックから消去する
+                            finish()
                             // グループチャット画面へ遷移
                             val intent = Intent(this, GroupChatActivity::class.java)
                             intent.putExtra("GroupId", cGroup.id)
