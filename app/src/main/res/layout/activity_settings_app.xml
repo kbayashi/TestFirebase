@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SettingsAppActivity">
+
+    <LinearLayout
+        android:id="@+id/logout_Layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/logout_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ログアウト"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/logout_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="端末からユーザ情報を消去します" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/logout_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:id="@+id/exit_Layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/exit_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="アプリ終了"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/exit_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="アプリを終了します" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/exit_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+</LinearLayout>
