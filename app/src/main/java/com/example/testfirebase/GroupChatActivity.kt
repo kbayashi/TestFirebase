@@ -6,9 +6,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -36,6 +35,10 @@ class GroupChatActivity : AppCompatActivity() {
         val g_recy = findViewById<RecyclerView>(R.id.group_chat_recyclerView)
         val g_edit = findViewById<EditText>(R.id.group_chat_editText)
         val g_send = findViewById<Button>(R.id.group_chat_send_button)
+        val g_join_layout = findViewById<LinearLayout>(R.id.group_join_layout)
+        val g_join_label = findViewById<TextView>(R.id.group_join_text)
+        val g_join_btn = findViewById<Button>(R.id.group_join_button)
+        val g_chat_layout = findViewById<LinearLayout>(R.id.chat_layout)
 
         // アダプタの設定
         var groupMessageListAdapter = groupMessageAdapter(this)
@@ -50,6 +53,7 @@ class GroupChatActivity : AppCompatActivity() {
             .addOnSuccessListener { document ->
                 if (document != null) {
                     setTitle(document["name"].toString())
+                    g_join_label.text = "あなたは" + document["name"].toString() + "に招待されています"
                 }
             }
             .addOnFailureListener { exception ->
@@ -58,13 +62,13 @@ class GroupChatActivity : AppCompatActivity() {
 
         // 参加済みユーザか判定
         if (isJoin) {
-            group_chat_editText.setEnabled(true)
-            group_chat_send_button.setEnabled(true)
+            g_edit.setEnabled(true)
+            g_send.setEnabled(true)
         } else {
             // 隠れていた参加ボタンを表示
-            group_join_layout.visibility = View.VISIBLE
+            g_join_layout.visibility = View.VISIBLE
             // メッセージ入力欄を非表示
-            chat_layout.visibility = View.GONE
+            g_chat_layout.visibility = View.GONE
         }
 
         // メッセージ受信
@@ -98,6 +102,24 @@ class GroupChatActivity : AppCompatActivity() {
                 // 削除
                 g_edit.text.clear()
             }
+        }
+
+        // 参加ボタン
+        g_join_btn.setOnClickListener {
+            AlertDialog.Builder(this) // FragmentではActivityを取得して生成
+                .setTitle(R.string.app_name)
+                .setMessage("グループに参加しますか？")
+                .setPositiveButton("はい") { dialog, which ->
+                    // no-joinレコードを削除
+                    // joinレコードを追加
+                    // 画面を再読み込みする
+                    finish()
+                    startActivity(intent)
+                }
+                .setNegativeButton("いいえ") { dialog, which ->
+                    // 何もしない
+                }
+                .show()
         }
     }
 

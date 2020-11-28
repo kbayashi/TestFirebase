@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="あなたを招待しています！"
+            android:text="あなたは招待されています"
             android:textColor="#ffffff" />
 
         <Button
