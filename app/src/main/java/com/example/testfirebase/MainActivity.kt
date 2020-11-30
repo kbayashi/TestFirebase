@@ -65,17 +65,13 @@ class MainActivity : AppCompatActivity() {
                     title = "タイムライン"
                     return@setOnNavigationItemSelectedListener true
                 }
-
-
             }
-            return@setOnNavigationItemSelectedListener false
 
+            return@setOnNavigationItemSelectedListener false
         }
 
         //初期化
         startFlagment()
-
-
     }
 
 
@@ -94,6 +90,10 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.user_list_fragment_menu_friend_add -> {
                 val intent = Intent(this, CreateGroupActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.user_list_fragment_menu_setting -> {
+                val intent = Intent(this, SettingsAppActivity::class.java)
                 startActivity(intent)
             }
         }
