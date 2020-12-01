@@ -8,11 +8,9 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_group_chat.*
 
 class GroupChatActivity : AppCompatActivity() {
 
@@ -106,14 +104,27 @@ class GroupChatActivity : AppCompatActivity() {
 
         // 参加ボタン
         g_join_btn.setOnClickListener {
+
+            // データ構造
+            data class jUser(
+                val gid: String? = null,
+                val uid: String? = null
+            )
+
             AlertDialog.Builder(this) // FragmentではActivityを取得して生成
                 .setTitle(R.string.app_name)
                 .setMessage("グループに参加しますか？")
                 .setPositiveButton("はい") { dialog, which ->
                     // no-joinレコードを削除
+                    db.collection("group-status").document(me!!.uid).collection("no-join").document(gid!!).delete()
                     // joinレコードを追加
-                    // 画面を再読み込みする
+                    db.collection("group-status").document(me!!.uid).collection("join").document(gid!!).set(jUser(gid, me.uid))
+                    // スタックからこの画面を削除する
                     finish()
+                    // 引数を割り当てる
+                    intent.putExtra("GroupId", gid)
+                    intent.putExtra("isJoin", true)
+                    // 遷移
                     startActivity(intent)
                 }
                 .setNegativeButton("いいえ") { dialog, which ->
