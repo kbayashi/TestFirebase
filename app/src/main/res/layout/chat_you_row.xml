@@ -8,7 +8,7 @@
 
     <Button
         android:id="@+id/chat_you_row_msg_button"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
@@ -18,7 +18,9 @@
         android:textAlignment="viewStart"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
+        app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@+id/chat_you_row_pic_imageView"
         app:layout_constraintTop_toTopOf="@+id/chat_you_row_pic_imageView" />
 
