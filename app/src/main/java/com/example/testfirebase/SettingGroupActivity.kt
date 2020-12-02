@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
@@ -25,7 +24,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.activity_create_group.*
 import kotlinx.android.synthetic.main.activity_create_group.group_icon_imageView
 import kotlinx.android.synthetic.main.activity_setting_group.*
 import java.util.*
@@ -64,14 +62,14 @@ class SettingGroupActivity : AppCompatActivity() {
         val subb = findViewById<Button>(R.id.submit_button)
 
         // リスト
-        val group_membres: ArrayList<String> = ArrayList()          // 在籍するユーザのIDを格納
-        val group_membres_name: ArrayList<String> = ArrayList()      // 在籍するユーザの名前を格納
-        val join_members: ArrayList<String> = ArrayList()           // 追加するユーザのIDを格納
-        val join_members_name: ArrayList<String> = ArrayList()       // 追加するユーザの名前を格納
-        val remove_members: ArrayList<String> = ArrayList()         // 除外するユーザのIDを格納
-        val remove_members_name: ArrayList<String> = ArrayList()     // 除外するユーザの名前を格納
-        val invite_members: ArrayList<String> = ArrayList()         // 招待中のユーザIDを格納
-        val invite_members_name: ArrayList<String> = ArrayList()     // 招待中のユーザの名前を格納
+        val group_membres: ArrayList<String> = ArrayList()              // 在籍するユーザのIDを格納
+        val group_membres_name: ArrayList<String> = ArrayList()         // 在籍するユーザの名前を格納
+        val join_members: ArrayList<String> = ArrayList()               // 追加するユーザのIDを格納
+        val join_members_name: ArrayList<String> = ArrayList()          // 追加するユーザの名前を格納
+        val remove_members: ArrayList<String> = ArrayList()             // 除外するユーザのIDを格納
+        val remove_members_name: ArrayList<String> = ArrayList()        // 除外するユーザの名前を格納
+        val invite_members: ArrayList<String> = ArrayList()             // 招待中のユーザIDを格納
+        val invite_members_name: ArrayList<String> = ArrayList()        // 招待中のユーザの名前を格納
 
         // ユーザオブジェクト
         var getUser: User?
