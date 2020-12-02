@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
@@ -12,6 +13,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -24,6 +26,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_create_group.*
+import kotlinx.android.synthetic.main.activity_create_group.group_icon_imageView
+import kotlinx.android.synthetic.main.activity_setting_group.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -56,20 +60,29 @@ class SettingGroupActivity : AppCompatActivity() {
         val tcon = findViewById<TextView>(R.id.group_topic_count_textView)
         val add_recy = findViewById<RecyclerView>(R.id.user_add_list_recyclerView)
         val rem_recy = findViewById<RecyclerView>(R.id.user_remove_list_recyclerView)
+        val inv_recy = findViewById<RecyclerView>(R.id.user_invite_list_recyclerView)
         val subb = findViewById<Button>(R.id.submit_button)
 
         // リスト
-        val join_members: ArrayList<String> = ArrayList()           // 追加するユーザのIDを格納
-        val remove_members: ArrayList<String> = ArrayList()         // 除外するユーザのIDを格納
-        val join_member_name: ArrayList<String> = ArrayList()       // 追加するユーザの名前を格納
-        val remove_member_name: ArrayList<String> = ArrayList()     // 除外するユーザの名前を格納
         val group_membres: ArrayList<String> = ArrayList()          // 在籍するユーザのIDを格納
-
-        // グループIDを取得
-        gid = intent.getStringExtra("GroupId")
+        val group_membres_name: ArrayList<String> = ArrayList()      // 在籍するユーザの名前を格納
+        val join_members: ArrayList<String> = ArrayList()           // 追加するユーザのIDを格納
+        val join_members_name: ArrayList<String> = ArrayList()       // 追加するユーザの名前を格納
+        val remove_members: ArrayList<String> = ArrayList()         // 除外するユーザのIDを格納
+        val remove_members_name: ArrayList<String> = ArrayList()     // 除外するユーザの名前を格納
+        val invite_members: ArrayList<String> = ArrayList()         // 招待中のユーザIDを格納
+        val invite_members_name: ArrayList<String> = ArrayList()     // 招待中のユーザの名前を格納
 
         // ユーザオブジェクト
         var getUser: User?
+
+        // アダプタ(グループ作成アダプタと同じ)
+        var user_add_adapter = add_remove_userAdapter(this)
+        var user_remove_adapter = add_remove_userAdapter(this)
+        var user_invite_adapter = add_remove_userAdapter(this)
+
+        // グループIDを取得
+        gid = intent.getStringExtra("GroupId")
 
         // グループの取得
         db.collection("group").document(gid)
@@ -86,10 +99,6 @@ class SettingGroupActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.d("TAG", "get failed with ", exception)
             }
-
-        // アダプタ(グループ作成アダプタと同じ)
-        var user_add_adapter = add_remove_userAdapter(this)
-        var user_remove_adapter = add_remove_userAdapter(this)
 
         // DBからグループメンバーの取得と表示(グループメンバーのみ)
         db.collection("group").document(gid).collection("member")
@@ -153,32 +162,76 @@ class SettingGroupActivity : AppCompatActivity() {
                     subb.setEnabled(true)
 
                 }.addOnFailureListener {
-                    finish()
+                    AlertDialog.Builder(this)
+                        .setTitle(R.string.app_name)
+                        .setMessage("予期せぬエラーが発生しました\n" + it)
+                        .setPositiveButton("OK") { dialog, which ->
+                            finish()
+                        }
+                        .show()
                 }
-
         }.addOnFailureListener {
-            finish()
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.app_name)
+                    .setMessage("予期せぬエラーが発生しました\n" + it)
+                    .setPositiveButton("OK") { dialog, which ->
+                        finish()
+                    }
+                    .show()
         }
+
+        // 招待中のユーザを取得
+        db.collection("group").document(gid).collection("invite").get()
+            .addOnSuccessListener { result ->
+                // 在籍メンバー分ループ
+                for (document in result) {
+                    // 在籍グループをデバッグ出力
+                    Log.d("Invite_Member", "${document.id} => ${document.data}")
+                    Log.d("Invite_Member_Substring_ID", document.data.toString().substring(5, 33))
+                    // 招待するユーザが存在する場合はレイアウトを表示
+                    Invite_LinearLayout.visibility = View.VISIBLE
+                    // グループメンバーのユーザIDを元にユーザテーブルから情報を取得
+                    db.collection("user").document(document.data.toString().substring(5, 33))
+                        .get().addOnSuccessListener {
+                            // ユーザオブジェクトを取得
+                            getUser = it.toObject(User::class.java)
+                            // アダプターに割り当て
+                            user_invite_adapter?.add(getUser!!)
+                        }
+                }
+                // アダプタに関連付け
+                inv_recy.adapter = user_invite_adapter
+            }
 
         // 選択処理
         user_add_adapter.setOnclickListener { uid: String, name: String, bool: Boolean ->
             // 追加 or 除外
             if (bool == true) {
                 join_members.add(uid)
-                join_member_name.add(name)
+                join_members_name.add(name)
             } else {
                 join_members.remove(uid)
-                join_member_name.remove(name)
+                join_members_name.remove(name)
             }
         }
         user_remove_adapter.setOnclickListener { uid: String, name: String, bool: Boolean ->
             // 追加 or 除外
             if (bool == true) {
                 remove_members.add(uid)
-                remove_member_name.add(name)
+                remove_members_name.add(name)
             } else {
                 remove_members.remove(uid)
-                remove_member_name.remove(name)
+                remove_members_name.remove(name)
+            }
+        }
+        user_invite_adapter.setOnclickListener { uid: String, name: String, bool: Boolean ->
+            // 追加 or 除外
+            if (bool == true) {
+                invite_members.add(uid)
+                invite_members_name.add(name)
+            } else {
+                invite_members.remove(uid)
+                invite_members_name.remove(name)
             }
         }
 
@@ -210,7 +263,7 @@ class SettingGroupActivity : AppCompatActivity() {
             if (join_members.size != 0){
                 str += "\n招待するメンバー\n"
                 // 名前表示
-                for (item in join_member_name) {
+                for (item in join_members_name) {
                     str += item
                     str += "\n"
                 }
@@ -220,41 +273,52 @@ class SettingGroupActivity : AppCompatActivity() {
             if (remove_members.size != 0) {
                 str += "\n除外するメンバー\n"
                 // 名前表示
-                for (item in remove_member_name) {
+                for (item in remove_members_name) {
+                    str += item
+                    str += "\n"
+                }
+            }
+
+            // 招待キャンセル判定
+            if (invite_members.size != 0) {
+                str += "\n招待をキャンセルするメンバー\n"
+                // 名前表示
+                for (item in invite_members) {
                     str += item
                     str += "\n"
                 }
             }
 
             // 確認表示
-            if (join_members.size != 0 || remove_members.size != 0) {
+            if (join_members.size != 0 || remove_members.size != 0 || invite_members.size != 0) {
                 // 表示
                 AlertDialog.Builder(this)
                     .setTitle(R.string.app_name)
                     .setMessage("以下の変更を加えますがよろしいですか？\n" + str)
                     .setPositiveButton("はい") { dialog, which ->
 
-                        //　メンバーを追加
+                        //　メンバーの招待
                         if (join_members.size != 0) {
                             for (i in 0 .. join_members.size-1) {
                                 // メンバー
                                 data class cUser(
                                     val uid: String? = null
                                 )
-                                // group
-                                val add_other = db.collection("group").document(gid).collection("member").document(join_members[i])
-                                add_other.set(cUser(join_members[i]))
-
                                 // データ構造
                                 data class jUser(
                                     val gid: String? = null,
                                     val uid: String? = null
                                 )
+
+                                // group
+                                val add_other = db.collection("group").document(gid).collection("invite").document(join_members[i])
+                                add_other.set(cUser(join_members[i]))
+
                                 // group-status
                                 db.collection("group-status").document(join_members[i]).collection("no-join").document(gid).set(jUser(gid, join_members[i]))
 
                                 // チャット画面内にログを記録
-                                send_group_message(me!!.uid, me_name + "さんが" + join_member_name[i] + "さんを招待しました")
+                                send_group_message(me!!.uid, me_name + "さんが" + join_members_name[i] + "さんを招待しました")
                             }
                         }
                         // メンバーを除外
@@ -265,7 +329,18 @@ class SettingGroupActivity : AppCompatActivity() {
                                 // group-status
                                 db.collection("group-status").document(remove_members[i]).collection("join").document(gid).delete()
                                 // チャット画面内にログを記録
-                                send_group_message(me!!.uid, me_name + "さんが" + remove_member_name[i] + "さんを除外しました")
+                                send_group_message(me!!.uid, me_name + "さんが" + remove_members_name[i] + "さんを除外しました")
+                            }
+                        }
+                        // 招待をキャンセル
+                        if (invite_members.size != 0) {
+                            for (i in 0 .. invite_members.size-1) {
+                                // group
+                                db.collection("group").document(gid).collection("invite").document(invite_members[i]).delete()
+                                // group-status
+                                db.collection("group-status").document(invite_members[i]).collection("no-join").document(gid).delete()
+                                // チャット画面内にログを記録
+                                send_group_message(me!!.uid, me_name + "さんが" + invite_members_name[i] + "さんの招待をキャンセルしました")
                             }
                         }
                         // 前の画面へ戻る

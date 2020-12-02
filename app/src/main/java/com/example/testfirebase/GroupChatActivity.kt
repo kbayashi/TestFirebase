@@ -117,6 +117,10 @@ class GroupChatActivity : AppCompatActivity() {
                     me_name = user!!.name
                 }
 
+            // メンバー
+            data class cUser(
+                val uid: String? = null
+            )
             // データ構造
             data class jUser(
                 val gid: String? = null,
@@ -129,8 +133,12 @@ class GroupChatActivity : AppCompatActivity() {
                 .setPositiveButton("はい") { dialog, which ->
                     // no-joinレコードを削除
                     db.collection("group-status").document(me!!.uid).collection("no-join").document(gid!!).delete()
+                    // inviteレコードを削除
+                    db.collection("group").document(gid!!).collection("invite").document(me.uid).delete()
                     // joinレコードを追加
                     db.collection("group-status").document(me!!.uid).collection("join").document(gid!!).set(jUser(gid, me.uid))
+                    // memberレコードを追加
+                    db.collection("group").document(gid!!).collection("member").document(me.uid).set(cUser(me.uid))
                     // チャット画面内にログを記録
                     send_group_message(me!!.uid, me_name + "さんが参加しました", true)
                     // スタックからこの画面を削除する
