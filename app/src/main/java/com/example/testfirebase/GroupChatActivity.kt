@@ -74,6 +74,26 @@ class GroupChatActivity : AppCompatActivity() {
             g_chat_layout.visibility = View.GONE
         }
 
+        // グループに属している人か確認
+        var me_join_flag = false
+        db.collection("group").document(gid!!).collection("member").get()
+            .addOnSuccessListener {
+                for (item in it){
+                    if (me!!.uid == item.data.toString().substring(5, 33)){
+                        me_join_flag = true
+                    }
+                }
+            }
+        if (me_join_flag == false) {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.app_name)
+                .setMessage("あなたは除外されました。")
+                .setPositiveButton("OK") { dialog, which ->
+                    finish()
+                }
+                .show()
+        }
+
         // メッセージ受信
         val docRef = db.collection("group-message").document("get").collection(gid!!).orderBy("timestamp")
         docRef.addSnapshotListener { snapshot, e ->
