@@ -148,6 +148,7 @@ class GroupChatActivity : AppCompatActivity() {
 
     }
 
+    // 右上のグループ設定ボタン
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.setting -> {
@@ -167,7 +168,7 @@ class GroupChatActivity : AppCompatActivity() {
         val time = System.currentTimeMillis()
 
         // メッセージ内容を格納
-        val g_msg = GroupMessage(uid, msg, time)
+        val g_msg = GroupMessage(uid, msg,false, time)
 
         // 最新トークデータに格納する型
         val les = Message(msg, gid!!, me!!.uid, time, true)
