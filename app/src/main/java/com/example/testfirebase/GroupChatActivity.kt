@@ -83,16 +83,17 @@ class GroupChatActivity : AppCompatActivity() {
                         me_join_flag = true
                     }
                 }
-            }
-        if (me_join_flag == false) {
-            AlertDialog.Builder(this)
-                .setTitle(R.string.app_name)
-                .setMessage("あなたは除外されました。")
-                .setPositiveButton("OK") { dialog, which ->
-                    finish()
+                // 判定
+                if (me_join_flag == false) {
+                    AlertDialog.Builder(this)
+                        .setTitle(R.string.app_name)
+                        .setMessage("あなたは除外されました。")
+                        .setPositiveButton("OK") { dialog, which ->
+                            finish()
+                        }
+                        .show()
                 }
-                .show()
-        }
+            }
 
         // メッセージ受信
         val docRef = db.collection("group-message").document("get").collection(gid!!).orderBy("timestamp")
