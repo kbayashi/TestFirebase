@@ -3,6 +3,7 @@ package com.example.testfirebase
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -184,7 +185,7 @@ class GroupChatActivity : AppCompatActivity() {
     }
 
     // メッセージを送信する関数
-    private fun send_group_message(uid: String, msg: String, log_flag: Boolean){
+    private fun send_group_message(uid: String, msg: String, log_flag: Boolean) {
 
         // メッセージインスタンス
         var g_msg: GroupMessage? = null
@@ -198,13 +199,25 @@ class GroupChatActivity : AppCompatActivity() {
             g_msg = GroupMessage(uid, msg, true, time)
         } else {
             // ログではない(チャット)場合
-            g_msg = GroupMessage(uid, msg,false, time)
+            g_msg = GroupMessage(uid, msg, false, time)
+
             // 最新トークデータに格納する型
             val les = Message(msg, gid!!, me!!.uid, time, true)
-            // 最新メッセージテーブルにも保存
-            db.collection("user-latest").document("les").collection(uid).document(gid!!).set(les)
-        }
 
+            // 最新トークデータを更新する処理
+            db.collection("group").document(gid!!).collection("member").get()
+                .addOnSuccessListener {
+                    for (item in it) {
+                        // 対象ユーザをデバッグ出力
+                        Log.d("Invite_Member", "${item.id} => ${item.data}")
+                        Log.d("Invite_Member_Substring_ID", item.data.toString().substring(5, 33))
+                        // 対象ユーザにLatest更新
+                        db.collection("user-latest").document("les")
+                            .collection(item.data.toString().substring(5, 33)).document(gid!!)
+                            .set(les)
+                    }
+                }
+        }
         // グループメッセージテーブルに保存
         db.collection("group-message").document("get").collection(gid!!).document().set(g_msg)
     }
