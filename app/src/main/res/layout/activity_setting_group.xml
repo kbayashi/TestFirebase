@@ -114,7 +114,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:text="追加"
+                android:text="招待"
                 android:textSize="18sp" />
 
             <androidx.recyclerview.widget.RecyclerView

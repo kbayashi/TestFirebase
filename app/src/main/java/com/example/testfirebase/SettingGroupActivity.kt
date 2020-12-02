@@ -36,6 +36,8 @@ class SettingGroupActivity : AppCompatActivity() {
         "https://firebasestorage.googleapis.com/v0/b/firevasetest-1d5b9.appspot.com/o/user_icon%2Fnoimage.png?alt=media&token=b9ae62b8-8c42-4791-9507-c84c93f6871f"
     // グループID
     private lateinit var gid: String
+    // ログインしているユーザの名前(招待、退会、除外の際にログ記録を残すのに使うため)
+    private var me_name: String? = null
 
     // Firebase
     private val auth = FirebaseAuth.getInstance()
@@ -55,6 +57,13 @@ class SettingGroupActivity : AppCompatActivity() {
         val add_recy = findViewById<RecyclerView>(R.id.user_add_list_recyclerView)
         val rem_recy = findViewById<RecyclerView>(R.id.user_remove_list_recyclerView)
         val subb = findViewById<Button>(R.id.submit_button)
+
+        // リスト
+        val join_members: ArrayList<String> = ArrayList()           // 追加するユーザのIDを格納
+        val remove_members: ArrayList<String> = ArrayList()         // 除外するユーザのIDを格納
+        val join_member_name: ArrayList<String> = ArrayList()       // 追加するユーザの名前を格納
+        val remove_member_name: ArrayList<String> = ArrayList()     // 除外するユーザの名前を格納
+        val group_membres: ArrayList<String> = ArrayList()          // 在籍するユーザのIDを格納
 
         // グループIDを取得
         gid = intent.getStringExtra("GroupId")
@@ -82,13 +91,6 @@ class SettingGroupActivity : AppCompatActivity() {
         var user_add_adapter = add_remove_userAdapter(this)
         var user_remove_adapter = add_remove_userAdapter(this)
 
-        // リスト
-        val join_members: ArrayList<String> = ArrayList()           // 追加するユーザのIDを格納
-        val remove_members: ArrayList<String> = ArrayList()         // 除外するユーザのIDを格納
-        val join_member_name: ArrayList<String> = ArrayList()       // 追加するユーザの名前を格納
-        val remove_member_name: ArrayList<String> = ArrayList()     // 除外するユーザの名前を格納
-        val group_membres: ArrayList<String> = ArrayList()          // 在籍するユーザのIDを格納
-
         // DBからグループメンバーの取得と表示(グループメンバーのみ)
         db.collection("group").document(gid).collection("member")
             .get().addOnSuccessListener { result ->
@@ -107,6 +109,9 @@ class SettingGroupActivity : AppCompatActivity() {
                             if (getUser!!.uid != me!!.uid) {
                                 user_remove_adapter?.add(getUser!!)
                                 group_membres.add(getUser!!.uid)
+                            }else{
+                                // 自分だった場合は、自分の名前を格納する文字列変数に保持しておく
+                                me_name = getUser!!.name
                             }
                         }
                 }
@@ -203,7 +208,7 @@ class SettingGroupActivity : AppCompatActivity() {
 
             // 追加判定
             if (join_members.size != 0){
-                str += "\n追加するメンバー\n"
+                str += "\n招待するメンバー\n"
                 // 名前表示
                 for (item in join_member_name) {
                     str += item
@@ -231,14 +236,14 @@ class SettingGroupActivity : AppCompatActivity() {
 
                         //　メンバーを追加
                         if (join_members.size != 0) {
-                            join_members.forEach {
+                            for (i in 0 .. join_members.size-1) {
                                 // メンバー
                                 data class cUser(
                                     val uid: String? = null
                                 )
                                 // group
-                                val add_other = db.collection("group").document(gid).collection("member").document(it)
-                                add_other.set(cUser(it))
+                                val add_other = db.collection("group").document(gid).collection("member").document(join_members[i])
+                                add_other.set(cUser(join_members[i]))
 
                                 // データ構造
                                 data class jUser(
@@ -246,16 +251,21 @@ class SettingGroupActivity : AppCompatActivity() {
                                     val uid: String? = null
                                 )
                                 // group-status
-                                db.collection("group-status").document(it).collection("no-join").document(gid).set(jUser(gid, it))
+                                db.collection("group-status").document(join_members[i]).collection("no-join").document(gid).set(jUser(gid, join_members[i]))
+
+                                // チャット画面内にログを記録
+                                send_group_message(me!!.uid, me_name + "さんが" + join_member_name[i] + "さんを招待しました")
                             }
                         }
                         // メンバーを除外
                         if (remove_members.size != 0) {
-                            remove_members.forEach {
+                            for (i in 0 .. remove_members.size-1) {
                                 // group
-                                db.collection("group").document(gid).collection("member").document(it).delete()
+                                db.collection("group").document(gid).collection("member").document(remove_members[i]).delete()
                                 // group-status
-                                db.collection("group-status").document(it).collection("join").document(gid).delete()
+                                db.collection("group-status").document(remove_members[i]).collection("join").document(gid).delete()
+                                // チャット画面内にログを記録
+                                send_group_message(me!!.uid, me_name + "さんが" + remove_member_name[i] + "さんを除外しました")
                             }
                         }
                         // 前の画面へ戻る
@@ -390,5 +400,18 @@ class SettingGroupActivity : AppCompatActivity() {
             }
         }
         return true
+    }
+
+    // メッセージを送信する関数(何気にGroupChatも同じ処理を使っている。クラス化したほうがいいだろうな。)
+    private fun send_group_message(uid: String, msg: String){
+
+        // 送信時間を確定
+        val time = System.currentTimeMillis()
+
+        // メッセージ内容を格納
+        val g_msg = GroupMessage(uid, msg,true, time)
+
+        // グループメッセージテーブルに保存
+        db.collection("group-message").document("get").collection(gid!!).document().set(g_msg)
     }
 }

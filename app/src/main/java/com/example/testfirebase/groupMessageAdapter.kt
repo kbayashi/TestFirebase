@@ -32,6 +32,11 @@ class groupMessageAdapter(private val context: Context): RecyclerView.Adapter<Re
         val you_time: TextView = itemView.findViewById(R.id.chat_you_row_time_textView)
     }
 
+    // View(Log)
+    class ViewGroupLogHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        val log_msg: Button = itemView.findViewById(R.id.log_button)
+    }
+
     // クラス
     class groupMessageListItem(val message: GroupMessage)
 
@@ -47,7 +52,10 @@ class groupMessageAdapter(private val context: Context): RecyclerView.Adapter<Re
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
 
-        if (viewType == 0) {
+        if (viewType == 2) {
+            val layout = layoutInflater.inflate(R.layout.chat_log_row, parent, false)
+            return ViewGroupLogHolder(layout)
+        } else if (viewType == 0) {
             val layout = layoutInflater.inflate(R.layout.chat_me_row, parent, false)
             return ViewGroupMeHolder(layout)
         } else {
@@ -59,10 +67,16 @@ class groupMessageAdapter(private val context: Context): RecyclerView.Adapter<Re
     // ViewTypeを返す
     override fun getItemViewType(position: Int): Int {
 
-        if (itemList[position].message.send_id == me) {
-            return 0
+        // logフラグがtrueなら、ログビュー
+        if (itemList[position].message.log_flag == true) {
+            return 2
         } else {
-            return 1
+            // logではない場合は、チャットビュー
+            if (itemList[position].message.send_id == me) {
+                return 0
+            } else {
+                return 1
+            }
         }
     }
 
@@ -99,6 +113,11 @@ class groupMessageAdapter(private val context: Context): RecyclerView.Adapter<Re
                         Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/firevasetest-1d5b9.appspot.com/o/user_icon%2Fnoimage.png?alt=media&token=b9ae62b8-8c42-4791-9507-c84c93f6871f")
                     }
                 }
+            }
+
+            2 -> {
+                val holder_log = holder as ViewGroupLogHolder
+                holder_log.log_msg.text = itemList[position].message.message
             }
         }
     }
