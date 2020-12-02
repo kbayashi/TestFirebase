@@ -191,14 +191,13 @@ class GroupChatActivity : AppCompatActivity() {
         } else {
             // ログではない(チャット)場合
             g_msg = GroupMessage(uid, msg,false, time)
+            // 最新トークデータに格納する型
+            val les = Message(msg, gid!!, me!!.uid, time, true)
+            // 最新メッセージテーブルにも保存
+            db.collection("user-latest").document("les").collection(uid).document(gid!!).set(les)
         }
-
-        // 最新トークデータに格納する型
-        val les = Message(msg, gid!!, me!!.uid, time, true)
 
         // グループメッセージテーブルに保存
         db.collection("group-message").document("get").collection(gid!!).document().set(g_msg)
-        // 最新メッセージテーブルにも保存
-        db.collection("user-latest").document("les").collection(uid).document(gid!!).set(les)
     }
 }
