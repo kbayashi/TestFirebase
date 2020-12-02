@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 
 class GroupChatActivity : AppCompatActivity() {
@@ -24,6 +25,9 @@ class GroupChatActivity : AppCompatActivity() {
 
     // 参加承認変数(false: 未参加 / true: 参加済み)
     private var isJoin: Boolean = false
+
+    // 自分の名前
+    private var me_name: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +100,7 @@ class GroupChatActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "メッセージを入力してください", Toast.LENGTH_SHORT).show()
             }else{
                 // メッセージをDBに送信
-                send_group_message(me!!.uid, g_edit.text.toString())
+                send_group_message(me!!.uid, g_edit.text.toString(), false)
                 // 削除
                 g_edit.text.clear()
             }
@@ -104,6 +108,14 @@ class GroupChatActivity : AppCompatActivity() {
 
         // 参加ボタン
         g_join_btn.setOnClickListener {
+
+            // 自分の名前を取得してくる
+            db.collection("user").document(me!!.uid)
+                .get().addOnSuccessListener {
+                    // ユーザオブジェクトを取得
+                    val user: User? = it.toObject(User::class.java)
+                    me_name = user!!.name
+                }
 
             // データ構造
             data class jUser(
@@ -119,6 +131,8 @@ class GroupChatActivity : AppCompatActivity() {
                     db.collection("group-status").document(me!!.uid).collection("no-join").document(gid!!).delete()
                     // joinレコードを追加
                     db.collection("group-status").document(me!!.uid).collection("join").document(gid!!).set(jUser(gid, me.uid))
+                    // チャット画面内にログを記録
+                    send_group_message(me!!.uid, me_name + "さんが参加しました", true)
                     // スタックからこの画面を削除する
                     finish()
                     // 引数を割り当てる
@@ -162,13 +176,22 @@ class GroupChatActivity : AppCompatActivity() {
     }
 
     // メッセージを送信する関数
-    private fun send_group_message(uid: String, msg: String){
+    private fun send_group_message(uid: String, msg: String, log_flag: Boolean){
+
+        // メッセージインスタンス
+        var g_msg: GroupMessage? = null
 
         // 送信時間を確定
         val time = System.currentTimeMillis()
 
         // メッセージ内容を格納
-        val g_msg = GroupMessage(uid, msg,false, time)
+        if (log_flag == true) {
+            // ログの場合
+            g_msg = GroupMessage(uid, msg, true, time)
+        } else {
+            // ログではない(チャット)場合
+            g_msg = GroupMessage(uid, msg,false, time)
+        }
 
         // 最新トークデータに格納する型
         val les = Message(msg, gid!!, me!!.uid, time, true)

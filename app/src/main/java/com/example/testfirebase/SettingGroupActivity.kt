@@ -390,6 +390,8 @@ class SettingGroupActivity : AppCompatActivity() {
                         db.collection("group").document(gid).collection("member").document(me!!.uid).delete()
                         // group-status
                         db.collection("group-status").document(me!!.uid).collection("join").document(gid).delete()
+                        // チャット画面内にログを記録
+                        send_group_message(me!!.uid, me_name + "さんが退会しました")
                         // 元の画面へ戻る
                         val intent = Intent(this, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -402,7 +404,7 @@ class SettingGroupActivity : AppCompatActivity() {
         return true
     }
 
-    // メッセージを送信する関数(何気にGroupChatも同じ処理を使っている。クラス化したほうがいいだろうな。)
+    // メッセージを送信する関数
     private fun send_group_message(uid: String, msg: String){
 
         // 送信時間を確定
