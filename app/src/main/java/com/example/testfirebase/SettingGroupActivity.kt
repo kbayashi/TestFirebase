@@ -130,6 +130,8 @@ class SettingGroupActivity : AppCompatActivity() {
                             }
                         }
                 }
+                // タイトル変更
+                user_remove_list_textView.setText("除外(" + member_list.size + ")")
             }
 
         // 招待中のユーザの取得と表示
@@ -152,6 +154,8 @@ class SettingGroupActivity : AppCompatActivity() {
                             inviting_list.add(getUser!!.uid)
                         }
                 }
+                // タイトル変更
+                user_invite_list_textView.setText("招待中(" + inviting_list.size + ")")
             }
 
         // グループに招待するユーザを取得、処理、表示
@@ -191,12 +195,29 @@ class SettingGroupActivity : AppCompatActivity() {
                         add_recy.adapter = user_add_adapter
                     }
             }
+            // タイトル変更
+            user_add_list_textView.setText("招待(" + candidate_list.size + ")")
+            // レイアウト表示判定
+            if (candidate_list.size == 0) {
+                user_add_list_linearLayout.visibility = View.GONE
+            }
         }
+
+        // レイアウト表示判定
+        /*if (candidate_list.size == 0) {
+            user_add_list_linearLayout.visibility = View.GONE
+        }
+        if (member_list.size == 0) {
+            user_remove_list_linearLayout.visibility = View.GONE
+        }
+        if (inviting_list.size == 0) {
+            user_invite_list_linearLayout.visibility = View.GONE
+        }*/
 
         // 選択処理
         user_add_adapter.setOnclickListener { uid: String, name: String, bool: Boolean ->
-            // 追加 or 除外
-            if (bool == true) {
+            // 追加 or 消去
+            if (bool) {
                 join_members.add(uid)
                 join_members_name.add(name)
             } else {
@@ -205,8 +226,8 @@ class SettingGroupActivity : AppCompatActivity() {
             }
         }
         user_remove_adapter.setOnclickListener { uid: String, name: String, bool: Boolean ->
-            // 追加 or 除外
-            if (bool == true) {
+            // 追加 or 消去
+            if (bool) {
                 remove_members.add(uid)
                 remove_members_name.add(name)
             } else {
@@ -215,8 +236,8 @@ class SettingGroupActivity : AppCompatActivity() {
             }
         }
         user_invite_adapter.setOnclickListener { uid: String, name: String, bool: Boolean ->
-            // 追加 or 除外
-            if (bool == true) {
+            // 追加 or 消去
+            if (bool) {
                 invite_members.add(uid)
                 invite_members_name.add(name)
             } else {
@@ -227,6 +248,9 @@ class SettingGroupActivity : AppCompatActivity() {
 
         // 保存ボタン
         subb.setOnClickListener {
+
+            // ダイアログメッセージ用 文字列変数
+            var str = ""
 
             // グループ名に変更がある場合は更新処理を行う
             if (gname != edit.text.toString()) {
@@ -239,7 +263,7 @@ class SettingGroupActivity : AppCompatActivity() {
                     }
 
                 // グループ名変更ログを出力する
-                send_group_message(me!!.uid, me_name + " さんがグループ名を " + gname + " に変更しました")
+                send_group_message(me!!.uid, me_name + " さんがグループ名を " + gname + " から " + edit.text.toString() + " に変更しました")
             }
 
             // トピックに変更がある場合は更新処理を行う
@@ -253,15 +277,12 @@ class SettingGroupActivity : AppCompatActivity() {
                     }
 
                 // トピック変更ログを出力する
-                send_group_message(me!!.uid, me_name + " さんがグループトピックを " + topi.text.toString() + " に変更しました")
+                send_group_message(me!!.uid, me_name + " さんがグループトピックを " + gtopic + " から " + topi.text.toString() + " に変更しました")
             }
-
-            // メッセージ表示用変数
-            var str = ""
 
             // 追加判定
             if (join_members.size != 0){
-                str += "\n招待するメンバー\n"
+                str += "\n招待するユーザ\n"
                 // 名前表示
                 for (item in join_members_name) {
                     str += item
@@ -271,7 +292,7 @@ class SettingGroupActivity : AppCompatActivity() {
 
             // 除外判定
             if (remove_members.size != 0) {
-                str += "\n除外するメンバー\n"
+                str += "\n除外するユーザ\n"
                 // 名前表示
                 for (item in remove_members_name) {
                     str += item
@@ -281,9 +302,9 @@ class SettingGroupActivity : AppCompatActivity() {
 
             // 招待キャンセル判定
             if (invite_members.size != 0) {
-                str += "\n招待をキャンセルするメンバー\n"
+                str += "\n招待をキャンセルするユーザ\n"
                 // 名前表示
-                for (item in invite_members) {
+                for (item in invite_members_name) {
                     str += item
                     str += "\n"
                 }
