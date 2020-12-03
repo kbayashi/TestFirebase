@@ -38,10 +38,10 @@ class SettingGroupActivity : AppCompatActivity() {
     // グループアイコン保存パス
     private var gicon =
         "https://firebasestorage.googleapis.com/v0/b/firevasetest-1d5b9.appspot.com/o/user_icon%2Fnoimage.png?alt=media&token=b9ae62b8-8c42-4791-9507-c84c93f6871f"
-    // グループ名
-    private lateinit var gname: String
     // グループID
     private lateinit var gid: String
+    // グループ名
+    private lateinit var gname: String
     // トピック
     private lateinit var gtopic: String
     // ログイン中のユーザの名前
@@ -218,8 +218,22 @@ class SettingGroupActivity : AppCompatActivity() {
         user_add_adapter.setOnclickListener { uid: String, name: String, bool: Boolean ->
             // 追加 or 消去
             if (bool) {
-                join_members.add(uid)
-                join_members_name.add(name)
+                // 既に追加していた場合は省く
+                var same_flag = false
+                for (item in join_members) {
+                    if (item == uid) {
+                        same_flag = true
+                        // 既にあった場合はループする必要がないので抜ける
+                        break
+                    }
+                }
+
+                // まだ追加されていなかった場合は、追加する
+                if (same_flag == false) {
+                    join_members.add(uid)
+                    join_members_name.add(name)
+                }
+
             } else {
                 join_members.remove(uid)
                 join_members_name.remove(name)
@@ -228,8 +242,22 @@ class SettingGroupActivity : AppCompatActivity() {
         user_remove_adapter.setOnclickListener { uid: String, name: String, bool: Boolean ->
             // 追加 or 消去
             if (bool) {
-                remove_members.add(uid)
-                remove_members_name.add(name)
+                // 既に追加していた場合は省く
+                var same_flag = false
+                for (item in remove_members) {
+                    if (item == uid) {
+                        same_flag = true
+                        // 既にあった場合はループから抜ける
+                        break
+                    }
+                }
+
+                // また追加されていない場合は追加する
+                if (same_flag == false) {
+                    remove_members.add(uid)
+                    remove_members_name.add(name)
+                }
+
             } else {
                 remove_members.remove(uid)
                 remove_members_name.remove(name)
@@ -238,8 +266,22 @@ class SettingGroupActivity : AppCompatActivity() {
         user_invite_adapter.setOnclickListener { uid: String, name: String, bool: Boolean ->
             // 追加 or 消去
             if (bool) {
-                invite_members.add(uid)
-                invite_members_name.add(name)
+                // 既に追加されていた場合は除く
+                var same_flag = false
+                for (item in invite_members) {
+                    if (item == uid) {
+                        same_flag = true
+                        // 既にあった場合はループから抜ける
+                        break
+                    }
+                }
+
+                // まだ追加されていない場合は追加する
+                if (same_flag == false) {
+                    invite_members.add(uid)
+                    invite_members_name.add(name)
+                }
+
             } else {
                 invite_members.remove(uid)
                 invite_members_name.remove(name)
@@ -295,7 +337,7 @@ class SettingGroupActivity : AppCompatActivity() {
             }
 
             // 確認表示
-            if (join_members.size != 0 || remove_members.size != 0 || invite_members.size != 0) {
+            if (join_members.size != 0 || remove_members.size != 0 || invite_members.size != 0 || gname != edit.text.toString() || gtopic != topi.text.toString()) {
                 // 表示
                 AlertDialog.Builder(this)
                     .setTitle(R.string.app_name)
