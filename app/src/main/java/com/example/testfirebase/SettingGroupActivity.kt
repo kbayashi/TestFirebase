@@ -36,7 +36,7 @@ class SettingGroupActivity : AppCompatActivity() {
     // 画像選択
     private var selectedPhotoUri: Uri? = null
     // グループアイコン保存パス
-    private var gIcon =
+    private var gicon =
         "https://firebasestorage.googleapis.com/v0/b/firevasetest-1d5b9.appspot.com/o/user_icon%2Fnoimage.png?alt=media&token=b9ae62b8-8c42-4791-9507-c84c93f6871f"
     // グループ名
     private lateinit var gname: String
@@ -252,32 +252,16 @@ class SettingGroupActivity : AppCompatActivity() {
             // ダイアログメッセージ用 文字列変数
             var str = ""
 
-            // グループ名に変更がある場合は更新処理を行う
+            // グループ名に変更があるか確認
             if (gname != edit.text.toString()) {
-                db.collection("group").document(gid)
-                    .update("name", edit.text.toString()).addOnSuccessListener {
-                        Log.d("Icon Update Success", "DocumentSnapshot successfully updated!")
-                    }
-                    .addOnFailureListener {
-                            e -> Log.w("Icon Update Error", "Error updating document", e)
-                    }
-
-                // グループ名変更ログを出力する
-                send_group_message(me!!.uid, me_name + " さんがグループ名を " + gname + " から " + edit.text.toString() + " に変更しました")
+                str += "\nグループ名\n"
+                str += edit.text.toString() + "\n"
             }
 
-            // トピックに変更がある場合は更新処理を行う
+            // トピックに変更があるか確認
             if (gtopic != topi.text.toString()) {
-                db.collection("group").document(gid)
-                    .update("topic", topi.text.toString()).addOnSuccessListener {
-                        Log.d("Topic Update Success", "DocumentSnapshot successfully updated!")
-                    }
-                    .addOnFailureListener {
-                            e -> Log.w("Topic Update Error", "Error updating document", e)
-                    }
-
-                // トピック変更ログを出力する
-                send_group_message(me!!.uid, me_name + " さんがグループトピックを " + gtopic + " から " + topi.text.toString() + " に変更しました")
+                str += "\nトピック\n"
+                str += topi.text.toString() + "\n"
             }
 
             // 追加判定
@@ -317,6 +301,34 @@ class SettingGroupActivity : AppCompatActivity() {
                     .setTitle(R.string.app_name)
                     .setMessage("以下の変更を加えますがよろしいですか？\n" + str)
                     .setPositiveButton("はい") { dialog, which ->
+
+                        // グループ名の更新処理を行う
+                        if (gname != edit.text.toString()) {
+                            db.collection("group").document(gid)
+                                .update("name", edit.text.toString()).addOnSuccessListener {
+                                    Log.d("Icon Update Success", "DocumentSnapshot successfully updated!")
+                                }
+                                .addOnFailureListener {
+                                        e -> Log.w("Icon Update Error", "Error updating document", e)
+                                }
+
+                            // グループ名変更ログを出力する
+                            send_group_message(me!!.uid, me_name + " さんがグループ名を " + gname + " から " + edit.text.toString() + " に変更しました")
+                        }
+
+                        // トピックの更新処理を行う
+                        if (gtopic != topi.text.toString()) {
+                            db.collection("group").document(gid)
+                                .update("topic", topi.text.toString()).addOnSuccessListener {
+                                    Log.d("Topic Update Success", "DocumentSnapshot successfully updated!")
+                                }
+                                .addOnFailureListener {
+                                        e -> Log.w("Topic Update Error", "Error updating document", e)
+                                }
+
+                            // トピック変更ログを出力する
+                            send_group_message(me!!.uid, me_name + " さんがグループトピックを " + gtopic + " から " + topi.text.toString() + " に変更しました")
+                        }
 
                         //　メンバーの招待
                         if (join_members.size != 0) {
@@ -451,12 +463,12 @@ class SettingGroupActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Log.d(UserProfileEditActivity.USER_REGISTAR, "アップロード成功${it.metadata?.path}")
                 ref.downloadUrl.addOnSuccessListener {
-                    gIcon = it.toString()
+                    gicon = it.toString()
                     Log.d(UserProfileEditActivity.USER_REGISTAR, "File 場所$it")
 
                     // グループテーブル上のアイコンデータも更新
                     db.collection("group").document(gid)
-                        .update("icon", gIcon).addOnSuccessListener {
+                        .update("icon", gicon).addOnSuccessListener {
                             Log.d("Icon Update Success", "DocumentSnapshot successfully updated!")
                         }
                         .addOnFailureListener {
