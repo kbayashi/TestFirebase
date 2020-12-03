@@ -28,20 +28,24 @@ import kotlin.collections.ArrayList
 
 class SettingGroupActivity : AppCompatActivity() {
 
+    // Firebase
+    private val auth = FirebaseAuth.getInstance()
+    private val me = auth.currentUser
+    private val db = FirebaseFirestore.getInstance()
+
     // 画像選択
     private var selectedPhotoUri: Uri? = null
     // グループアイコン保存パス
     private var gIcon =
         "https://firebasestorage.googleapis.com/v0/b/firevasetest-1d5b9.appspot.com/o/user_icon%2Fnoimage.png?alt=media&token=b9ae62b8-8c42-4791-9507-c84c93f6871f"
+    // グループ名
+    private lateinit var gname: String
     // グループID
     private lateinit var gid: String
-    // ログインしているユーザの名前(招待、退会、除外の際にログ記録を残すのに使うため)
+    // トピック
+    private lateinit var gtopic: String
+    // ログイン中のユーザの名前
     private var me_name: String? = null
-
-    // Firebase
-    private val auth = FirebaseAuth.getInstance()
-    private val me = auth.currentUser
-    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,10 +60,6 @@ class SettingGroupActivity : AppCompatActivity() {
         val add_recy = findViewById<RecyclerView>(R.id.user_add_list_recyclerView)
         val rem_recy = findViewById<RecyclerView>(R.id.user_remove_list_recyclerView)
         val inv_recy = findViewById<RecyclerView>(R.id.user_invite_list_recyclerView)
-        val add_linear = findViewById<LinearLayout>(R.id.Join_LinearLayout)
-        val rem_linear = findViewById<LinearLayout>(R.id.Remove_LinearLayout)
-        val inv_linear = findViewById<LinearLayout>(R.id.Invite_LinearLayout)
-        val rem_inv_linear = findViewById<LinearLayout>(R.id.RemInv_LinearLayout)
         val subb = findViewById<Button>(R.id.submit_button)
 
         // 配列リスト(現状の所属メンバー、招待中のユーザ、招待可能ユーザを保持) : RecyclerViewの時に使用
@@ -90,9 +90,11 @@ class SettingGroupActivity : AppCompatActivity() {
         db.collection("group").document(gid).get()
             .addOnSuccessListener {
                 if (it != null) {
-                    setTitle(it["name"].toString() + "の編集")
-                    edit.setText(it["name"].toString())
-                    topi.setText(it["topic"].toString())
+                    gname = it["name"].toString()
+                    setTitle(gname + "の編集")
+                    edit.setText(gname)
+                    gtopic = it["topic"].toString()
+                    topi.setText(gtopic)
                     Picasso.get().load(it["icon"].toString()).into(icon)
                 } else {
                     Log.d("TAG", "No such document")
@@ -117,10 +119,11 @@ class SettingGroupActivity : AppCompatActivity() {
                             getUser = it.toObject(User::class.java)
                             // 自分の場合は除く
                             if (getUser!!.uid != me!!.uid) {
-                                user_remove_adapter?.add(getUser!!)
-                                member_list.add(getUser!!.uid)
                                 // アダプタに関連付け
+                                user_remove_adapter?.add(getUser!!)
                                 rem_recy.adapter = user_remove_adapter
+                                // ArrayList
+                                member_list.add(getUser!!.uid)
                             } else {
                                 // 自分だった場合は、自分の名前を格納する文字列変数に保持しておく
                                 me_name = getUser!!.name
@@ -142,11 +145,11 @@ class SettingGroupActivity : AppCompatActivity() {
                         .addOnSuccessListener {
                             // ユーザオブジェクトを取得
                             getUser = it.toObject(User::class.java)
-                            // アダプターに割り当て
-                            user_invite_adapter?.add(getUser!!)
-                            inviting_list.add(getUser!!.uid)
                             // アダプタに関連付け
+                            user_invite_adapter?.add(getUser!!)
                             inv_recy.adapter = user_invite_adapter
+                            // ArrayList
+                            inviting_list.add(getUser!!.uid)
                         }
                 }
             }
@@ -225,23 +228,33 @@ class SettingGroupActivity : AppCompatActivity() {
         // 保存ボタン
         subb.setOnClickListener {
 
-            // グループ名の更新処理
-            db.collection("group").document(gid)
-                .update("name", edit.text.toString()).addOnSuccessListener {
-                    Log.d("Icon Update Success", "DocumentSnapshot successfully updated!")
-                }
-                .addOnFailureListener {
-                        e -> Log.w("Icon Update Error", "Error updating document", e)
-                }
+            // グループ名に変更がある場合は更新処理を行う
+            if (gname != edit.text.toString()) {
+                db.collection("group").document(gid)
+                    .update("name", edit.text.toString()).addOnSuccessListener {
+                        Log.d("Icon Update Success", "DocumentSnapshot successfully updated!")
+                    }
+                    .addOnFailureListener {
+                            e -> Log.w("Icon Update Error", "Error updating document", e)
+                    }
 
-            // トピックの更新処理
-            db.collection("group").document(gid)
-                .update("topic", topi.text.toString()).addOnSuccessListener {
-                    Log.d("Topic Update Success", "DocumentSnapshot successfully updated!")
-                }
-                .addOnFailureListener {
-                        e -> Log.w("Topic Update Error", "Error updating document", e)
-                }
+                // グループ名変更ログを出力する
+                send_group_message(me!!.uid, me_name + " さんがグループ名を " + gname + " に変更しました")
+            }
+
+            // トピックに変更がある場合は更新処理を行う
+            if (gtopic != topi.text.toString()) {
+                db.collection("group").document(gid)
+                    .update("topic", topi.text.toString()).addOnSuccessListener {
+                        Log.d("Topic Update Success", "DocumentSnapshot successfully updated!")
+                    }
+                    .addOnFailureListener {
+                            e -> Log.w("Topic Update Error", "Error updating document", e)
+                    }
+
+                // トピック変更ログを出力する
+                send_group_message(me!!.uid, me_name + " さんがグループトピックを " + topi.text.toString() + " に変更しました")
+            }
 
             // メッセージ表示用変数
             var str = ""
@@ -305,7 +318,7 @@ class SettingGroupActivity : AppCompatActivity() {
                                 db.collection("group-status").document(join_members[i]).collection("no-join").document(gid).set(jUser(gid, join_members[i]))
 
                                 // チャット画面内にログを記録
-                                send_group_message(me!!.uid, me_name + "さんが" + join_members_name[i] + "さんを招待しました")
+                                send_group_message(me!!.uid, me_name + " さんが " + join_members_name[i] + " さんを招待しました")
                             }
                         }
                         // メンバーを除外
@@ -316,7 +329,7 @@ class SettingGroupActivity : AppCompatActivity() {
                                 // group-status
                                 db.collection("group-status").document(remove_members[i]).collection("join").document(gid).delete()
                                 // チャット画面内にログを記録
-                                send_group_message(me!!.uid, me_name + "さんが" + remove_members_name[i] + "さんを除外しました")
+                                send_group_message(me!!.uid, me_name + " さんが " + remove_members_name[i] + " さんを除外しました")
                             }
                         }
                         // 招待をキャンセル
@@ -327,7 +340,7 @@ class SettingGroupActivity : AppCompatActivity() {
                                 // group-status
                                 db.collection("group-status").document(invite_members[i]).collection("no-join").document(gid).delete()
                                 // チャット画面内にログを記録
-                                send_group_message(me!!.uid, me_name + "さんが" + invite_members_name[i] + "さんの招待をキャンセルしました")
+                                send_group_message(me!!.uid, me_name + " さんが " + invite_members_name[i] + " さんの招待をキャンセルしました")
                             }
                         }
                         // 前の画面へ戻る
@@ -455,7 +468,7 @@ class SettingGroupActivity : AppCompatActivity() {
                         // group-status
                         db.collection("group-status").document(me!!.uid).collection("join").document(gid).delete()
                         // チャット画面内にログを記録
-                        send_group_message(me!!.uid, me_name + "さんが退会しました")
+                        send_group_message(me!!.uid, me_name + " さんが退会しました")
                         // 元の画面へ戻る
                         val intent = Intent(this, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP

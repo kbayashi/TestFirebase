@@ -104,7 +104,6 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/Join_LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -128,7 +127,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/RemInv_LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -136,7 +134,6 @@
             android:visibility="visible">
 
             <LinearLayout
-                android:id="@+id/Remove_LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -159,7 +156,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/Invite_LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

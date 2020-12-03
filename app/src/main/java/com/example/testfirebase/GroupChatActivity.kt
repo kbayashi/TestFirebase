@@ -162,7 +162,7 @@ class GroupChatActivity : AppCompatActivity() {
                     // memberレコードを追加
                     db.collection("group").document(gid!!).collection("member").document(me.uid).set(cUser(me.uid))
                     // チャット画面内にログを記録
-                    send_group_message(me!!.uid, me_name + "さんが参加しました", true)
+                    send_group_message(me!!.uid, me_name + " さんが参加しました", true)
                     // スタックからこの画面を削除する
                     finish()
                     // 引数を割り当てる
