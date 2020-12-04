@@ -63,7 +63,7 @@ class SettingGroupActivity : AppCompatActivity() {
         val subb = findViewById<Button>(R.id.submit_button)
 
         // 配列リスト(現状の所属メンバー、招待中のユーザ、招待可能ユーザを保持) : RecyclerViewの時に使用
-        val candidate_list: ArrayList<String> = ArrayList()             // 候補者を絞り込みする一時的な配列
+        val candidate_list: ArrayList<String> = ArrayList()             // 候補者の絞り込みをする一時的な配列
         val member_list: ArrayList<String> = ArrayList()                // 在籍するユーザのIDを格納する一時的な配列
         val inviting_list: ArrayList<String> = ArrayList()              // 招待中のユーザIDを格納する一時的な配列
 
@@ -119,11 +119,11 @@ class SettingGroupActivity : AppCompatActivity() {
                             getUser = it.toObject(User::class.java)
                             // 自分の場合は除く
                             if (getUser!!.uid != me!!.uid) {
+                                // ArrayList
+                                member_list.add(getUser!!.uid)
                                 // アダプタに関連付け
                                 user_remove_adapter?.add(getUser!!)
                                 rem_recy.adapter = user_remove_adapter
-                                // ArrayList
-                                member_list.add(getUser!!.uid)
                             } else {
                                 // 自分だった場合は、自分の名前を格納する文字列変数に保持しておく
                                 me_name = getUser!!.name
@@ -147,11 +147,11 @@ class SettingGroupActivity : AppCompatActivity() {
                         .addOnSuccessListener {
                             // ユーザオブジェクトを取得
                             getUser = it.toObject(User::class.java)
+                            // ArrayList
+                            inviting_list.add(getUser!!.uid)
                             // アダプタに関連付け
                             user_invite_adapter?.add(getUser!!)
                             inv_recy.adapter = user_invite_adapter
-                            // ArrayList
-                            inviting_list.add(getUser!!.uid)
                         }
                 }
                 // タイトル変更
