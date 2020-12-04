@@ -41,4 +41,14 @@
         app:layout_constraintEnd_toEndOf="@+id/chat_you_row_pic_imageView"
         app:layout_constraintStart_toStartOf="@+id/chat_you_row_pic_imageView"
         app:layout_constraintTop_toBottomOf="@+id/chat_you_row_pic_imageView" />
+
+    <ImageView
+        android:id="@+id/chat_you_row_imgSrc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chat_you_row_time_textView"
+        tools:visibility="gone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

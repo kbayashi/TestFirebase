@@ -34,8 +34,24 @@ class messageAdapter(private val context: Context)
         val you_time: TextView = itemView.findViewById(R.id.chat_you_row_time_textView)
     }
 
+    //画像(自分)
+    class ViewMeImageHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        val me_img: ImageView = itemView.findViewById(R.id.chat_me_row_pic_imageView)
+        val me_time: TextView = itemView.findViewById(R.id.chat_me_row_time_textView)
+        val me_msg: Button = itemView.findViewById(R.id.chat_me_row_msg_button)
+        val me_imgSrc: ImageView = itemView.findViewById(R.id.chat_me_row_imgSrc)
+    }
+
+    //画像(相手)
+    class ViewYouImageHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        val you_img: ImageView = itemView.findViewById(R.id.chat_you_row_pic_imageView)
+        val you_time: TextView = itemView.findViewById(R.id.chat_you_row_time_textView)
+        val you_msg: Button = itemView.findViewById(R.id.chat_you_row_msg_button)
+        val you_imgSrc: ImageView = itemView.findViewById(R.id.chat_you_row_imgSrc)
+    }
+
     //何してるところかよくわからない
-    class messageListItem(val message: Message){}
+    class messageListItem(val message: Message)
 
     //メッセージオブジェクトに関する何か
     private val itemList = mutableListOf<messageListItem>()
@@ -52,21 +68,42 @@ class messageAdapter(private val context: Context)
         //ビューを生成
         if(viewType == 0){
             val layout = layoutInflater.inflate(R.layout.chat_me_row,parent,false)
-            return messageAdapter.ViewMeHolder(layout)
+            return ViewMeHolder(layout)
+        }else if(viewType == 1){
+            val layout = layoutInflater.inflate(R.layout.chat_you_row,parent,false)
+            return ViewYouHolder(layout)
+        }else if(viewType == 2){
+            val layout = layoutInflater.inflate(R.layout.chat_me_row,parent,false)
+            return ViewMeImageHolder(layout)
         }else{
             val layout = layoutInflater.inflate(R.layout.chat_you_row,parent,false)
-            return messageAdapter.ViewYouHolder(layout)
+            return ViewYouImageHolder(layout)
         }
     }
 
     //ViewTypeを返す関数(メッセージ送信者が自分か相手か比較する)
-    //[戻り値] 0: 自分 / 1: 相手
+    //[戻り値] 0: 自分(メッセージ) / 1: 相手(メッセージ) / 2: 画像) / 3: 相手(画像)
     override fun getItemViewType(position: Int): Int {
         //IDを比較
         if(itemList[position].message.send_user == meUid){
-            return 0
+            // 自分
+            if(itemList[position].message.image_flag == false) {
+                // メッセージ
+                return 0
+            } else {
+                // 画像
+                return 2
+            }
+
         }else{
-            return 1
+            // 相手
+            if (itemList[position].message.image_flag == false) {
+                // メッセージ
+                return 1
+            } else {
+                // 画像
+                return 3
+            }
         }
     }
 
@@ -113,6 +150,46 @@ class messageAdapter(private val context: Context)
                             Picasso.get().load("https://cv.tipsfound.com/windows10/02014/8.png").into(holder_you.you_img)
                         }
                     }
+            }
+            2 ->{
+                val holder_me = holder as ViewMeImageHolder
+                holder_me.me_time.text = itemList[position].message.sendTimestampToString(itemList[position].message.time)
+                // 自分のユーザアイコンを取りに行く
+                db.collection("user").document(itemList[position].message.send_user).get()
+                    .addOnSuccessListener { document ->
+                        if (document != null) {
+                            //Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                            Picasso.get().load(document.getString("img")).into(holder_me.me_img)
+                        } else {
+                            Log.d(TAG, "No such document")
+                            Picasso.get().load("https://cv.tipsfound.com/windows10/02014/8.png").into(holder_me.me_img)
+                        }
+                    }
+                // Viewを表示、非表示
+                holder_me.me_msg.visibility = View.GONE
+                holder_me.me_imgSrc.visibility = View.VISIBLE
+                // 画像を読み込む
+                Picasso.get().load(itemList[position].message.message).into(holder_me.me_imgSrc)
+            }
+            3 ->{
+                val holder_you = holder as ViewYouImageHolder
+                holder_you.you_time.text = itemList[position].message.sendTimestampToString(itemList[position].message.time)
+                //相手のユーザアイコンを取りに行く
+                db.collection("user").document(itemList[position].message.send_user).get()
+                    .addOnSuccessListener { document ->
+                        if (document != null) {
+                            //Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                            Picasso.get().load(document.getString("img")).into(holder_you.you_img)
+                        } else {
+                            Log.d(TAG, "No such document")
+                            Picasso.get().load("https://cv.tipsfound.com/windows10/02014/8.png").into(holder_you.you_img)
+                        }
+                    }
+                // Viewを表示、非表示
+                holder_you.you_msg.visibility = View.GONE
+                holder_you.you_imgSrc.visibility = View.VISIBLE
+                // 画像を読み込む
+                Picasso.get().load(itemList[position].message.message).into(holder_you.you_imgSrc)
             }
         }
     }

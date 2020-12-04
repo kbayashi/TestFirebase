@@ -233,7 +233,7 @@ class GroupChatActivity : AppCompatActivity() {
             g_msg = GroupMessage(uid, msg, false, time)
 
             // 最新トークデータに格納する型
-            val les = Message(msg, gid!!, me!!.uid, time, true)
+            val les = Message(msg, gid!!, me!!.uid, time,false,true)
 
             // 最新トークデータを更新する処理
             db.collection("group").document(gid!!).collection("member").get()

@@ -195,12 +195,6 @@ class CreateGroupActivity : AppCompatActivity() {
 
                             // group-join
                             db.collection("group-status").document(user_id_array[i]).collection("no-join").document(gid).set(jUser(gid, user_id_array[i]))
-
-                            /*
-                            // group-join
-                            val jGroup = db.collection("group-join").document(user_id_array[i]).collection(gid).document("join-status")
-                            jGroup.set(jUser(user_id_array[i], false))
-                             */
                         }
                     }
 
