@@ -11,7 +11,6 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 
 class GroupChatActivity : AppCompatActivity() {
@@ -50,18 +49,37 @@ class GroupChatActivity : AppCompatActivity() {
         gid = intent.getStringExtra("GroupId")
         isJoin = intent.getBooleanExtra("isJoin", false)
 
-        // アクションバーの表記を変更
-        val title = db.collection("group").document(gid!!)
-        title.get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    setTitle(document["name"].toString())
-                    g_join_label.text = "あなたは" + document["name"].toString() + "に招待されています"
+        // グループメンバーか確認
+        var me_join_flag = false
+        db.collection("group").document(gid!!).collection("member").get()
+            .addOnSuccessListener {
+                for (item in it){
+                    if (me!!.uid == item.data.toString().substring(5, 33)){
+                        me_join_flag = true
+                    }
                 }
             }
-            .addOnFailureListener { exception ->
-                setTitle("グループチャット")
+
+        // 招待中のユーザか確認
+        db.collection("group").document(gid!!).collection("invite").get()
+            .addOnSuccessListener {
+                for (item in it){
+                    if (me!!.uid == item.data.toString().substring(5, 33)){
+                        me_join_flag = true
+                    }
+                }
             }
+
+        // 判定
+        if (me_join_flag == false) {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.app_name)
+                .setMessage("あなたは除外されました。")
+                .setPositiveButton("OK") { dialog, which ->
+                    finish()
+                }
+                .show()
+        }
 
         // 参加済みユーザか判定
         if (isJoin) {
@@ -74,25 +92,17 @@ class GroupChatActivity : AppCompatActivity() {
             g_chat_layout.visibility = View.GONE
         }
 
-        // グループに属している人か確認
-        var me_join_flag = false
-        db.collection("group").document(gid!!).collection("member").get()
-            .addOnSuccessListener {
-                for (item in it){
-                    if (me!!.uid == item.data.toString().substring(5, 33)){
-                        me_join_flag = true
-                    }
+        // アクションバーの表記を変更
+        val title = db.collection("group").document(gid!!)
+        title.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    setTitle(document["name"].toString())
+                    g_join_label.text = "あなたは" + document["name"].toString() + "に招待されています"
                 }
-                // 判定
-                if (me_join_flag == false) {
-                    AlertDialog.Builder(this)
-                        .setTitle(R.string.app_name)
-                        .setMessage("あなたは除外されました。")
-                        .setPositiveButton("OK") { dialog, which ->
-                            finish()
-                        }
-                        .show()
-                }
+            }
+            .addOnFailureListener { exception ->
+                setTitle("グループチャット")
             }
 
         // メッセージ受信
