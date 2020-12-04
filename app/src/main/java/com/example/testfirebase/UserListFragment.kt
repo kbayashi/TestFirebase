@@ -157,19 +157,19 @@ class UserListFragment: Fragment() {
                         .addOnSuccessListener {
                             val groupData = it.toObject(Group::class.java)
                             groupInviteListAdapter!!.add(groupData!!)
-                            view!!.group_invite_recyclerView.adapter = groupInviteListAdapter
+                            view?.group_invite_recyclerView?.adapter = groupInviteListAdapter
 
                             // 招待数が0のときは非表示にする
                             if (groupInviteListAdapter!!.itemCount > 0) {
                                 groupInviteFlg = true
-                                view!!.group_invite_constraintLayout.visibility = View.VISIBLE
-                                view!!.group_invite_recyclerView.visibility = View.VISIBLE
-                                view!!.group_invite_imageView.setImageResource(R.drawable.ic_expand_more_24dp)
+                                view?.group_invite_constraintLayout?.visibility = View.VISIBLE
+                                view?.group_invite_recyclerView?.visibility = View.VISIBLE
+                                view?.group_invite_imageView?.setImageResource(R.drawable.ic_expand_more_24dp)
                             } else {
                                 groupInviteFlg = false
-                                view!!.group_invite_constraintLayout.visibility = View.GONE
-                                view!!.group_invite_recyclerView.visibility = View.GONE
-                                view!!.group_invite_imageView.setImageResource(R.drawable.ic_expand_less_24dp)
+                                view?.group_invite_constraintLayout?.visibility = View.GONE
+                                view?.group_invite_recyclerView?.visibility = View.GONE
+                                view?.group_invite_imageView?.setImageResource(R.drawable.ic_expand_less_24dp)
                             }
                         }
                 }
