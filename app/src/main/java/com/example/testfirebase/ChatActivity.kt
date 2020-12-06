@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +12,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_chat.*
-import kotlinx.android.synthetic.main.activity_create_group.*
 import messageAdapter
 import java.util.*
 
@@ -106,38 +104,19 @@ class ChatActivity : AppCompatActivity() {
 
         //DBにメッセージを登録(自分Ver)
         db.collection("user-message").document(me!!.uid).collection(you.uid).add(message)
-            .addOnSuccessListener{
-                Log.d("DB", "データベースにメッセージを登録しました")
-            }
-            .addOnFailureListener{
-                Log.d("DB", "データベースにメッセージの登録が失敗しました ${it.message}")
-            }
-
-        //DBにメッセージを登録(相手Ver)
         db.collection("user-message").document(you.uid).collection(me!!.uid).add(message)
-            .addOnSuccessListener{
-                Log.d("DB", "データベースにメッセージを登録しました")
-            }
-            .addOnFailureListener{
-                Log.d("DB", "データベースにメッセージの登録が失敗しました ${it.message}")
-            }
 
         //最新トーク一覧のデータ更新
-        db.collection("user-latest").document("les").collection(me!!.uid).document(you.uid).set(message)
-            .addOnSuccessListener{
-                Log.d("DB", "データベースにメッセージを登録しました")
-            }
-            .addOnFailureListener{
-                Log.d("DB", "データベースにメッセージの登録が失敗しました ${it.message}")
-            }
-
-        db.collection("user-latest").document("les").collection(you.uid).document(me!!.uid).set(message)
-            .addOnSuccessListener{
-                Log.d("DB", "データベースにメッセージを登録しました")
-            }
-            .addOnFailureListener{
-                Log.d("DB", "データベースにメッセージの登録が失敗しました ${it.message}")
-            }
+        if (img_flag == true) {
+            // 画像の場合
+            val message_img = Message("画像を送信しました", me!!.uid, you.uid, millis, img_flag, false)
+            db.collection("user-latest").document("les").collection(me!!.uid).document(you.uid).set(message_img)
+            db.collection("user-latest").document("les").collection(you.uid).document(me!!.uid).set(message_img)
+        } else {
+            // メッセージの場合
+            db.collection("user-latest").document("les").collection(me!!.uid).document(you.uid).set(message)
+            db.collection("user-latest").document("les").collection(you.uid).document(me!!.uid).set(message)
+        }
 
         //テキストボックスの内容をすべて削除
         message_editText.text = null
