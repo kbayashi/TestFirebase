@@ -191,7 +191,7 @@ class CreateGroupActivity : AppCompatActivity() {
                     for (i in 0 .. user_select_array.size-1){
                         if (user_select_array[i] == true){
                             // group
-                            cGroup.collection("member").document(user_id_array[i]).set(cUser(user_id_array[i]))
+                            cGroup.collection("invite").document(user_id_array[i]).set(cUser(user_id_array[i]))
 
                             // group-join
                             db.collection("group-status").document(user_id_array[i]).collection("no-join").document(gid).set(jUser(gid, user_id_array[i]))
