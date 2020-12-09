@@ -63,7 +63,7 @@ class SettingGroupActivity : AppCompatActivity() {
         val subb = findViewById<Button>(R.id.submit_button)
 
         // 配列リスト(現状の所属メンバー、招待中のユーザ、招待可能ユーザを保持) : RecyclerViewの時に使用
-        val candidate_list: ArrayList<String> = ArrayList()             //
+        val candidate_list: ArrayList<String> = ArrayList()             // 招待候補ユーザIDを格納する配列
         val member_list: ArrayList<String> = ArrayList()                // 在籍するユーザIDを格納する配列
         val inviting_list: ArrayList<String> = ArrayList()              // 招待中のユーザIDを格納する配列
 
@@ -88,7 +88,7 @@ class SettingGroupActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 if (it != null) {
                     gname = it["name"].toString()
-                    setTitle(gname + "の編集")
+                    title = gname + "の編集"
                     edit.setText(gname)
                     gtopic = it["topic"].toString()
                     topi.setText(gtopic)
@@ -108,29 +108,36 @@ class SettingGroupActivity : AppCompatActivity() {
                     val user = document.toObject(User::class.java)
                     // 自分以外を追加
                     if (user.uid != me!!.uid) {
+                        candidate_list.add(user.uid)
+                        user_add_list_textView.text = "招待候補(" + candidate_list.size + ")"
                         // アダプタ
                         user_add_adapter.add(user)
                         add_recy.adapter = user_add_adapter
-                        candidate_list.add(user.uid)
-                        user_add_list_textView.setText("招待(" + candidate_list.size + ")")
                     }
 
+                    // グループメンバー処理
                     db.collection("group").document(gid).collection("member").document(user.uid).get()
                         .addOnSuccessListener { member ->
                             if (user.uid == member["uid"]) {
-                                candidate_list.remove(user.uid)
-                                member_list.add(user.uid)
-                                // アダプタ
-                                user_remove_adapter.add(user)
-                                rem_recy.adapter = user_remove_adapter
+                                // 自分以外のメンバーを格納
+                                if (user.uid != me.uid) {
+                                    candidate_list.remove(user.uid)
+                                    member_list.add(user.uid)
+                                    user_remove_list_textView.text = "メンバー(" + member_list.size + ")"
+                                    // アダプタ
+                                    user_remove_adapter.add(user)
+                                    rem_recy.adapter = user_remove_adapter
+                                }
                             }
                         }
 
+                    // 招待中ユーザ処理
                     db.collection("group").document(gid).collection("invite").document(user.uid).get()
                         .addOnSuccessListener { invite ->
                             if (user.uid == invite["uid"]) {
                                 candidate_list.remove(user.uid)
                                 inviting_list.add(user.uid)
+                                user_invite_list_textView.setText("招待中(" + inviting_list.size + ")")
                                 // アダプタ
                                 user_invite_adapter.add(user)
                                 inv_recy.adapter = user_invite_adapter
