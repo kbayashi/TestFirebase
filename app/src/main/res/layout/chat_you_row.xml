@@ -15,7 +15,7 @@
         android:background="@drawable/button_round_you"
         android:padding="15dp"
         android:text="相手のメッセージです"
-        android:textAlignment="viewStart"
+        android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         app:layout_constrainedWidth="true"
