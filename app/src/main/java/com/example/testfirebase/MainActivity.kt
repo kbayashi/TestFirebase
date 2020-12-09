@@ -92,10 +92,10 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, CreateGroupActivity::class.java)
                 startActivity(intent)
             }
-            R.id.user_list_fragment_menu_setting -> {
+            /* R.id.user_list_fragment_menu_setting -> {
                 val intent = Intent(this, SettingsAppActivity::class.java)
                 startActivity(intent)
-            }
+            } */
         }
         return super.onOptionsItemSelected(item)
     }
