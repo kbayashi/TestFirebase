@@ -63,9 +63,9 @@ class SettingGroupActivity : AppCompatActivity() {
         val subb = findViewById<Button>(R.id.submit_button)
 
         // 配列リスト(現状の所属メンバー、招待中のユーザ、招待可能ユーザを保持) : RecyclerViewの時に使用
-        val candidate_list: ArrayList<String> = ArrayList()             // 候補者の絞り込みをする一時的な配列
-        val member_list: ArrayList<String> = ArrayList()                // 在籍するユーザのIDを格納する一時的な配列
-        val inviting_list: ArrayList<String> = ArrayList()              // 招待中のユーザIDを格納する一時的な配列
+        val candidate_list: ArrayList<String> = ArrayList()             //
+        val member_list: ArrayList<String> = ArrayList()                // 在籍するユーザIDを格納する配列
+        val inviting_list: ArrayList<String> = ArrayList()              // 招待中のユーザIDを格納する配列
 
         // 配列リスト(追加、除外、招待キャンセルするユーザを格納、保持) : Firebaseに追加、削除、更新を加える時に使用
         val join_members: ArrayList<String> = ArrayList()               // 追加するユーザのIDを格納
@@ -79,9 +79,6 @@ class SettingGroupActivity : AppCompatActivity() {
         var user_add_adapter = add_remove_userAdapter(this)
         var user_remove_adapter = add_remove_userAdapter(this)
         var user_invite_adapter = add_remove_userAdapter(this)
-
-        // ユーザオブジェクト
-        var getUser: User?
 
         // グループIDを取得
         gid = intent.getStringExtra("GroupId")
@@ -104,115 +101,43 @@ class SettingGroupActivity : AppCompatActivity() {
                 Log.d("TAG", "get failed with ", exception)
             }
 
-        // グループに所属しているメンバーの取得と表示
-        db.collection("group").document(gid).collection("member").get()
+        // グループメンバーを取得
+        db.collection("user").get()
             .addOnSuccessListener {
-                // 在籍メンバー分ループ
                 for (document in it) {
-                    // 在籍グループをデバッグ出力
-                    Log.d("Join_Member_NAME", "${document.id} => ${document.data}")
-                    Log.d("Join_Member_ID", document.data.toString().substring(5, 33))
-                    // グループメンバーのユーザIDを元にユーザテーブルから情報を取得
-                    db.collection("user").document(document.data.toString().substring(5, 33)).get()
-                        .addOnSuccessListener {
-                            // ユーザオブジェクトを取得
-                            getUser = it.toObject(User::class.java)
-                            // 自分の場合は除く
-                            if (getUser!!.uid != me!!.uid) {
-                                // ArrayList
-                                member_list.add(getUser!!.uid)
-                                // アダプタに関連付け
-                                user_remove_adapter?.add(getUser!!)
+                    val user = document.toObject(User::class.java)
+                    // 自分以外を追加
+                    if (user.uid != me!!.uid) {
+                        // アダプタ
+                        user_add_adapter.add(user)
+                        add_recy.adapter = user_add_adapter
+                        candidate_list.add(user.uid)
+                        user_add_list_textView.setText("招待(" + candidate_list.size + ")")
+                    }
+
+                    db.collection("group").document(gid).collection("member").document(user.uid).get()
+                        .addOnSuccessListener { member ->
+                            if (user.uid == member["uid"]) {
+                                candidate_list.remove(user.uid)
+                                member_list.add(user.uid)
+                                // アダプタ
+                                user_remove_adapter.add(user)
                                 rem_recy.adapter = user_remove_adapter
-                            } else {
-                                // 自分だった場合は、自分の名前を格納する文字列変数に保持しておく
-                                me_name = getUser!!.name
+                            }
+                        }
+
+                    db.collection("group").document(gid).collection("invite").document(user.uid).get()
+                        .addOnSuccessListener { invite ->
+                            if (user.uid == invite["uid"]) {
+                                candidate_list.remove(user.uid)
+                                inviting_list.add(user.uid)
+                                // アダプタ
+                                user_invite_adapter.add(user)
+                                inv_recy.adapter = user_invite_adapter
                             }
                         }
                 }
-                // タイトル変更
-                user_remove_list_textView.setText("除外(" + member_list.size + ")")
             }
-
-        // 招待中のユーザの取得と表示
-        db.collection("group").document(gid).collection("invite").get()
-            .addOnSuccessListener {
-                // 招待ユーザー分ループ
-                for (document in it) {
-                    // 在籍グループをデバッグ出力
-                    Log.d("Invite_Member", "${document.id} => ${document.data}")
-                    Log.d("Invite_Member_Substring_ID", document.data.toString().substring(5, 33))
-                    // 招待したユーザのIDを元にユーザテーブルから情報を取得
-                    db.collection("user").document(document.data.toString().substring(5, 33)).get()
-                        .addOnSuccessListener {
-                            // ユーザオブジェクトを取得
-                            getUser = it.toObject(User::class.java)
-                            // ArrayList
-                            inviting_list.add(getUser!!.uid)
-                            // アダプタに関連付け
-                            user_invite_adapter?.add(getUser!!)
-                            inv_recy.adapter = user_invite_adapter
-                        }
-                }
-                // タイトル変更
-                user_invite_list_textView.setText("招待中(" + inviting_list.size + ")")
-            }
-
-        // グループに招待するユーザを取得、処理、表示
-        db.collection("user").get().addOnSuccessListener {
-            // すべてのユーザを取得
-            for (document in it) {
-                // ユーザオブジェクトに変換
-                getUser = document.toObject(User::class.java)
-                // 自分は除く
-                if (getUser!!.uid != me!!.uid) {
-                    candidate_list.add(getUser!!.uid)
-                }
-            }
-            // 全てのユーザを取得後(自分を除く)、招待可能なユーザを絞り込む(所属メンバー、招待中のユーザは除く)
-            candidate_list.forEach {
-                member_list.forEach { member ->
-                    // 所属するメンバーと被った場合は除く
-                    if (it == member) {
-                        candidate_list.remove(it)
-                    }
-                }
-                inviting_list.forEach { inviter ->
-                    // 招待中のユーザと被った場合は除く
-                    if (it == inviter) {
-                        candidate_list.remove(it)
-                    }
-                }
-            }
-            // 招待可能ユーザを絞り込んだ後はRecyclerViewに表示
-            candidate_list.forEach {
-                db.collection("user").document(it).get()
-                    .addOnSuccessListener {
-                        // ユーザオブジェクト型に変換
-                        getUser = it.toObject(User::class.java)
-                        user_add_adapter?.add(getUser!!)
-                        // アダプタに関連付け
-                        add_recy.adapter = user_add_adapter
-                    }
-            }
-            // タイトル変更
-            user_add_list_textView.setText("招待(" + candidate_list.size + ")")
-            // レイアウト表示判定
-            if (candidate_list.size == 0) {
-                user_add_list_linearLayout.visibility = View.GONE
-            }
-        }
-
-        // レイアウト表示判定
-        /*if (candidate_list.size == 0) {
-            user_add_list_linearLayout.visibility = View.GONE
-        }
-        if (member_list.size == 0) {
-            user_remove_list_linearLayout.visibility = View.GONE
-        }
-        if (inviting_list.size == 0) {
-            user_invite_list_linearLayout.visibility = View.GONE
-        }*/
 
         // 選択処理
         user_add_adapter.setOnclickListener { uid: String, name: String, bool: Boolean ->
