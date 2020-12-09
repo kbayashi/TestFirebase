@@ -3,8 +3,15 @@ package com.example.testfirebase
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Message(val message: String,val send_user:String,val receive_user: String,val time: Long, val group_flag: Boolean) {
-    constructor():this("", "", "", -1L, false)
+class Message(
+    val message: String,
+    val send_user: String,
+    val receive_user: String,
+    val time: Long,
+    val image_flag: Boolean,
+    val group_flag: Boolean
+) {
+    constructor():this("", "", "", -1L,false,false)
   
     //メッセージを送ったタイムスタンプを時間表示にする関数
     fun sendTimestampToString(long: Long): String{

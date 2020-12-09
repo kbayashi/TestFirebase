@@ -4,8 +4,13 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class GroupMessage(val send_id: String, val message: String, val timestamp: Long) {
-    constructor():this("","",-1L)
+class GroupMessage(
+    val send_id: String,
+    val message: String,
+    val log_flag: Boolean,
+    val img_flag: Boolean,
+    val timestamp: Long) {
+    constructor():this("","",false,false,-1L)
 
     // タイムスタンプを時間に変換
     fun TimestampToDate(long: Long): String{

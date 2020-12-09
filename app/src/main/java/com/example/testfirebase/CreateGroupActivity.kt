@@ -177,24 +177,24 @@ class CreateGroupActivity : AppCompatActivity() {
 
                     // データ構造
                     data class jUser(
-                        val uid: String? = null,
-                        val status: Boolean = false
+                        val gid: String? = null,
+                        val uid: String? = null
                     )
 
-                    // グループに自分を加入する
-                    cGroup.collection("member").document(me.uid).set(cUser(me.uid))     // group
-                    db.collection("group-join").document(me.uid).collection(gid).document("join-status").set(jUser(me.uid, true))    // group-join
+                    // group
+                    cGroup.collection("member").document(me.uid).set(cUser(me.uid))
+
+                    // group-join
+                    db.collection("group-status").document(me.uid).collection("join").document(gid).set(jUser(gid, me.uid))
 
                     // グループに自分以外のユーザを加入する
                     for (i in 0 .. user_select_array.size-1){
                         if (user_select_array[i] == true){
                             // group
-                            val add_other = cGroup.collection("member").document(user_id_array[i])
-                            add_other.set(cUser(user_id_array[i]))
+                            cGroup.collection("member").document(user_id_array[i]).set(cUser(user_id_array[i]))
 
                             // group-join
-                            val jGroup = db.collection("group-join").document(user_id_array[i]).collection(gid).document("join-status")
-                            jGroup.set(jUser(user_id_array[i], false))
+                            db.collection("group-status").document(user_id_array[i]).collection("no-join").document(gid).set(jUser(gid, user_id_array[i]))
                         }
                     }
 
@@ -205,10 +205,12 @@ class CreateGroupActivity : AppCompatActivity() {
                         .setTitle(R.string.app_name)
                         .setMessage("グループを作成しました！")
                         .setPositiveButton("OK") { dialog, which ->
-
+                            // この画面が再度呼び出されないように、スタックから消去する
+                            finish()
                             // グループチャット画面へ遷移
                             val intent = Intent(this, GroupChatActivity::class.java)
                             intent.putExtra("GroupId", cGroup.id)
+                            intent.putExtra("isJoin", true)
                             startActivity(intent)
                         }
                         .show()
