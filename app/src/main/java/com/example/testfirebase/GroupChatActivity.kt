@@ -84,11 +84,27 @@ class GroupChatActivity : AppCompatActivity() {
             snapshot?.documentChanges?.forEach {
 
                 // GroupMessage型に変換
-                var groupMessagedata = it.document.toObject(GroupMessage::class.java)
-                // リサイクルビューに追加
-                groupMessageListAdapter?.add(groupMessagedata)
-                // 一番下にスクロール
-                g_recy.scrollToPosition(groupMessageListAdapter.itemCount-1)
+                var message = it.document.toObject(GroupMessage::class.java)
+
+                // 除外判定
+                if (message.message.takeLast(6) == "除外しました" && message.send_id == me?.uid) {
+                    // 除外されている
+                    AlertDialog.Builder(this)
+                        .setTitle(R.string.app_name)
+                        .setMessage(message.message)
+                        .setPositiveButton("はい") { dialog, which ->
+                            finish()
+                        }
+                        .setNegativeButton("いいえ") { dialog, which ->
+                            // 何もしない
+                        }
+                        .show()
+                } else {
+                    // リサイクルビューに追加
+                    groupMessageListAdapter?.add(message)
+                    // 一番下にスクロール
+                    g_recy.scrollToPosition(groupMessageListAdapter.itemCount-1)
+                }
             }
         }
 
