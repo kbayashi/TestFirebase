@@ -136,6 +136,7 @@ class TimeLineAddActivity : AppCompatActivity() {
         //カメラ起動
         time_line_add_camera_imageView.setOnClickListener {
             // カメラ機能を実装したアプリが存在するかチェック
+            //resolveActivityはインデントを渡すアプリがなければnullを返す
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).resolveActivity(packageManager)?.let {
                 if (checkCameraPermission()) {
                     takePicture()

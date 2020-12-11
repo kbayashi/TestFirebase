@@ -41,6 +41,7 @@ class timeLineListAdapter(private val context: Context)
         timeLineEditClickListner = listener
     }
 
+    val uid = FirebaseAuth.getInstance().uid.toString()
 
     //１行で使用する各部品（ビュー）を保持したもの
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -49,10 +50,11 @@ class timeLineListAdapter(private val context: Context)
         val editTextMutable:EditText = itemView.findViewById(R.id.time_line_recyclerview_row_editTextTextMultiLine)
         val goodCount:TextView = itemView.findViewById(R.id.time_line_recyclerview_row_goodCount_textView)
         val RecyclerView:RecyclerView = itemView.findViewById(R.id.time_line_recyclerview_row_image_recyclerView)
-        val GoodButton:Button = itemView.findViewById(R.id.time_line_recyclerview_row_good_textView)
+        val GoodButton:ImageView = itemView.findViewById(R.id.time_line_recyclerview_row_good_textView)
         val comment: ImageView = itemView.findViewById(R.id.time_line_recycletview_row_comment_imageView)
         val time:TextView = itemView.findViewById(R.id.time_line_recyclerview_row_time_textView)
         val setting:ImageView = itemView.findViewById(R.id.time_line_recyclerview_row_setting_imageView)
+        val commentCount:TextView = itemView.findViewById(R.id.time_line_recyclerview_comment_count_textView)
     }
 
     //現状userデータがないのでダミーデータを格納するだけの処理になっている
@@ -126,6 +128,7 @@ class timeLineListAdapter(private val context: Context)
 
         //カウント取得
         getCount(goodRef,holder)
+        getCount(holder,position)
 
         //コメント画面へ移動
         holder.comment.setOnClickListener {
@@ -138,7 +141,7 @@ class timeLineListAdapter(private val context: Context)
 
         //カウントアップ
         holder.GoodButton.setOnClickListener {
-            countUp(position,uid)
+            countUp(position,uid,holder.GoodButton)
         }
 
         FirebaseFirestore.getInstance().collection("user").document(itemList[position].timeLine.uid).get().addOnSuccessListener {
@@ -187,8 +190,13 @@ class timeLineListAdapter(private val context: Context)
 
         goodRef.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
             if(querySnapshot!!.size() > 0) {
-                //Log.d("gooodの数",querySnapshot.size().toString())
                 holder.goodCount.text = querySnapshot.size().toString()
+                querySnapshot.forEach {
+                    Log.d("goodID", it.id)
+                    if(it.id == uid){
+                        holder.GoodButton.setImageResource(R.drawable.ic_baseline_yellow_thumb_up_24)
+                    }
+                }
             }else{
                 holder.goodCount.text = "0"
             }
@@ -196,20 +204,29 @@ class timeLineListAdapter(private val context: Context)
         }
 
     }
+
+    private fun getCount(holder: ViewHolder,position: Int){
+        FirebaseFirestore.getInstance().collection("time-line-comment").document(itemList[position].timeLine.id)
+            .collection("get").get().addOnSuccessListener {
+                holder.commentCount.text = it.size().toString()
+            }
+
+    }
     //グッドを増やしたり減らしたり
-    private fun countUp(position: Int,uid:String){
+    private fun countUp(position: Int,uid:String , imageView: ImageView){
         val ref = FirebaseFirestore.getInstance().collection("time-line-good").document(itemList[position].timeLine.id)
             .collection("get").document(uid)
         ref.get().addOnSuccessListener {
-            //Log.d("なんだこれ", "${it.reference}")
-            //Log.d("good取得成功" ,"${it.toObject(Good::class.java)}")
             if(it.toObject(Good::class.java) == null){
                 var hashMap = hashMapOf(
                     "goood" to "good"
                 )
                 ref.set(hashMap)
+                imageView.setImageResource(R.drawable.ic_baseline_yellow_thumb_up_24)
             }else{
+
                 ref.delete()
+                imageView.setImageResource(R.drawable.ic_baseline_thumb_up_24)
             }
 
         }.addOnFailureListener {

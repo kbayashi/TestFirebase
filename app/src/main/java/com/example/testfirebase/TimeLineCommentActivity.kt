@@ -39,7 +39,7 @@ class TimeLineCommentActivity : AppCompatActivity() {
 
         //コメントを投稿
         time_line_send_button_imageView.setOnClickListener {
-            if(time_line_comment_editTextTextPersonName.text != null){
+            if(time_line_comment_editTextTextPersonName.text != null && !time_line_comment_editTextTextPersonName.text.isEmpty() && !time_line_comment_editTextTextPersonName.text.isBlank()){
                 val id = UUID.randomUUID()
                 val comment = Comment(id.toString(),FirebaseAuth.getInstance().uid.toString(), time_line_comment_editTextTextPersonName.text.toString(),  System.currentTimeMillis())
                 FirebaseFirestore.getInstance().collection("time-line-comment").document(timeLineData.id).collection("get")
