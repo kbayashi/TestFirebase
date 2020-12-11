@@ -77,13 +77,8 @@ class GroupChatActivity : AppCompatActivity() {
         db.collection("group").document(gid!!).collection("member").document(me!!.uid)
             .addSnapshotListener { snapshot, e ->
                 if (isJoin && snapshot!!.get("uid") != me.uid) {
-                    AlertDialog.Builder(this)
-                        .setTitle(R.string.app_name)
-                        .setMessage("あなたは除外されています")
-                        .setPositiveButton("はい") { _, _ ->
-                            finish()
-                        }
-                        .show()
+                    Toast.makeText(applicationContext, "あなたは除外されました", Toast.LENGTH_LONG).show()
+                    finish()
                 }
             }
 
