@@ -507,10 +507,8 @@ class SettingGroupActivity : AppCompatActivity() {
 
         // 送信時間を確定
         val time = System.currentTimeMillis()
-
         // メッセージ内容を格納
         val g_msg = GroupMessage(uid, msg,true,false, time)
-
         // グループメッセージテーブルに保存
         db.collection("group-message").document("get").collection(gid!!).document().set(g_msg)
     }
