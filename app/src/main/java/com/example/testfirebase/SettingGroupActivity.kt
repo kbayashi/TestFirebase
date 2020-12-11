@@ -457,10 +457,12 @@ class SettingGroupActivity : AppCompatActivity() {
                     // グループテーブル上のアイコンデータも更新
                     db.collection("group").document(gid)
                         .update("icon", gicon).addOnSuccessListener {
+                            // チャット画面内にログを記録
+                            send_group_message(me!!.uid, me_name + " さんがアイコンを変更しました")
                             Log.d("Icon Update Success", "DocumentSnapshot successfully updated!")
                         }
-                        .addOnFailureListener {
-                                e -> Log.w("Icon Update Error", "Error updating document", e)
+                        .addOnFailureListener { e ->
+                            Log.w("Icon Update Error", "Error updating document", e)
                         }
                 }
             }
