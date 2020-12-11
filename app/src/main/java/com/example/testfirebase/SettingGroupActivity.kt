@@ -101,6 +101,12 @@ class SettingGroupActivity : AppCompatActivity() {
                 Log.d("TAG", "get failed with ", exception)
             }
 
+        // 自分の名前を取得する
+        db.collection("user").document(me!!.uid).get()
+            .addOnSuccessListener {
+                me_name = it["name"].toString()
+            }
+
         // グループメンバーを取得
         db.collection("user").get()
             .addOnSuccessListener {
