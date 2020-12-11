@@ -26,8 +26,8 @@ class GroupChatActivity : AppCompatActivity() {
 
     // 変数
     private var gid: String? = null             // GroupID
-    private var isJoin: Boolean = false         // 参加承認変数(true: 参加済み / false: 未参加)
     private var me_name: String? = null         // 自分の名前
+    private var isJoin: Boolean = false         // 参加変数(true: 参加済み / false: 招待中)
 
     // 画像選択
     private var selectedPhotoUri: Uri? = null
@@ -73,38 +73,35 @@ class GroupChatActivity : AppCompatActivity() {
             g_chat_layout.visibility = View.GONE
         }
 
+        // メンバー除外受信
+        db.collection("group").document(gid!!).collection("member").document(me!!.uid)
+            .addSnapshotListener { snapshot, e ->
+                if (isJoin && snapshot!!.get("uid") != me.uid) {
+                    AlertDialog.Builder(this)
+                        .setTitle(R.string.app_name)
+                        .setMessage("あなたは除外されています")
+                        .setPositiveButton("はい") { _, _ ->
+                            finish()
+                        }
+                        .show()
+                }
+            }
+
         // メッセージ受信
         val docRef = db.collection("group-message").document("get").collection(gid!!).orderBy("timestamp")
         docRef.addSnapshotListener { snapshot, e ->
-
-            // アダプタに関連付け
-            g_recy.adapter = groupMessageListAdapter
 
             // データを取り出す
             snapshot?.documentChanges?.forEach {
 
                 // GroupMessage型に変換
                 var message = it.document.toObject(GroupMessage::class.java)
-
-                // 除外判定
-                if (message.message.takeLast(6) == "除外しました" && message.send_id == me?.uid) {
-                    // 除外されている
-                    AlertDialog.Builder(this)
-                        .setTitle(R.string.app_name)
-                        .setMessage(message.message)
-                        .setPositiveButton("はい") { dialog, which ->
-                            finish()
-                        }
-                        .setNegativeButton("いいえ") { dialog, which ->
-                            // 何もしない
-                        }
-                        .show()
-                } else {
-                    // リサイクルビューに追加
-                    groupMessageListAdapter?.add(message)
-                    // 一番下にスクロール
-                    g_recy.scrollToPosition(groupMessageListAdapter.itemCount-1)
-                }
+                // リサイクルビューに追加
+                groupMessageListAdapter?.add(message)
+                // アダプタに関連付け
+                g_recy.adapter = groupMessageListAdapter
+                // 一番下にスクロール
+                g_recy.scrollToPosition(groupMessageListAdapter.itemCount-1)
             }
         }
 
