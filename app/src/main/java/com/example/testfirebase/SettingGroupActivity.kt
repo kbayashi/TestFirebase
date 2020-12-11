@@ -486,6 +486,8 @@ class SettingGroupActivity : AppCompatActivity() {
                         db.collection("group").document(gid).collection("member").document(me!!.uid).delete()
                         // group-status
                         db.collection("group-status").document(me!!.uid).collection("join").document(gid).delete()
+                        // user-latest
+                        db.collection("user-latest").document("les").collection(me.uid).document(gid).delete()
                         // チャット画面内にログを記録
                         send_group_message(me!!.uid, me_name + " さんが退会しました")
                         // 元の画面へ戻る
