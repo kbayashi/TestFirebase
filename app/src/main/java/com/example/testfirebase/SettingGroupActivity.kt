@@ -347,6 +347,8 @@ class SettingGroupActivity : AppCompatActivity() {
                                 db.collection("group").document(gid).collection("member").document(remove_members[i]).delete()
                                 // group-status
                                 db.collection("group-status").document(remove_members[i]).collection("join").document(gid).delete()
+                                // user-latest
+                                db.collection("user-latest").document("les").collection(me.uid).document(gid).delete()
                                 // チャット画面内にログを記録
                                 send_group_message(me!!.uid, me_name + " さんが " + remove_members_name[i] + " さんを除外しました")
                             }
