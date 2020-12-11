@@ -62,11 +62,6 @@ class SettingGroupActivity : AppCompatActivity() {
         val inv_recy = findViewById<RecyclerView>(R.id.user_invite_list_recyclerView)
         val subb = findViewById<Button>(R.id.submit_button)
 
-        // 配列リスト(現状の所属メンバー、招待中のユーザ、招待可能ユーザを保持) : RecyclerViewの時に使用
-        val candidate_list: ArrayList<String> = ArrayList()             //
-        val member_list: ArrayList<String> = ArrayList()                // 在籍するユーザIDを格納する配列
-        val inviting_list: ArrayList<String> = ArrayList()              // 招待中のユーザIDを格納する配列
-
         // 配列リスト(追加、除外、招待キャンセルするユーザを格納、保持) : Firebaseに追加、削除、更新を加える時に使用
         val join_members: ArrayList<String> = ArrayList()               // 追加するユーザのIDを格納
         val join_members_name: ArrayList<String> = ArrayList()          // 追加するユーザの名前を格納
@@ -74,6 +69,11 @@ class SettingGroupActivity : AppCompatActivity() {
         val remove_members_name: ArrayList<String> = ArrayList()        // 除外するユーザの名前を格納
         val invite_members: ArrayList<String> = ArrayList()             // 招待中のユーザIDを格納
         val invite_members_name: ArrayList<String> = ArrayList()        // 招待中のユーザの名前を格納
+
+        // カウント変数
+        var add_cnt = 0
+        var mem_cnt = 0
+        var inv_cnt = 0
 
         // アダプタ(グループ作成アダプタと同じ)
         var user_add_adapter = add_remove_userAdapter(this)
@@ -88,7 +88,7 @@ class SettingGroupActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 if (it != null) {
                     gname = it["name"].toString()
-                    setTitle(gname + "の編集")
+                    title = gname + "の編集"
                     edit.setText(gname)
                     gtopic = it["topic"].toString()
                     topi.setText(gtopic)
@@ -101,39 +101,58 @@ class SettingGroupActivity : AppCompatActivity() {
                 Log.d("TAG", "get failed with ", exception)
             }
 
+        // 自分の名前を取得する
+        db.collection("user").document(me!!.uid).get()
+            .addOnSuccessListener {
+                me_name = it["name"].toString()
+            }
+
         // グループメンバーを取得
         db.collection("user").get()
             .addOnSuccessListener {
                 for (document in it) {
                     val user = document.toObject(User::class.java)
-                    // 自分以外を追加
-                    if (user.uid != me!!.uid) {
-                        // アダプタ
-                        user_add_adapter.add(user)
-                        add_recy.adapter = user_add_adapter
-                        candidate_list.add(user.uid)
-                        user_add_list_textView.setText("招待(" + candidate_list.size + ")")
-                    }
 
+                    // グループメンバー処理
                     db.collection("group").document(gid).collection("member").document(user.uid).get()
                         .addOnSuccessListener { member ->
                             if (user.uid == member["uid"]) {
-                                candidate_list.remove(user.uid)
-                                member_list.add(user.uid)
-                                // アダプタ
-                                user_remove_adapter.add(user)
-                                rem_recy.adapter = user_remove_adapter
-                            }
-                        }
+                                // 自分以外のメンバーを格納
+                                if (user.uid != me!!.uid) {
+                                    mem_cnt += 1
+                                    user_remove_list_textView.text = "メンバー(" + mem_cnt + ")"
+                                    // アダプタ
+                                    user_remove_adapter.add(user)
+                                    rem_recy.adapter = user_remove_adapter
+                                    // レイアウト表示
+                                    user_rem_inv_list_linearLayout.visibility = View.VISIBLE
+                                    user_remove_list_linearLayout.visibility = View.VISIBLE
+                                }
 
-                    db.collection("group").document(gid).collection("invite").document(user.uid).get()
-                        .addOnSuccessListener { invite ->
-                            if (user.uid == invite["uid"]) {
-                                candidate_list.remove(user.uid)
-                                inviting_list.add(user.uid)
-                                // アダプタ
-                                user_invite_adapter.add(user)
-                                inv_recy.adapter = user_invite_adapter
+                            } else {
+
+                                // 招待中ユーザ処理
+                                db.collection("group").document(gid).collection("invite").document(user.uid).get()
+                                    .addOnSuccessListener { invite ->
+                                        if (user.uid == invite["uid"]) {
+                                            inv_cnt += 1
+                                            user_invite_list_textView.text = "招待中(" + inv_cnt + ")"
+                                            // アダプタ
+                                            user_invite_adapter.add(user)
+                                            inv_recy.adapter = user_invite_adapter
+                                            // レイアウト表示
+                                            user_rem_inv_list_linearLayout.visibility = View.VISIBLE
+                                            user_invite_list_linearLayout.visibility = View.VISIBLE
+                                        } else {
+                                            // メンバーでも招待中でもなければ、招待可能ユーザである
+                                            add_cnt += 1
+                                            user_add_list_textView.text = "招待可能(" + add_cnt + ")"
+                                            user_add_adapter.add(user)
+                                            add_recy.adapter = user_add_adapter
+                                            // レイアウト表示
+                                            user_add_list_linearLayout.visibility = View.VISIBLE
+                                        }
+                                    }
                             }
                         }
                 }
@@ -328,8 +347,10 @@ class SettingGroupActivity : AppCompatActivity() {
                                 db.collection("group").document(gid).collection("member").document(remove_members[i]).delete()
                                 // group-status
                                 db.collection("group-status").document(remove_members[i]).collection("join").document(gid).delete()
-                                // チャット画面内にログを記録
-                                send_group_message(me!!.uid, me_name + " さんが " + remove_members_name[i] + " さんを除外しました")
+                                // user-latest
+                                db.collection("user-latest").document("les").collection(remove_members[i]).document(gid).delete()
+                                // チャット画面内にログを記録(SenderIDは、除外されたユーザIDを入れています。ややこしくてごめんなさい)
+                                send_group_message(remove_members[i], me_name + " さんが " + remove_members_name[i] + " さんを除外しました")
                             }
                         }
                         // 招待をキャンセル
@@ -436,10 +457,12 @@ class SettingGroupActivity : AppCompatActivity() {
                     // グループテーブル上のアイコンデータも更新
                     db.collection("group").document(gid)
                         .update("icon", gicon).addOnSuccessListener {
+                            // チャット画面内にログを記録
+                            send_group_message(me!!.uid, me_name + " さんがアイコンを変更しました")
                             Log.d("Icon Update Success", "DocumentSnapshot successfully updated!")
                         }
-                        .addOnFailureListener {
-                                e -> Log.w("Icon Update Error", "Error updating document", e)
+                        .addOnFailureListener { e ->
+                            Log.w("Icon Update Error", "Error updating document", e)
                         }
                 }
             }
@@ -467,6 +490,8 @@ class SettingGroupActivity : AppCompatActivity() {
                         db.collection("group").document(gid).collection("member").document(me!!.uid).delete()
                         // group-status
                         db.collection("group-status").document(me!!.uid).collection("join").document(gid).delete()
+                        // user-latest
+                        db.collection("user-latest").document("les").collection(me.uid).document(gid).delete()
                         // チャット画面内にログを記録
                         send_group_message(me!!.uid, me_name + " さんが退会しました")
                         // 元の画面へ戻る
@@ -486,10 +511,8 @@ class SettingGroupActivity : AppCompatActivity() {
 
         // 送信時間を確定
         val time = System.currentTimeMillis()
-
         // メッセージ内容を格納
         val g_msg = GroupMessage(uid, msg,true,false, time)
-
         // グループメッセージテーブルに保存
         db.collection("group-message").document("get").collection(gid!!).document().set(g_msg)
     }

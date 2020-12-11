@@ -26,9 +26,8 @@ class GroupChatActivity : AppCompatActivity() {
 
     // 変数
     private var gid: String? = null             // GroupID
-    private var isJoin: Boolean = false         // 参加承認変数(true: 参加済み / false: 未参加)
-    private var me_join_flag: Boolean = false   // フラグ(true: メンバー or 招待ユーザ / false: 部外者)
     private var me_name: String? = null         // 自分の名前
+    private var isJoin: Boolean = false         // 参加変数(true: 参加済み / false: 招待中)
 
     // 画像選択
     private var selectedPhotoUri: Uri? = null
@@ -62,41 +61,6 @@ class GroupChatActivity : AppCompatActivity() {
                     g_join_label.text = "あなたは" + it["name"].toString() + "に招待されています"
                 }
             }
-            .addOnFailureListener {
-                setTitle("グループチャット")
-            }
-
-        // グループメンバーか確認
-        /*db.collection("group").document(gid!!).collection("member").get()
-            .addOnSuccessListener {
-                it.forEach {
-                    if (me!!.uid == it.data.toString().substring(5, 33)) {
-                        me_join_flag = true
-                    }
-                }
-            }
-
-        if (me_join_flag == false) {
-            // 招待中のユーザか確認
-            db.collection("group").document(gid!!).collection("invite").get()
-                .addOnSuccessListener {
-                    it.forEach {
-                        if (me!!.uid == it.data.toString().substring(5, 33)){
-                            me_join_flag = true
-                        }
-                    }
-                }
-        }
-
-        if (me_join_flag == false){
-            AlertDialog.Builder(this)
-                .setTitle("タイトル")
-                .setMessage("メッセージ")
-                .setPositiveButton("OK") { _, _ ->
-                    finish()
-                }
-                .show()
-        }*/
 
         // 参加済みユーザか判定
         if (isJoin) {
@@ -109,20 +73,28 @@ class GroupChatActivity : AppCompatActivity() {
             g_chat_layout.visibility = View.GONE
         }
 
+        // メンバー除外受信
+        db.collection("group").document(gid!!).collection("member").document(me!!.uid)
+            .addSnapshotListener { snapshot, e ->
+                if (isJoin && snapshot!!.get("uid") != me.uid) {
+                    Toast.makeText(applicationContext, "あなたは除外されました", Toast.LENGTH_LONG).show()
+                    finish()
+                }
+            }
+
         // メッセージ受信
         val docRef = db.collection("group-message").document("get").collection(gid!!).orderBy("timestamp")
         docRef.addSnapshotListener { snapshot, e ->
-
-            // アダプタに関連付け
-            g_recy.adapter = groupMessageListAdapter
 
             // データを取り出す
             snapshot?.documentChanges?.forEach {
 
                 // GroupMessage型に変換
-                var groupMessagedata = it.document.toObject(GroupMessage::class.java)
+                var message = it.document.toObject(GroupMessage::class.java)
                 // リサイクルビューに追加
-                groupMessageListAdapter?.add(groupMessagedata)
+                groupMessageListAdapter?.add(message)
+                // アダプタに関連付け
+                g_recy.adapter = groupMessageListAdapter
                 // 一番下にスクロール
                 g_recy.scrollToPosition(groupMessageListAdapter.itemCount-1)
             }

@@ -1,5 +1,6 @@
 package com.example.testfirebase
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -18,6 +19,8 @@ import kotlinx.android.synthetic.main.chat_list_fragment.view.*
 class LatestChatListFragment: Fragment() {
 
     var adapter:latestChatListAdapter? = null
+    val uid = FirebaseAuth.getInstance().uid
+    val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,11 +47,25 @@ class LatestChatListFragment: Fragment() {
         }
 
         // グループ画面に移動
-        adapter?.setOnGroupClickListener {
-            val intent = Intent(context, GroupChatActivity::class.java)
-            intent.putExtra("GroupId", it)
-            intent.putExtra("isJoin", true)
-            startActivity(intent)
+        adapter?.setOnGroupClickListener { gid ->
+
+            // グループに属しているユーザか判定
+            db.collection("group").document(gid).collection("member").document(uid!!).get()
+                .addOnSuccessListener {
+                    if (it["uid"] == uid) {
+                        val intent = Intent(context, GroupChatActivity::class.java)
+                        intent.putExtra("GroupId", gid)
+                        intent.putExtra("isJoin", true)
+                        startActivity(intent)
+                    } else {
+                        AlertDialog.Builder(activity)
+                            .setTitle(R.string.app_name)
+                            .setMessage("あなたは除外されています。")
+                            .setPositiveButton("OK") { _, _ ->
+                            }
+                            .show()
+                    }
+                }
         }
     }
 

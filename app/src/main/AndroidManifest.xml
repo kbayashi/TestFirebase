@@ -17,7 +17,7 @@
         <activity android:name=".SettingsAppActivity"></activity>
         <activity android:name=".SettingGroupActivity" />
         <activity android:name=".GroupChatActivity" />
-        <activity android:name=".SettingActivity" />
+        <!-- <activity android:name=".SettingActivity" /> -->
         <activity android:name=".PasswordForgetActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
