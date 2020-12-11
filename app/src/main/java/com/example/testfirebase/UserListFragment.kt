@@ -1,5 +1,6 @@
 package com.example.testfirebase
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -81,11 +82,25 @@ class UserListFragment: Fragment() {
         }
 
         // グループチャット画面に遷移する
-        groupListAdapter?.setOnclickListener {
-            val intent = Intent(context, GroupChatActivity::class.java)
-            intent.putExtra("GroupId", it)
-            intent.putExtra("isJoin", true)
-            startActivity(intent)
+        groupListAdapter?.setOnclickListener { gid ->
+
+            // グループに属しているユーザか判定
+            db.collection("group").document(gid).collection("member").document(uid!!).get()
+                .addOnSuccessListener {
+                    if (it["uid"] == uid) {
+                        val intent = Intent(context, GroupChatActivity::class.java)
+                        intent.putExtra("GroupId", gid)
+                        intent.putExtra("isJoin", true)
+                        startActivity(intent)
+                    } else {
+                        AlertDialog.Builder(activity)
+                            .setTitle(R.string.app_name)
+                            .setMessage("あなたは除外されています。")
+                            .setPositiveButton("OK") { _, _ ->
+                            }
+                            .show()
+                    }
+                }
         }
           
         // チャット画面に飛ばす
@@ -104,11 +119,25 @@ class UserListFragment: Fragment() {
         }
 
         // 招待されたグループ画面へ遷移する
-        groupInviteListAdapter?.setOnclickListener {
-            val intent = Intent(context, GroupChatActivity::class.java)
-            intent.putExtra("GroupId", it)
-            intent.putExtra("isJoin", false)
-            startActivity(intent)
+        groupInviteListAdapter?.setOnclickListener { gid ->
+
+            // 招待されたユーザか確認
+            db.collection("group").document(gid).collection("invite").document(uid!!).get()
+                .addOnSuccessListener {
+                    if (it["uid"] == uid) {
+                        val intent = Intent(context, GroupChatActivity::class.java)
+                        intent.putExtra("GroupId", gid)
+                        intent.putExtra("isJoin", false)
+                        startActivity(intent)
+                    } else {
+                        AlertDialog.Builder(activity)
+                            .setTitle(R.string.app_name)
+                            .setMessage("招待をキャンセルされました")
+                            .setPositiveButton("OK") { _, _ ->
+                            }
+                            .show()
+                    }
+                }
         }
     }
 
