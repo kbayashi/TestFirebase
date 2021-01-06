@@ -246,8 +246,15 @@ class SettingGroupActivity : AppCompatActivity() {
 
             // トピックに変更があるか確認
             if (gtopic != topi.text.toString()) {
+
                 str += "\nトピック\n"
-                str += topi.text.toString() + "\n"
+                // トピックで空文字を入力するのは問題ない
+                if (topi.text.isBlank()) {
+                    str += "空白"
+                } else {
+                    str += topi.text.toString() + "\n"
+                }
+                str += "\n"
             }
 
             // 追加判定
@@ -281,99 +288,108 @@ class SettingGroupActivity : AppCompatActivity() {
             }
 
             // 確認表示
-            if (join_members.size != 0 || remove_members.size != 0 || invite_members.size != 0 || gname != edit.text.toString() || gtopic != topi.text.toString()) {
-                // 表示
+            if (edit.text.isNotBlank()) {
+
+                if (join_members.size != 0 || remove_members.size != 0 || invite_members.size != 0 || gname != edit.text.toString() || gtopic != topi.text.toString()) {
+                    // 表示
+                    AlertDialog.Builder(this)
+                        .setTitle(R.string.app_name)
+                        .setMessage("以下の変更を加えますがよろしいですか？\n$str")
+                        .setPositiveButton("はい") { _, _ ->
+
+                            // グループ名の更新処理を行う
+                            if (gname != edit.text.toString()) {
+                                db.collection("group").document(gid)
+                                    .update("name", edit.text.toString()).addOnSuccessListener {
+                                        Log.d("Icon Update Success", "DocumentSnapshot successfully updated!")
+                                    }
+                                    .addOnFailureListener {
+                                            e -> Log.w("Icon Update Error", "Error updating document", e)
+                                    }
+
+                                // グループ名変更ログを出力する
+                                send_group_message(me!!.uid, me_name + " さんがグループ名を " + gname + " から " + edit.text.toString() + " に変更しました")
+                            }
+
+                            // トピックの更新処理を行う
+                            if (gtopic != topi.text.toString()) {
+                                db.collection("group").document(gid)
+                                    .update("topic", topi.text.toString()).addOnSuccessListener {
+                                        Log.d("Topic Update Success", "DocumentSnapshot successfully updated!")
+                                    }
+                                    .addOnFailureListener {
+                                            e -> Log.w("Topic Update Error", "Error updating document", e)
+                                    }
+
+                                // トピック変更ログを出力する
+                                send_group_message(me!!.uid, me_name + " さんがグループトピックを " + gtopic + " から " + topi.text.toString() + " に変更しました")
+                            }
+
+                            //　メンバーの招待
+                            if (join_members.size != 0) {
+                                for (i in 0 .. join_members.size-1) {
+                                    // メンバー
+                                    data class cUser(
+                                        val uid: String? = null
+                                    )
+                                    // データ構造
+                                    data class jUser(
+                                        val gid: String? = null,
+                                        val uid: String? = null
+                                    )
+
+                                    // group
+                                    val add_other = db.collection("group").document(gid).collection("invite").document(join_members[i])
+                                    add_other.set(cUser(join_members[i]))
+
+                                    // group-status
+                                    db.collection("group-status").document(join_members[i]).collection("no-join").document(gid).set(jUser(gid, join_members[i]))
+
+                                    // チャット画面内にログを記録
+                                    send_group_message(me!!.uid, me_name + " さんが " + join_members_name[i] + " さんを招待しました")
+                                }
+                            }
+                            // メンバーを除外
+                            if (remove_members.size != 0) {
+                                for (i in 0 .. remove_members.size-1) {
+                                    // group
+                                    db.collection("group").document(gid).collection("member").document(remove_members[i]).delete()
+                                    // group-status
+                                    db.collection("group-status").document(remove_members[i]).collection("join").document(gid).delete()
+                                    // user-latest
+                                    db.collection("user-latest").document("les").collection(remove_members[i]).document(gid).delete()
+                                    // チャット画面内にログを記録(SenderIDは、除外されたユーザIDを入れています。ややこしくてごめんなさい)
+                                    send_group_message(remove_members[i], me_name + " さんが " + remove_members_name[i] + " さんを除外しました")
+                                }
+                            }
+                            // 招待をキャンセル
+                            if (invite_members.size != 0) {
+                                for (i in 0 .. invite_members.size-1) {
+                                    // group
+                                    db.collection("group").document(gid).collection("invite").document(invite_members[i]).delete()
+                                    // group-status
+                                    db.collection("group-status").document(invite_members[i]).collection("no-join").document(gid).delete()
+                                    // チャット画面内にログを記録
+                                    send_group_message(me!!.uid, me_name + " さんが " + invite_members_name[i] + " さんの招待をキャンセルしました")
+                                }
+                            }
+                            // 前の画面へ戻る
+                            finish()
+                        }
+                        .setNegativeButton("いいえ", null)
+                        .show()
+                } else {
+                    // 今の画面を木端微塵に破壊する。そんな面倒なことはさせない。
+                    finish()
+                }
+
+            } else {
+
                 AlertDialog.Builder(this)
                     .setTitle(R.string.app_name)
-                    .setMessage("以下の変更を加えますがよろしいですか？\n" + str)
-                    .setPositiveButton("はい") { dialog, which ->
-
-                        // グループ名の更新処理を行う
-                        if (gname != edit.text.toString()) {
-                            db.collection("group").document(gid)
-                                .update("name", edit.text.toString()).addOnSuccessListener {
-                                    Log.d("Icon Update Success", "DocumentSnapshot successfully updated!")
-                                }
-                                .addOnFailureListener {
-                                        e -> Log.w("Icon Update Error", "Error updating document", e)
-                                }
-
-                            // グループ名変更ログを出力する
-                            send_group_message(me!!.uid, me_name + " さんがグループ名を " + gname + " から " + edit.text.toString() + " に変更しました")
-                        }
-
-                        // トピックの更新処理を行う
-                        if (gtopic != topi.text.toString()) {
-                            db.collection("group").document(gid)
-                                .update("topic", topi.text.toString()).addOnSuccessListener {
-                                    Log.d("Topic Update Success", "DocumentSnapshot successfully updated!")
-                                }
-                                .addOnFailureListener {
-                                        e -> Log.w("Topic Update Error", "Error updating document", e)
-                                }
-
-                            // トピック変更ログを出力する
-                            send_group_message(me!!.uid, me_name + " さんがグループトピックを " + gtopic + " から " + topi.text.toString() + " に変更しました")
-                        }
-
-                        //　メンバーの招待
-                        if (join_members.size != 0) {
-                            for (i in 0 .. join_members.size-1) {
-                                // メンバー
-                                data class cUser(
-                                    val uid: String? = null
-                                )
-                                // データ構造
-                                data class jUser(
-                                    val gid: String? = null,
-                                    val uid: String? = null
-                                )
-
-                                // group
-                                val add_other = db.collection("group").document(gid).collection("invite").document(join_members[i])
-                                add_other.set(cUser(join_members[i]))
-
-                                // group-status
-                                db.collection("group-status").document(join_members[i]).collection("no-join").document(gid).set(jUser(gid, join_members[i]))
-
-                                // チャット画面内にログを記録
-                                send_group_message(me!!.uid, me_name + " さんが " + join_members_name[i] + " さんを招待しました")
-                            }
-                        }
-                        // メンバーを除外
-                        if (remove_members.size != 0) {
-                            for (i in 0 .. remove_members.size-1) {
-                                // group
-                                db.collection("group").document(gid).collection("member").document(remove_members[i]).delete()
-                                // group-status
-                                db.collection("group-status").document(remove_members[i]).collection("join").document(gid).delete()
-                                // user-latest
-                                db.collection("user-latest").document("les").collection(remove_members[i]).document(gid).delete()
-                                // チャット画面内にログを記録(SenderIDは、除外されたユーザIDを入れています。ややこしくてごめんなさい)
-                                send_group_message(remove_members[i], me_name + " さんが " + remove_members_name[i] + " さんを除外しました")
-                            }
-                        }
-                        // 招待をキャンセル
-                        if (invite_members.size != 0) {
-                            for (i in 0 .. invite_members.size-1) {
-                                // group
-                                db.collection("group").document(gid).collection("invite").document(invite_members[i]).delete()
-                                // group-status
-                                db.collection("group-status").document(invite_members[i]).collection("no-join").document(gid).delete()
-                                // チャット画面内にログを記録
-                                send_group_message(me!!.uid, me_name + " さんが " + invite_members_name[i] + " さんの招待をキャンセルしました")
-                            }
-                        }
-                        // 前の画面へ戻る
-                        finish()
-                    }
-                    .setNegativeButton("いいえ") { dialog, which ->
-                        // 何もしない
-                    }
+                    .setMessage("グループ名を空白にすることはできません")
+                    .setPositiveButton("はい", null)
                     .show()
-            } else {
-                // 今の画面を木端微塵に破壊する。そんな面倒なことはさせない。
-                finish()
             }
         }
 
