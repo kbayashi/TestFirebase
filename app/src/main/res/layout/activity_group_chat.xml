@@ -60,7 +60,8 @@
             android:layout_weight="1"
             android:enabled="false"
             android:hint="メッセージを入力"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:maxLength="100" />
 
         <Button
             android:id="@+id/group_image_send_button"

@@ -104,7 +104,7 @@ class GroupChatActivity : AppCompatActivity() {
         g_send.setOnClickListener {
 
             // テキストボックスに何も記入がないときはスルーする
-            if (g_edit.text.isEmpty()){
+            if (g_edit.text.isBlank()){
                 Toast.makeText(applicationContext, "メッセージを入力してください", Toast.LENGTH_SHORT).show()
             }else{
                 // メッセージをDBに送信

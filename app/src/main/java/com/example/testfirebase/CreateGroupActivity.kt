@@ -133,7 +133,7 @@ class CreateGroupActivity : AppCompatActivity() {
         subb.setOnClickListener {
 
             // グループ名規定の分岐
-            if(edit.text.isEmpty()){
+            if(edit.text.isBlank()){
                 AlertDialog.Builder(this)
                     .setTitle(R.string.app_name)
                     .setMessage("グループ名を入力してください")
