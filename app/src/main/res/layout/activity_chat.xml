@@ -30,7 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="メッセージを入力"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:maxLength="100" />
 
         <Button
             android:id="@+id/image_send_button"

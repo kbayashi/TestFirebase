@@ -1,9 +1,11 @@
 package com.example.testfirebase
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Vibrator
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -30,20 +32,21 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
-        //相手のオブジェクト情報(相手のUIDを)
+        // 相手のオブジェクト情報(相手のUIDを)
         val intent = getIntent()
         get_you = intent.getParcelableExtra(SELECT_USER)
 
-        //アクションバーに相手の名前を表記
-        setTitle(get_you!!.name)
+        // アクションバーに相手の名前を表記
+        title = get_you!!.name
 
-        //アダプターの設定
+        // アダプターの設定
         var messageListAdapter = messageAdapter(this)
 
         //メッセージの監視
         val docRef = db.collection("user-message").document(me!!.uid).collection(get_you!!.uid).orderBy("time")
+
         //ブロックされているならメッセージを表示しない
-        val BlockRef = db.collection("block-user").document("get")
+        db.collection("block-user").document("get")
             .collection(me.uid).document(get_you!!.uid).get().addOnSuccessListener {
                 if(it["uid"] != get_you!!.uid){
                     docRef.addSnapshotListener { snapshot, e ->
@@ -77,7 +80,7 @@ class ChatActivity : AppCompatActivity() {
 
         //メッセージ送信(MessageDBに登録)
         send_button.setOnClickListener {
-            if(message_editText.text.isEmpty()){
+            if(message_editText.text.isBlank()){
                 Toast.makeText(applicationContext, "メッセージを入力してください", Toast.LENGTH_SHORT).show()
             }else{
                 sendMessage(get_you!!, message_editText.text.toString(),false)
@@ -136,21 +139,21 @@ class ChatActivity : AppCompatActivity() {
     }
 
     // Firebaseに画像をアップロードするメソッド
-    private fun uploadImageFirebaseStorage(){
+    private fun uploadImageFirebaseStorage() {
 
-        if(selectedPhotoUri == null) return
+        if (selectedPhotoUri == null) return
         val filename = UUID.randomUUID().toString()
         val ref = FirebaseStorage.getInstance().getReference("/chat_img/$filename")
         ref.putFile(selectedPhotoUri!!)
             .addOnSuccessListener {
                 Log.d(UserProfileEditActivity.USER_REGISTAR, "アップロード成功${it.metadata?.path}")
                 ref.downloadUrl.addOnSuccessListener {
-                    sendMessage(get_you!!,it.toString(),true)
+                    sendMessage(get_you!!, it.toString(), true)
                     Log.d(UserProfileEditActivity.USER_REGISTAR, "File 場所$it")
                     // FirebaseFirestore.getInstance().collection("user").document(my_user!!.uid).set(my_user!!)
                 }
             }
-            .addOnFailureListener{
+            .addOnFailureListener {
                 //do same logging here
                 Log.d(UserProfileEditActivity.USER_REGISTAR, "作成に失敗しました ${it.message}")
                 Toast.makeText(this, "作成に失敗しました ${it.message}", Toast.LENGTH_SHORT).show()
