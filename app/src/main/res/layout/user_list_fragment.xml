@@ -271,15 +271,11 @@
 
     <ImageView
         android:id="@+id/user_list_fragment_advertisement_imageView"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="100dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/advertisement"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:src="@drawable/ecc_karaoke"
-        tools:srcCompat="@drawable/advertisement" />
-
+        app:srcCompat="@drawable/ecc_karaoke" />
 </androidx.constraintlayout.widget.ConstraintLayout>
