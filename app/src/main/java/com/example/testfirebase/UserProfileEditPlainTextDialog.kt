@@ -110,7 +110,7 @@ class UserProfileEditPlainTextDialog(val title:String,val textView: TextView, va
         dialog.activity_user_profile_edit_plain_text_savebutton.setOnClickListener {
 
             //文字列が格納されているか判定
-            if (dialog.activity_user_profile_edit_plain_text_plainText.text.length > 0) {
+            if (dialog.activity_user_profile_edit_plain_text_plainText.text.isNotBlank()) {
 
                 if (dbRefName == "name") {
                     //更新可能
